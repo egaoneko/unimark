@@ -1,0 +1,36 @@
+import { async } from 'rxjs/internal/scheduler/async';
+import { queue } from 'rxjs/internal/scheduler/queue';
+import { apply } from '../../../../src/utils/common';
+import mock{{repositoryClass}}, {
+  mock{{class}},
+} from '../../../../__mocks__/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
+import {{class}} from '../../../../src/domain/use-cases/{{repositoryModule}}/{{class}}';
+
+describe('{{class}} UseCase', () => {
+  beforeEach(() => {
+    mock{{repositoryClass}}.mockClear();
+    mock{{class}}.mockClear();
+  });
+
+  test('{{class}} is called', async() => {
+    const repository = new mock{{repositoryClass}}();
+    const useCase: {{class}} = new {{class}}(repository);
+
+    const prop: any = {};
+    const result: any = await apply(useCase, (it: {{class}}) => it.prop = prop)
+      .runOnce(async, queue)
+      .toPromise();
+    expect(mock{{class}}).toHaveBeenCalledTimes(1);
+    expect(mock{{class}}).toBeCalledWith(prop)
+  });
+
+  // test('throw exception without any', () => {
+  //   const repository = new mock{{repositoryClass}}();
+  //   const useCase: {{class}} = new {{class}}(repository);
+  //
+  //   expect(() => {
+  //     apply(useCase, () => {})
+  //       .runOnce(async, queue)
+  //   }).toThrowError('Invalid params in UseCase');
+  // });
+});

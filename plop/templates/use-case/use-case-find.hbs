@@ -1,0 +1,19 @@
+import { Observable } from 'rxjs';
+import UseCase from '../UseCase';
+import {{entity}} from '../../entities/{{module}}/{{entity}}';
+import {{repositoryClass}} from '../../repositories/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
+import { Options } from '../../../interfaces/repository/options';
+
+export default class Find{{pluralEntity}}By extends UseCase<{{entity}}[]> {
+  public options: Options = {};
+
+  constructor(
+    private repository: {{repositoryClass}}
+  ) {
+    super();
+  }
+
+  protected build(): Observable<{{entity}}[]> {
+    return this.repository.find{{pluralEntity}}By(this.options);
+  }
+}

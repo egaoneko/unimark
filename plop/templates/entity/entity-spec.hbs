@@ -1,0 +1,22 @@
+import {{class}} from '../../../../src/{{layer}}/entities/{{module}}/{{class}}';
+
+describe('{{class}}', () => {
+  test('equal', () => {
+    const {{camelCase class}}: {{class}} = new {{class}}('test');
+    expect({{camelCase class}}.equal(new {{class}}('test'))).toBeTruthy();
+    expect({{camelCase class}}.equal(new {{class}}('fail'))).toBeFalsy();
+  });
+
+  test('clone', () => {
+    const {{camelCase class}}: {{class}} = new {{class}}('test');
+    const clone: {{class}} = {{camelCase class}}.clone();
+    expect(clone.prop).toBe({{camelCase class}}.prop);
+  });
+
+  test('toString', () => {
+    const {{camelCase class}}: {{class}} = new {{class}}('test');
+    expect({{camelCase class}}.toString()).toBe([
+      {{camelCase class}}.prop,
+    ].join(','));
+  });
+});

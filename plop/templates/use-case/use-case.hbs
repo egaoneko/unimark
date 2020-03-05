@@ -1,0 +1,24 @@
+import { Observable } from 'rxjs';
+import UseCase from '../UseCase';
+import {{repositoryClass}} from '../../repositories/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
+
+export default class {{class}} extends UseCase<any> {
+  public prop: any | null = null;
+
+  constructor(
+    private repository: {{repositoryClass}}
+  ) {
+    super();
+  }
+
+  protected build(): Observable<any> {
+    return this.repository.{{camelCase class}}(this.prop as any);
+  }
+
+  protected validate(): boolean {
+    if (!this.prop) {
+      return false;
+    }
+    return true;
+  }
+}

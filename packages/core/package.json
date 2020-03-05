@@ -1,0 +1,31 @@
+{
+  "name": "@unimark/core",
+  "version": "0.0.1",
+  "description": "core",
+  "license": "MIT",
+  "main": "lib/index",
+  "types": "lib/index",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf ./lib",
+    "compile": "tsc --project tsconfig.json",
+    "start": "npm run build && node lib/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "axios": "^0.19.1",
+    "rxjs": "^6.5.3"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.12",
+    "jest": "^24.9.0",
+    "jest-config": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "~3.7.2"
+  }
+}

@@ -1,0 +1,25 @@
+import { Observable } from 'rxjs';
+import UseCase from '../UseCase';
+import {{entity}} from '../../entities/{{module}}/{{entity}}';
+import {{repositoryClass}} from '../../repositories/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
+
+export default class Create{{entity}} extends UseCase<[{{entity}}, boolean]> {
+  public {{camelCase entity}}: {{entity}} | null = null;
+
+  constructor(
+    private repository: {{repositoryClass}}
+  ) {
+    super();
+  }
+
+  protected build(): Observable<[{{entity}}, boolean]> {
+    return this.repository.create{{entity}}(this.{{camelCase entity}} as {{entity}});
+  }
+
+  protected validate(): boolean {
+    if (!this.{{camelCase entity}}) {
+      return false;
+    }
+    return true;
+  }
+}

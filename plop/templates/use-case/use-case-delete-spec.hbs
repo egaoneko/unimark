@@ -1,0 +1,50 @@
+import { async } from 'rxjs/internal/scheduler/async';
+import { queue } from 'rxjs/internal/scheduler/queue';
+import { apply } from '../../../../src/utils/common';
+import mock{{repositoryClass}}, {
+  mockDelete{{entity}},
+} from '../../../../__mocks__/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
+import Delete{{entity}} from '../../../../src/domain/use-cases/{{module}}/Delete{{entity}}';
+import {{entity}} from '../../../../src/domain/entities/{{module}}/{{entity}}';
+import { DEFAULT_ID } from '../../../../__mocks__/constant';
+
+describe('Delete{{entity}} UseCase', () => {
+  beforeEach(() => {
+    mock{{repositoryClass}}.mockClear();
+    mockDelete{{entity}}.mockClear();
+  });
+
+  test('Delete{{entity}} is called', async() => {
+    const repository = new mock{{repositoryClass}}();
+    const useCase: Delete{{entity}} = new Delete{{entity}}(repository);
+
+    const result: [{{entity}}, boolean] = await apply(useCase, (it: Delete{{entity}}) => it.{{camelCase entity}} = DEFAULT_{{upperCase (snakeCase entity)}})
+      .runOnce(async, queue)
+      .toPromise();
+    expect(mockDelete{{entity}}).toHaveBeenCalledTimes(1);
+    expect(mockDelete{{entity}}).toBeCalledWith(DEFAULT_{{upperCase (snakeCase entity)}});
+  });
+
+  test('throw exception without entity', () => {
+    const repository = new mock{{repositoryClass}}();
+    const useCase: Delete{{entity}} = new Delete{{entity}}(repository);
+
+    expect(() => {
+      apply(useCase, () => {})
+        .runOnce(async, queue)
+    }).toThrowError('Invalid params in UseCase');
+  });
+
+  // test('throw exception with invalid prop', () => {
+  //   const repository = new mock{{repositoryClass}}();
+  //   const useCase: Delete{{entity}} = new Delete{{entity}}(repository);
+  //   const {{camelCase entity}}: {{entity}} = new {{entity}}();
+  //   ({{camelCase entity}} as any).prop = null;
+  //   {{camelCase entity}}.id = DEFAULT_ID;
+  //
+  //   expect(() => {
+  //     apply(useCase, ((it: Delete{{entity}}) => it.{{camelCase entity}} = {{camelCase entity}}))
+  //       .runOnce(async, queue)
+  //   }).toThrowError('Invalid params in UseCase');
+  // });
+});

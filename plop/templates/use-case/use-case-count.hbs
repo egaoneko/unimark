@@ -1,0 +1,18 @@
+import { Observable } from 'rxjs';
+import UseCase from '../UseCase';
+import {{repositoryClass}} from '../../repositories/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
+import { Options } from '../../../interfaces/repository/options';
+
+export default class Count{{pluralEntity}} extends UseCase<number> {
+  public options: Options = {};
+
+  constructor(
+    private repository: {{repositoryClass}}
+  ) {
+    super();
+  }
+
+  protected build(): Observable<number> {
+    return this.repository.count{{pluralEntity}}(this.options);
+  }
+}
