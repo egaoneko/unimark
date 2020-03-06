@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Col,
   Layout,
@@ -6,7 +6,6 @@ import {
 } from 'antd';
 import FullLayoutTemplate from '../layout/FullLayoutTemplate';
 import styled from 'styled-components';
-import firebase from 'gatsby-plugin-firebase';
 
 const Container = styled(Layout)`
   display: flex;

@@ -4,9 +4,10 @@
   "scripts": {
     "postinstall": "npm run bootstrap",
     "bootstrap": "lerna bootstrap",
+    "start:client": "lerna run start --stream --scope @unimark/client",
     "build": "lerna run build",
     "build:core": "lerna run build --scope @unimark/core",
-    "start:client": "lerna run start --stream --scope @unimark/client",
+    "build:client": "lerna run build --scope @unimark/client",
     "test": "lerna run test --stream",
     "test:core": "lerna run test --stream --scope @unimark/core",
     "test:client": "lerna run test --stream --scope @unimark/client"
