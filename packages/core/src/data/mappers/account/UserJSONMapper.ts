@@ -1,7 +1,7 @@
 import JSONMapper from '../JSONMapper';
-import ApplicationErrorFactory from '../../errors/ApplicationErrorFactory';
 import ErrorType from '../../../error/ErrorType';
 import User, { UserInterface } from '../../../domain/entities/account/User';
+import { APPLICATION_ERROR_FACTORY } from '../../errors/factories';
 
 export default class UserJSONMapper implements JSONMapper<UserInterface, User> {
   public toEntity(json: UserInterface): User {
@@ -11,7 +11,7 @@ export default class UserJSONMapper implements JSONMapper<UserInterface, User> {
       !json.name ||
       !json.role
     ) {
-      throw ApplicationErrorFactory.getError(ErrorType.GENERAL, 'Invalid json');
+      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, 'Invalid json');
     }
     const user: User = new User(
       json.id,

@@ -1,5 +1,4 @@
 import {
-  AsyncSubject,
   Observable,
   of
 } from 'rxjs';
@@ -11,8 +10,8 @@ import {
   switchMap
 } from 'rxjs/operators';
 import UserJSONMapper from '@unimark/core/lib/data/mappers/account/UserJSONMapper';
-import { ApplicationErrorFactory } from '@unimark/core/lib/data/errors/ApplicationErrorFactory';
 import ErrorType from '@unimark/core/lib/error/ErrorType';
+import { APPLICATION_ERROR_FACTORY } from '@unimark/core/lib/data/errors/factories';
 
 const mapper: UserJSONMapper = new UserJSONMapper();
 
@@ -49,11 +48,10 @@ export default class FirebaseUserProvider {
                     name: user.name,
                     role: user.role,
                     photo: user.photo,
-                    provider: user.provider,
                   })
                   .then((err: any): [User, boolean] => {
                     if (err) {
-                      throw ApplicationErrorFactory.getError(ErrorType.GENERAL, `Fail create user: ${err}`);
+                      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create user: ${err}`);
                     }
                     return [user, true];
                   })
@@ -66,16 +64,13 @@ export default class FirebaseUserProvider {
   }
 
   public getCurrentUser(): Observable<User | null> {
-    const subject: AsyncSubject<User | null> = new AsyncSubject();
-    firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
-      if (!user) {
-        subject.next(null);
-      } else {
-        subject.next(new FirebaseUserMapper().toEntity(user));
-      }
-      subject.complete();
-    });
-    return subject;
+    const user: firebase.User | null = firebase.auth().currentUser;
+
+    if (!user) {
+      return of(null);
+    }
+
+    return of(new FirebaseUserMapper().toEntity(user));
   }
 
   public getCurrentUserToken(): Observable<string | null> {

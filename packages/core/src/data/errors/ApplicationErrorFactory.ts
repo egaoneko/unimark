@@ -3,7 +3,7 @@ import ErrorFactory from '../../error/ErrorFactory';
 import CustomError, { ErrorDataType } from '../../error/CustomError';
 import ErrorType from '../../error/ErrorType';
 
-export class ApplicationErrorFactory implements ErrorFactory {
+export default class ApplicationErrorFactory implements ErrorFactory {
   public getError(name: ErrorType, message: string, data?: ErrorDataType): CustomError {
     const error: CustomError = ERRORS[name as keyof typeof ERRORS] || ERRORS['general'];
     const params: ErrorDataType = data || {};
@@ -12,5 +12,3 @@ export class ApplicationErrorFactory implements ErrorFactory {
     return error;
   }
 }
-
-export default new ApplicationErrorFactory();

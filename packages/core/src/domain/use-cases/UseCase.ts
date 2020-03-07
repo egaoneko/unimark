@@ -7,8 +7,8 @@ import {
   observeOn,
   first
 } from 'rxjs/operators';
-import ApplicationErrorFactory from '../../data/errors/ApplicationErrorFactory';
 import ErrorType from '../../error/ErrorType';
+import { APPLICATION_ERROR_FACTORY } from '../../data/errors/factories';
 
 export default abstract class UseCase<T> {
   protected abstract build(): Observable<T>;
@@ -18,7 +18,7 @@ export default abstract class UseCase<T> {
     postExecutionScheduler: SchedulerLike
   ): Observable<T> {
     if (!this.validate()) {
-      throw ApplicationErrorFactory.getError(ErrorType.GENERAL, 'Invalid params in UseCase');
+      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, 'Invalid params in UseCase');
     }
 
     return this.build()
@@ -33,7 +33,7 @@ export default abstract class UseCase<T> {
     postExecutionScheduler: SchedulerLike
   ): Observable<T> {
     if (!this.validate()) {
-      throw ApplicationErrorFactory.getError(ErrorType.GENERAL, 'Invalid params in UseCase');
+      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, 'Invalid params in UseCase');
     }
 
     return this.build()

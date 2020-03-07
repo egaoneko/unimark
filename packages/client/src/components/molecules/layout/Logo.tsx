@@ -34,14 +34,13 @@ const Span = styled.span`
 `;
 
 interface PropsType {
-  width: number;
-  height: number;
+  size: number;
   style?: CSSProperties;
   onClick?: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const Logo: React.FC<PropsType> = props => {
-  const { width, height, style, onClick }: PropsType = props;
+  const { size, style, onClick }: PropsType = props;
   const { site } = useStaticQuery(graphql`
       query {
           site {
@@ -57,15 +56,13 @@ const Logo: React.FC<PropsType> = props => {
       role="button"
       tabIndex={0}
       style={{
-        width: width,
-        height: height,
         cursor: `${onClick ? 'pointer' : 'auto'}`,
         ...style
       }}
       onClick={onClick}>
       <Container>
         <Span style={{
-          fontSize: height,
+          fontSize: size,
         }}>
           {site.siteMetadata.title}
         </Span>

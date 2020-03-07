@@ -16,7 +16,7 @@ export default class User implements Entity {
     public id: string,
     public email: string,
     public name: string,
-    public role: Role,
+    public role: Role = Role.USER,
   ) {
   }
 

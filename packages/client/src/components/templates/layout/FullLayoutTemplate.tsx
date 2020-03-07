@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import FullLayout from '../../organisms/layout/FullLayout';
 import FullContent from '../../organisms/layout/FullContent';
 
 interface PropsType {
+  style?: CSSProperties;
   children?: React.ReactNode;
 }
 
-const FullLayoutTemplate: React.FC<PropsType> = ({ children }) => {
+const FullLayoutTemplate: React.FC<PropsType> = ({ style, children }) => {
   return (
-    <FullLayout>
+    <FullLayout style={style}>
       <FullContent>
         {children}
       </FullContent>

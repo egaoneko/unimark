@@ -8,6 +8,11 @@ import {
 import Logo from '../../molecules/layout/Logo';
 import Avatar from '../../molecules/layout/Avartar';
 import styled from 'styled-components';
+import User from '@unimark/core/lib/domain/entities/account/User';
+import { signIn } from '../../../utils/router';
+import firebase from '../../../externals/firebase';
+import useStores from '../../../utils/mobx';
+import { observer } from 'mobx-react';
 
 const Header = styled.div`
   display: flex;
@@ -26,8 +31,8 @@ const RightMenuContainer = styled.div`
 const DropdownMenu = () => {
   const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // firebase.auth().signOut();
-    // Router.push('/sign-in');
+    firebase.auth().signOut();
+    signIn();
   };
   return (
     <Menu>
@@ -41,22 +46,27 @@ const DropdownMenu = () => {
 };
 
 interface PropsType {
-  selectedKey: string;
-  user?: any | null;
 }
 
-const HeaderNav: React.FC<PropsType> = ({ selectedKey, user }) => {
-  const [visible, setVisible] = useState<boolean>(false);
+const HeaderNav: React.FC<PropsType> = observer(() => {
+  const { userStore } = useStores();
 
-  function onClickAvatar(user?: any | null) {
-    setVisible(true);
+  function onChangeVisible(visible: boolean) {
+    if (!visible) {
+      return;
+    }
+
+    if (userStore?.user) {
+      return;
+    }
+
+    signIn();
   }
 
   return (
     <Header>
       <Logo
-        width={200}
-        height={38}
+        size={38}
         style={{
           margin: '2px 10px 2px 0',
           float: 'left',
@@ -65,15 +75,14 @@ const HeaderNav: React.FC<PropsType> = ({ selectedKey, user }) => {
         <Dropdown
           overlay={DropdownMenu}
           trigger={['click']}
-          visible={!!user && visible}
+          onVisibleChange={onChangeVisible}
           placement="bottomRight">
           <Avatar
-            onClick={onClickAvatar}
-            user={user}/>
+            user={userStore.user}/>
         </Dropdown>
       </RightMenuContainer>
     </Header>
   );
-};
+});
 
 export default HeaderNav;

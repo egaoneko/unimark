@@ -1,7 +1,7 @@
 import CustomError from '../../error/CustomError';
 
 export default class GeneralError extends CustomError {
-  name = 'GeneralError';
+  public name = 'GeneralError';
 
   constructor() {
     super();

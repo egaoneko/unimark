@@ -1,19 +1,17 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import FullLayout from '../../organisms/layout/FullLayout';
 import HeaderNav from '../../organisms/layout/HeaderNav';
 import FullContent from '../../organisms/layout/FullContent';
 
 interface PropsType {
+  style?: CSSProperties;
   children?: React.ReactNode;
-  user?: any | null;
 }
 
-const HeaderLayoutTemplate: React.FC<PropsType> = ({ children, user }) => {
+const HeaderLayoutTemplate: React.FC<PropsType> = ({ style, children }) => {
   return (
-    <FullLayout>
-      <HeaderNav
-        selectedKey={'stocker'}
-        user={user}/>
+    <FullLayout style={style}>
+      <HeaderNav/>
       <FullContent>
         {children}
       </FullContent>

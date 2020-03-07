@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import {
   Layout as AntLayout,
 } from 'antd';
@@ -10,12 +10,15 @@ const Layout = styled(AntLayout)`
 `;
 
 interface PropsType {
+  style?: CSSProperties;
   children?: React.ReactNode;
 }
 
-const BaseLayout: React.FC<PropsType> = ({ children }) => {
+const BaseLayout: React.FC<PropsType> = ({ style, children }) => {
   return (
-    <Layout>
+    <Layout style={{
+      ...style
+    }}>
       {children}
     </Layout>
   );

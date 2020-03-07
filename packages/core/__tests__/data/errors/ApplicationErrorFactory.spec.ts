@@ -1,6 +1,6 @@
-import { ApplicationErrorFactory } from '../../../src/data/errors/ApplicationErrorFactory';
 import GeneralError from '../../../src/data/errors/GeneralError';
 import ErrorType from '../../../src/error/ErrorType';
+import ApplicationErrorFactory from '../../../src/data/errors/ApplicationErrorFactory';
 
 describe('ApplicationErrorFactory', () => {
   test('getError', () => {

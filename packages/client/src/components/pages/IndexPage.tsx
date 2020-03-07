@@ -5,7 +5,7 @@ import HomeContainer from '../templates/main/HomeContainer';
 
 const IndexPage: React.FC = () => {
   return (
-    <HeaderLayoutTemplate user={null}>
+    <HeaderLayoutTemplate>
       <SEO title="Home" />
       <HomeContainer/>
     </HeaderLayoutTemplate>

@@ -1,6 +1,9 @@
 import firebase from 'firebase/app';
 
-if (!firebase.apps.length) {
+if (
+  typeof window !== "undefined" &&
+  !firebase.apps.length
+) {
   firebase.initializeApp({
     appId: '1:845966195286:web:c5597abcc470f6597e19f7',
     apiKey: 'AIzaSyA9Mj3huKl-TMxlv0xeIuTFcqEcq8DXp9k',
