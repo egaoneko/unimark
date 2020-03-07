@@ -12,6 +12,7 @@ import { signIn } from '../../../utils/router';
 import { auth } from '../../../externals/firebase';
 import useStores from '../../../utils/mobx';
 import { observer } from 'mobx-react';
+import User from '@unimark/core/lib/src/domain/entities/account/User';
 
 const Header = styled.div`
   display: flex;
@@ -44,23 +45,31 @@ const DropdownMenu = () => {
   );
 };
 
+const AvatarDropdown: React.FC<{ user: User }> = ({ user }) => {
+  function onClickAvatar() {
+    signIn();
+  }
+
+  if (!user) {
+    return <Avatar onClick={onClickAvatar} user={user}/>;
+  }
+
+  return (
+    <Dropdown
+      overlay={DropdownMenu}
+      trigger={['click']}
+      placement="bottomRight">
+      <Avatar
+        user={user}/>
+    </Dropdown>
+  );
+};
+
 interface PropsType {
 }
 
 const HeaderNav: React.FC<PropsType> = observer(() => {
   const { userStore } = useStores();
-
-  function onChangeVisible(visible: boolean) {
-    if (!visible) {
-      return;
-    }
-
-    if (userStore?.user) {
-      return;
-    }
-
-    signIn();
-  }
 
   return (
     <Header>
@@ -71,14 +80,7 @@ const HeaderNav: React.FC<PropsType> = observer(() => {
           float: 'left',
         }}/>
       <RightMenuContainer>
-        <Dropdown
-          overlay={DropdownMenu}
-          trigger={['click']}
-          onVisibleChange={onChangeVisible}
-          placement="bottomRight">
-          <Avatar
-            user={userStore.user}/>
-        </Dropdown>
+        <AvatarDropdown user={userStore.user}/>
       </RightMenuContainer>
     </Header>
   );
