@@ -10,9 +10,12 @@ import CreateUser from '@unimark/core/lib/domain/use-cases/account/CreateUser';
 import { async } from 'rxjs/internal/scheduler/async';
 import { queue } from 'rxjs/internal/scheduler/queue';
 import UserStore from '../stores/UserStore';
-import firebase from '../externals/firebase';
+import { auth } from '../externals/firebase';
 import FirebaseUserMapper from '../data/mappers/account/FirebaseUserMapper';
-import { CONTEXT } from '../constant';
+import {
+  CONTEXT,
+  IS_SSR
+} from '../constant';
 import { NOOP } from '../utils/common';
 
 const userStore: UserStore = new UserStore();
@@ -23,7 +26,11 @@ export default ({ element }: WrapRootElementBrowserArgs | WrapRootElementNodeArg
 };
 
 function initObserve(): void {
-  firebase.auth().onAuthStateChanged((fbUser: firebase.User | null) => {
+  if (IS_SSR) {
+    return;
+  }
+
+  auth?.onAuthStateChanged(fbUser => {
     let user: User | null = null;
 
     if (fbUser) {

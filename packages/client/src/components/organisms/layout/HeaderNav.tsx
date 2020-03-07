@@ -8,9 +8,8 @@ import {
 import Logo from '../../molecules/layout/Logo';
 import Avatar from '../../molecules/layout/Avartar';
 import styled from 'styled-components';
-import User from '@unimark/core/lib/domain/entities/account/User';
 import { signIn } from '../../../utils/router';
-import firebase from '../../../externals/firebase';
+import { auth } from '../../../externals/firebase';
 import useStores from '../../../utils/mobx';
 import { observer } from 'mobx-react';
 
@@ -31,7 +30,7 @@ const RightMenuContainer = styled.div`
 const DropdownMenu = () => {
   const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    firebase.auth().signOut();
+    auth.signOut();
     signIn();
   };
   return (

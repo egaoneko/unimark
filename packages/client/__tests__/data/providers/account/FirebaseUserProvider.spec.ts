@@ -3,7 +3,10 @@ import FirebaseUserProvider from '../../../../src/data/providers/account/Firebas
 import {
   DEFAULT_USER,
 } from '../../../../__mocks__/account/constant';
-import firebase from '../../../../__mocks__/firebase';
+import firebase, {
+  auth,
+  db
+} from '../../../../src/externals/firebase';
 
 describe('FirebaseUserProvider', () => {
   const provider: FirebaseUserProvider = new FirebaseUserProvider();
@@ -26,7 +29,7 @@ describe('FirebaseUserProvider', () => {
     const [_, success]: [User, boolean] = await provider.createUser(DEFAULT_USER).toPromise();
     expect(success).toBeTruthy();
 
-    const userRef: firebase.database.Reference = firebase.database().ref('users/' + DEFAULT_USER.id);
+    const userRef: firebase.database.Reference = db.ref('users/' + DEFAULT_USER.id);
     const dataSnapShot: firebase.database.DataSnapshot = await userRef.once('value');
     expect(dataSnapShot.hasChildren()).toBeTruthy();
     const err: any = await userRef.remove();
@@ -36,7 +39,7 @@ describe('FirebaseUserProvider', () => {
   test('getCurrentUser', async () => {
     const user: User | null = await provider.getCurrentUser().toPromise();
 
-    if (firebase.auth().currentUser) {
+    if (auth.currentUser) {
       if (!user) {
         throw 'Invalid User';
       }
@@ -54,7 +57,7 @@ describe('FirebaseUserProvider', () => {
   test('getCurrentUserToken', async () => {
     const token: string | null = await provider.getCurrentUserToken().toPromise();
 
-    const user: firebase.User | null = firebase.auth().currentUser;
+    const user: firebase.User | null = auth.currentUser;
     if (user) {
       if (!token) {
         throw 'Invalid token';

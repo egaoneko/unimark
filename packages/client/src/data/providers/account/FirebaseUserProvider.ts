@@ -3,7 +3,10 @@ import {
   of
 } from 'rxjs';
 import User, { UserInterface } from '@unimark/core/lib/domain/entities/account/User';
-import firebase from '../../../externals/firebase';
+import firebase, {
+  auth,
+  db
+} from '../../../externals/firebase';
 import FirebaseUserMapper from '../../mappers/account/FirebaseUserMapper';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import {
@@ -17,7 +20,7 @@ const mapper: UserJSONMapper = new UserJSONMapper();
 
 export default class FirebaseUserProvider {
   public findUserById(id: string): Observable<User | null> {
-    const userRef: firebase.database.Reference = firebase.database().ref('users/' + id);
+    const userRef: firebase.database.Reference = db.ref('users/' + id);
     return fromPromise(userRef.once('value'))
       .pipe(
         switchMap<firebase.database.DataSnapshot, Observable<User | null>>(
@@ -35,7 +38,7 @@ export default class FirebaseUserProvider {
   }
 
   public createUser(user: User): Observable<[User, boolean]> {
-    const userRef: firebase.database.Reference = firebase.database().ref('users/' + user.id);
+    const userRef: firebase.database.Reference = db.ref('users/' + user.id);
     return fromPromise(userRef.once('value'))
       .pipe(
         switchMap<firebase.database.DataSnapshot, Observable<[User, boolean]>>(
@@ -64,7 +67,7 @@ export default class FirebaseUserProvider {
   }
 
   public getCurrentUser(): Observable<User | null> {
-    const user: firebase.User | null = firebase.auth().currentUser;
+    const user: firebase.User | null = auth.currentUser;
 
     if (!user) {
       return of(null);
@@ -74,7 +77,7 @@ export default class FirebaseUserProvider {
   }
 
   public getCurrentUserToken(): Observable<string | null> {
-    const user: firebase.User | null = firebase.auth().currentUser;
+    const user: firebase.User | null = auth.currentUser;
 
     if (!user) {
       return of(null);

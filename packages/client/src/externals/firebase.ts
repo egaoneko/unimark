@@ -1,7 +1,8 @@
 import firebase from 'firebase/app';
+import { IS_SSR } from '../constant';
 
 if (
-  typeof window !== "undefined" &&
+  !IS_SSR &&
   !firebase.apps.length
 ) {
   firebase.initializeApp({
@@ -14,6 +15,21 @@ if (
     messagingSenderId: '845966195286',
     measurementId: 'G-F78SJ2SEKJ'
   });
+}
+
+let db: firebase.database.Database;
+let auth: firebase.auth.Auth;
+
+if (
+  !IS_SSR
+) {
+  db = firebase.database();
+  auth = firebase.auth();
+}
+
+export {
+  db,
+  auth
 }
 
 export default firebase;

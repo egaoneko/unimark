@@ -14,7 +14,7 @@ import MDSpinner from 'react-md-spinner';
 import FullLayoutTemplate from '../layout/FullLayoutTemplate';
 import CenterTemplate from '../layout/CenterTemplate';
 import { StyledFirebaseAuth } from 'react-firebaseui';
-import firebase from '../../../externals/firebase';
+import { auth } from '../../../externals/firebase';
 import Logo from '../../molecules/layout/Logo';
 import { main } from '../../../utils/router';
 
@@ -48,7 +48,7 @@ const Auth: React.FC<{
   uiConfig: firebaseui.auth.Config,
   loading: boolean,
   error: string | null,
-  onClose: () => vioid
+  onClose: () => void
 }> = ({ uiConfig, loading, error, onClose }) => {
   if (error) {
     return (
@@ -82,7 +82,7 @@ const Auth: React.FC<{
       <FirebaseAuthContainer>
         <StyledFirebaseAuth
           uiConfig={uiConfig}
-          firebaseAuth={firebase.auth()}/>
+          firebaseAuth={auth}/>
       </FirebaseAuthContainer>
     </>
   );
