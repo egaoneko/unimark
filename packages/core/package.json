@@ -16,16 +16,16 @@
     "test": "jest"
   },
   "dependencies": {
-    "axios": "^0.19.1",
-    "rxjs": "^6.5.3"
+    "axios": "~0.19.1",
+    "rxjs": "~6.5.3"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.12",
-    "jest": "^24.9.0",
-    "jest-config": "^24.9.0",
-    "ts-jest": "^24.2.0",
-    "typescript": "~3.7.2"
+    "@types/axios": "~0.14.0",
+    "@types/jest": "~25.1.4",
+    "@types/node": "~13.9.0",
+    "jest": "~25.1.0",
+    "jest-config": "~25.1.0",
+    "ts-jest": "~25.2.1",
+    "typescript": "~3.8.3"
   }
 }

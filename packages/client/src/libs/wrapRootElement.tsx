@@ -25,9 +25,14 @@ export default ({ element }: WrapRootElementBrowserArgs | WrapRootElementNodeArg
   return <Provider userStore={userStore}>{element}</Provider>;
 };
 
-function initObserve(): void {
+async function initObserve(): Promise<void> {
   if (IS_SSR) {
     return;
+  }
+
+  if (auth?.currentUser) {
+    const user: User = new FirebaseUserMapper().toEntity(auth.currentUser);
+    await userStore.updateUser(user);
   }
 
   auth?.onAuthStateChanged(fbUser => {
