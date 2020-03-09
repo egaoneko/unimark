@@ -16,7 +16,6 @@
     "@babel/plugin-proposal-class-properties": "~7.8.3",
     "@babel/plugin-proposal-decorators": "~7.8.3",
     "@unimark/core": "~0.0.1",
-    "add": "~2.0.6",
     "animate.css": "~3.7.2",
     "antd": "~4.0.0",
     "firebase": "~7.10.0",
