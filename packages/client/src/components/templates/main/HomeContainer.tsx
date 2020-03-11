@@ -6,6 +6,7 @@ import {
 } from 'antd';
 import FullLayoutTemplate from '../layout/FullLayoutTemplate';
 import styled from 'styled-components';
+import MainGridContainer from './MainGridContainer';
 
 const Container = styled(Layout)`
   display: flex;
@@ -19,6 +20,7 @@ const Container = styled(Layout)`
 
 const Content = styled(Layout.Content)`
   width: 100%;
+  height: 100%;
   background: #fff;
 `;
 
@@ -30,10 +32,7 @@ const HomeContainer: React.FC<PropsType> = () => {
     <FullLayoutTemplate>
       <Container>
         <Content>
-          <Row>
-            <Col span={24}>
-            </Col>
-          </Row>
+          <MainGridContainer/>
         </Content>
       </Container>
     </FullLayoutTemplate>

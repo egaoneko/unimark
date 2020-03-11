@@ -1,12 +1,8 @@
 import React, { CSSProperties } from 'react';
-import {
-  Layout as AntLayout,
-} from 'antd';
 import styled from 'styled-components';
 
-const Layout = styled(AntLayout)`
+const Layout = styled.div`
   height: 100%;
-  background: #ffffff;
 `;
 
 interface PropsType {

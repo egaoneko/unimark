@@ -15,6 +15,8 @@ const Container = styled.div`
 `;
 
 const Span = styled.span`
+  font-family: sans-serif;
+  font-weight: bold;
   background: linear-gradient(to left, #8be9fd, #50fa7b, #ffb86c, #ff79c6, #bd93f9, #ff5555, #f1fa8c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
