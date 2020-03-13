@@ -6,7 +6,7 @@ import mockUserRepository, {
 import { queue } from 'rxjs/internal/scheduler/queue';
 import CreateUser from '../../../../src/domain/use-cases/account/CreateUser';
 import User from '../../../../src/domain/entities/account/User';
-import { Role } from '../../../../src/enums/account';
+import { Role } from '../../../../src/enums/account/user';
 import { apply } from '../../../../src/utils/common';
 import { DEFAULT_USER } from '../../../../__mocks__/account/constant';
 

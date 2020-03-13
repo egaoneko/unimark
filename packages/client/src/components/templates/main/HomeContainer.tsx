@@ -1,12 +1,10 @@
 import React from 'react';
 import {
-  Col,
   Layout,
-  Row
 } from 'antd';
 import FullLayoutTemplate from '../layout/FullLayoutTemplate';
 import styled from 'styled-components';
-import MainGridContainer from './MainGridContainer';
+import MainGridContainer from '../grid/MainGridContainer';
 
 const Container = styled(Layout)`
   display: flex;
