@@ -1,5 +1,5 @@
 import Entity from '../Entity';
-import { Role } from '../../../enums/account';
+import { Role } from '../../../enums/account/user';
 
 export interface UserInterface {
   id: string;

@@ -1,23 +1,14 @@
 import User, { UserInterface } from '../../../../src/domain/entities/account/User';
 import UserJSONMapper from '../../../../src/data/mappers/account/UserJSONMapper';
-import { Role } from '../../../../src/enums/account';
+import {
+  DEFAULT_USER,
+  DEFAULT_USER_JSON
+} from '../../../../__mocks__/account/constant';
 
 describe('UserJSONMapper', () => {
   const mapper: UserJSONMapper = new UserJSONMapper();
-  const json: UserInterface = {
-    id: '0',
-    email: 'test@test.com',
-    name: 'Test',
-    role: Role.USER,
-    photo: 'photo',
-  };
-  const entity: User = new User(
-    '0',
-    'test@test.com',
-    'Test',
-    Role.USER,
-  );
-  entity.photo = 'photo';
+  const json: UserInterface = DEFAULT_USER_JSON;
+  const entity: User = DEFAULT_USER;
 
   test('toEntity', () => {
     expect(mapper.toEntity(json).equal(entity)).toBeTruthy();

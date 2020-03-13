@@ -1,6 +1,7 @@
 const loadHelpers = require('./plop/scripts/helpers');
 const loadPrompts = require('./plop/scripts/prompts');
 const loadEntity = require('./plop/scripts/entity');
+const loadMapper = require('./plop/scripts/mapper');
 const loadRepository = require('./plop/scripts/repository');
 const loadUseCase = require('./plop/scripts/use-case');
 const loadUseCaseCRUD = require('./plop/scripts/use-case-crud');
@@ -11,6 +12,7 @@ module.exports = (plop) => {
   loadHelpers(plop);
   loadPrompts(plop);
   loadEntity(plop);
+  loadMapper(plop);
   loadRepository(plop);
   loadUseCase(plop);
   loadUseCaseCRUD(plop);

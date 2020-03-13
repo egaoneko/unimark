@@ -102,10 +102,12 @@ const MainGridContainer: React.FC<PropsType> = () => {
     onLayoutChange: function () {
     },
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    initialLayout: layout
+    initialLayout: layout,
+    compactType: 'vertical',
+    verticalCompact: false,
+    preventCollision: true,
   };
   const [breakpoint, setBreakpoint] = useState<string>('lg');
-  const [compactType, setCompactType] = useState<'vertical' | 'horizontal' | null>('vertical');
   const [mounted, setMounted] = useState<boolean>(false);
   const [layouts, setLayouts] = useState({ lg: defaultProps.initialLayout });
 
@@ -137,8 +139,6 @@ const MainGridContainer: React.FC<PropsType> = () => {
       // and set `measureBeforeMount={true}`.
       layouts={layouts}
       useCSSTransforms={mounted}
-      compactType={compactType}
-      preventCollision={!compactType}
     >
       {generateDOM()}
     </ResponsiveReactGridLayout>

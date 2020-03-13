@@ -5,6 +5,10 @@ import {{parentClass}} from '../{{#if parentModule}}{{parentModule}}/{{/if}}{{pa
 import {{parentClass}} from '@stocker/core/lib/{{parentLayer}}/entities/{{#if parentModule}}{{parentModule}}/{{/if}}{{parentClass}}';
 {{/ifNotEquals}}
 
+export interface {{class}}Interface {
+  prop: any;
+}
+
 export default class {{class}} implements {{parentClass}} {
   constructor(
     public prop: any,

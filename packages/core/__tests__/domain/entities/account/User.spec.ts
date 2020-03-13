@@ -1,5 +1,5 @@
 import User from '../../../../src/domain/entities/account/User';
-import { Role } from '../../../../src/enums/account';
+import { Role } from '../../../../src/enums/account/user';
 
 describe('User', () => {
   test('equal', () => {

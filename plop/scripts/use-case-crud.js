@@ -28,7 +28,7 @@ module.exports = (plop) => {
       ),
       genAutocompletePrompt(
         'entity',
-        'Please choice repository class',
+        'Please choice entity class',
         (answer, input) => new Promise((resolve) => {
           input = input || '';
           const source = readDir(`${PACKAGE_ROOT_PATH}/core/src/domain/entities/${answer.module}`)
