@@ -13,10 +13,10 @@ import UserStore from '../stores/UserStore';
 import { auth } from '../externals/firebase';
 import FirebaseUserMapper from '../data/mappers/account/FirebaseUserMapper';
 import {
-  CONTEXT,
-  IS_SSR
-} from '../constant';
+  CONTEXT
+} from '../constant/context';
 import { NOOP } from '../utils/common';
+import { IS_SSR } from '../constant/common';
 
 const userStore: UserStore = new UserStore();
 

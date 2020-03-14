@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { IS_SSR } from '../constant';
+import { IS_SSR } from '../constant/common';
 
 if (
   !IS_SSR &&

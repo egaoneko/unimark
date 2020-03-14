@@ -4,6 +4,7 @@ import Setting, {
   AppLayouts,
   SettingInterface
 } from '../../src/domain/entities/account/Setting';
+import { DEFAULT_UID } from '../constant';
 
 export const DEFAULT_ID: string = 'KpE7RIpfbYQMFAm713eeQNy2oNv1';
 export const DEFAULT_NAME: string = 'donghyun.seo91@gmail.com';
@@ -30,10 +31,11 @@ export const DEFAULT_USER_JSON: UserInterface = {
 export const DEFAULT_APP_LAYOUTS: AppLayouts = {};
 
 export const DEFAULT_SETTING: Setting = new Setting(DEFAULT_USER);
+DEFAULT_SETTING.id = DEFAULT_UID;
 DEFAULT_SETTING.layouts = DEFAULT_APP_LAYOUTS;
 
 export const DEFAULT_SETTING_JSON: SettingInterface = {
-  id: DEFAULT_SETTING.id,
+  id: DEFAULT_UID,
   user: DEFAULT_USER_JSON,
   layouts: DEFAULT_APP_LAYOUTS,
 };

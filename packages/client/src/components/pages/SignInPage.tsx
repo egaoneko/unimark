@@ -6,7 +6,7 @@ import { apply } from '@unimark/core/lib/utils/common';
 import firebase from '../../externals/firebase';
 import SignInTemplate from '../../components/templates/account/SignInTemplate';
 import FirebaseUserMapper from '../../../src/data/mappers/account/FirebaseUserMapper';
-import { CONTEXT } from '../../constant';
+import { CONTEXT } from '../../constant/context';
 import {
   main,
   signIn
