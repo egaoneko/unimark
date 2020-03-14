@@ -17,6 +17,9 @@ const isPascalCase = (str) => {
 };
 
 module.exports = {
+  camelCase,
+  paramCase,
+  pascalCase,
   isCamelCase,
   isParamCase,
   isPascalCase,

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import AppContext from './AppContext';
+import AppContext from '../AppContext';
 
 export const TIMEOUT: number = 10000;
 export const DEFAULT_AXIOS_INSTANCE: AxiosInstance = axios.create({
@@ -7,4 +7,3 @@ export const DEFAULT_AXIOS_INSTANCE: AxiosInstance = axios.create({
 });
 export const CONTEXT: AppContext = new AppContext(DEFAULT_AXIOS_INSTANCE);
 
-export const IS_SSR = typeof window === 'undefined';

@@ -9,13 +9,9 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "experimentalDecorators": true,
-    "jsx": "preserve"
+    "noEmit": true
   },
   "include": [
     "src/**/*"

@@ -4,6 +4,10 @@ import GetCurrentUser from '@unimark/core/lib/domain/use-cases/account/GetCurren
 import GetCurrentUserToken from '@unimark/core/lib/domain/use-cases/account/GetCurrentUserToken';
 import CreateUser from '@unimark/core/lib/domain/use-cases/account/CreateUser';
 import { AxiosInstance } from 'axios';
+import {
+  auth,
+  db
+} from './externals/firebase';
 
 interface ProviderDependencies {
   firebaseUser: FirebaseUserProvider;
@@ -28,7 +32,7 @@ export default class AppContext {
   constructor(axiosInstance: AxiosInstance) {
     this.axiosInstance = axiosInstance;
     this.providers = {
-      firebaseUser: new FirebaseUserProvider(),
+      firebaseUser: new FirebaseUserProvider(db, auth),
     };
     this.repositories = {
       user: new UserRepository(this.providers.firebaseUser),
