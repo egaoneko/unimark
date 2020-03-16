@@ -7,6 +7,7 @@ import User, { UserInterface } from '@unimark/core/lib/domain/entities/account/U
 import FirebaseUserMapper from '../../mappers/account/FirebaseUserMapper';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import {
+  catchError,
   switchMap
 } from 'rxjs/operators';
 import UserJSONMapper from '@unimark/core/lib/data/mappers/account/UserJSONMapper';
@@ -17,45 +18,50 @@ import FirebaseProvider from '../FirebaseProvider';
 const mapper: UserJSONMapper = new UserJSONMapper();
 
 export default class FirebaseUserProvider extends FirebaseProvider {
+
   public findUserById(id: string): Observable<User | null> {
-    const userRef: firebase.database.Reference = this.db.ref('users/' + id);
-    return fromPromise(userRef.once('value'))
+    return fromPromise(
+      this.db
+        .collection('users')
+        .doc(id)
+        .get(FirebaseProvider.GET_OPTIONS)
+    )
       .pipe(
-        switchMap<firebase.database.DataSnapshot, Observable<User | null>>(
-          (dataSnapShot: firebase.database.DataSnapshot): Observable<User | null> => {
-            if (!dataSnapShot.hasChildren()) {
+        switchMap<firebase.firestore.DocumentSnapshot, Observable<User | null>>(
+          (doc: firebase.firestore.DocumentSnapshot): Observable<User | null> => {
+            if (!doc.exists) {
               return of(null);
             }
-            return of(mapper.toEntity({
-              id,
-              ...dataSnapShot.toJSON() as UserInterface,
-            }));
+            return of(mapper.toEntity(doc.data() as UserInterface));
           }
         )
       );
   }
 
   public createUser(user: User): Observable<[User, boolean]> {
-    const userRef: firebase.database.Reference = this.db.ref('users/' + user.id);
-    return fromPromise(userRef.once('value'))
+    return this.findUserById(user.id)
       .pipe(
-        switchMap<firebase.database.DataSnapshot, Observable<[User, boolean]>>(
-          (dataSnapShot: firebase.database.DataSnapshot): Observable<[User, boolean]> => {
-            if (!dataSnapShot.hasChildren()) {
-              return fromPromise(
-                userRef
-                  .set(mapper.toJSON(user))
-                  .then((err: any): [User, boolean] => {
-                    if (err) {
-                      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create user: ${err}`);
-                    }
-                    return [user, true];
-                  })
-              );
+        switchMap<User | null, Observable<[User, boolean]>>(
+          (dbUser: User | null): Observable<[User, boolean]> => {
+            if (dbUser) {
+              return of([dbUser, false]);
             }
-            return fromPromise(Promise.resolve([user, false]));
+
+            return fromPromise(
+              this.db
+                .collection('users')
+                .doc(user.id)
+                .set(mapper.toJSON(user)))
+              .pipe(
+                switchMap<void, Observable<[User, boolean]>>(
+                  (): Observable<[User, boolean]> => of([user, true])
+                ),
+                catchError((err) => {
+                  throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create user: ${err}`);
+                })
+              );
           }
-        )
+        ),
       );
   }
 

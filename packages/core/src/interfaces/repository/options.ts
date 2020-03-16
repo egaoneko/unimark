@@ -3,5 +3,5 @@ export interface Options {
   limit?: number;
   page?: number;
   sort?: any[];
-  where?: any;
+  where?: any[];
 }

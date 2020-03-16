@@ -17,13 +17,13 @@ if (
   });
 }
 
-let db: firebase.database.Database;
+let db: firebase.firestore.Firestore;
 let auth: firebase.auth.Auth;
 
 if (
   !IS_SSR
 ) {
-  db = firebase.database();
+  db = firebase.firestore();
   auth = firebase.auth();
 }
 

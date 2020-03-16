@@ -11,18 +11,18 @@ import {
 } from '../../../../__mocks__/firebase';
 import {
   clear,
-  once,
-  ref,
   reset,
+  collection,
+  doc,
+  get,
   set,
-  hasChildren,
-  toJSON,
-} from '../../../../__mocks__/account/MockUserRef';
+  data,
+} from '../../../../__mocks__/account/MockUserCorrection';
 
 describe('FirebaseUserProvider', () => {
 
   beforeAll(() => {
-    db.setRef(ref)
+    db.setCollection(collection)
   });
 
   afterAll(() => {
@@ -53,12 +53,12 @@ describe('FirebaseUserProvider', () => {
     expect(user.role).toEqual(DEFAULT_USER.role);
     expect(user.photo).toEqual(DEFAULT_USER.photo);
 
-    expect(ref).toHaveBeenCalledTimes(1);
-    expect(ref).toBeCalledWith('users/' + id);
-    expect(once).toHaveBeenCalledTimes(1);
-    expect(once).toBeCalledWith('value');
-    expect(hasChildren).toHaveBeenCalledTimes(1);
-    expect(toJSON).toHaveBeenCalledTimes(1);
+    expect(collection).toHaveBeenCalledTimes(1);
+    expect(collection).toBeCalledWith('users');
+    expect(doc).toHaveBeenCalledTimes(1);
+    expect(doc).toBeCalledWith(id);
+    expect(get).toHaveBeenCalledTimes(1);
+    expect(data).toHaveBeenCalledTimes(1);
   });
 
   test('findUserById with invalid', async () => {
@@ -67,12 +67,11 @@ describe('FirebaseUserProvider', () => {
 
     expect(user).toBeNull();
 
-    expect(ref).toHaveBeenCalledTimes(1);
-    expect(ref).toBeCalledWith('users/' + id);
-    expect(once).toHaveBeenCalledTimes(1);
-    expect(once).toBeCalledWith('value');
-    expect(hasChildren).toHaveBeenCalledTimes(1);
-    expect(toJSON).toHaveBeenCalledTimes(0);
+    expect(collection).toHaveBeenCalledTimes(1);
+    expect(collection).toBeCalledWith('users');
+    expect(doc).toHaveBeenCalledTimes(1);
+    expect(doc).toBeCalledWith(id);
+    expect(get).toHaveBeenCalledTimes(1);
   });
 
   test('createUser', async () => {
@@ -81,26 +80,14 @@ describe('FirebaseUserProvider', () => {
     const [_, success]: [User, boolean] = await provider.createUser(DEFAULT_USER).toPromise();
     expect(success).toBeTruthy();
 
-    expect(ref).toHaveBeenCalledTimes(1);
-    expect(ref).toBeCalledWith('users/' + id);
-    expect(once).toHaveBeenCalledTimes(1);
-    expect(once).toBeCalledWith('value');
-    expect(hasChildren).toHaveBeenCalledTimes(1);
+    expect(collection).toHaveBeenCalledTimes(2);
+    expect(collection).toBeCalledWith('users');
+    expect(doc).toHaveBeenCalledTimes(2);
+    expect(doc).toBeCalledWith(id);
+    expect(get).toHaveBeenCalledTimes(1);
+    expect(data).toHaveBeenCalledTimes(1);
     expect(set).toHaveBeenCalledTimes(1);
     expect(set).toBeCalledWith(DEFAULT_USER_JSON);
-  });
-
-  test('createUser with already exist', async () => {
-    const id: string = DEFAULT_USER.id;
-    const [_, success]: [User, boolean] = await provider.createUser(DEFAULT_USER).toPromise();
-    expect(success).toBeFalsy();
-
-    expect(ref).toHaveBeenCalledTimes(1);
-    expect(ref).toBeCalledWith('users/' + id);
-    expect(once).toHaveBeenCalledTimes(1);
-    expect(once).toBeCalledWith('value');
-    expect(hasChildren).toHaveBeenCalledTimes(1);
-    expect(set).toHaveBeenCalledTimes(0);
   });
 
   test('getCurrentUser with authorization', async () => {

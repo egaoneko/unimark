@@ -25,12 +25,12 @@ export const auth: any = {
 };
 
 export const db: any = {
-  ref: null,
-  setRef: (ref: any) => {
-    db.ref = ref
+  collection: null,
+  setCollection: (collection: any) => {
+    db.collection = collection
   },
   clear: () => {
-    db?.ref.clear();
-    db.ref = null;
+    db?.collection.clear();
+    db.collection = null;
   }
 };

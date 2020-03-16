@@ -14,40 +14,42 @@ export function reset(empty: boolean = false): void {
   cache.set(user.id as string, user);
 }
 
-let id: string = '';
-export const ref = jest.fn().mockImplementation((path: string) => {
-  id = path.split('/')[1];
+export const collection = jest.fn().mockImplementation((path: string) => {
   return {
-    once,
+    doc,
+  };
+});
+
+let id: string = '';
+export const doc = jest.fn().mockImplementation((_id: string) => {
+  id = _id;
+  return {
+    get,
     set,
   };
 });
 
-export const once = jest.fn().mockImplementation((eventType: string) => {
+export const get = jest.fn().mockImplementation((options) => {
   return Promise.resolve({
-    hasChildren,
-    toJSON,
+    exists: cache.has(id),
+    data,
   });
 });
 
-export const hasChildren = jest.fn().mockImplementation(() => {
-  return cache.has(id);
-});
-
-export const toJSON = jest.fn().mockImplementation(() => {
+export const data = jest.fn().mockImplementation((): any => {
   return cache.get(id);
 });
 
 export const set = jest.fn().mockImplementation((user: UserInterface): Promise<any> => {
-  return Promise.resolve(null);
+  cache.set(id, user);
+  return Promise.resolve();
 });
 
 export const clear = () => {
   reset();
-  ref.mockClear();
-  once.mockClear();
+  collection.mockClear();
+  doc.mockClear();
+  get.mockClear();
   set.mockClear();
-  hasChildren.mockClear();
-  toJSON.mockClear();
   id = '';
 };

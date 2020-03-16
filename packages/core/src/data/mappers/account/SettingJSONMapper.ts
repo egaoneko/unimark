@@ -13,10 +13,9 @@ export default class SettingJSONMapper implements JSONMapper<SettingInterface, S
     ) {
       throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, 'Invalid json');
     }
-    const setting: Setting = new Setting(
-      userMapper.toEntity(json.user),
-    );
+    const setting: Setting = new Setting();
     setting.id = json.id;
+    setting.user = userMapper.toEntity(json.user);
     setting.layouts = json.layouts;
     return setting;
   }

@@ -45,7 +45,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid id', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('', 'test@test.com', 'test', Role.USER);
+    const user: User = DEFAULT_USER.clone();
+    user.id = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)
@@ -56,7 +57,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid email', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('1234', '', 'test', Role.USER);
+    const user: User = DEFAULT_USER.clone();
+    user.email = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)
@@ -67,7 +69,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid name', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('1234', 'test@test.com', '', Role.USER);
+    const user: User = DEFAULT_USER.clone();
+    user.name = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)
@@ -78,7 +81,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid role', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('1234', 'test@test.com', 'test', '' as any);
+    const user: User = DEFAULT_USER.clone();
+    user.role = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)
