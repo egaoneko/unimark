@@ -3,70 +3,24 @@ import {
   of
 } from 'rxjs';
 import firebase from 'firebase';
-import User, { UserInterface } from '@unimark/core/lib/domain/entities/account/User';
+import User from '@unimark/core/lib/domain/entities/account/User';
 import FirebaseUserMapper from '../../mappers/account/FirebaseUserMapper';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import {
-  catchError,
-  switchMap
-} from 'rxjs/operators';
-import UserJSONMapper from '@unimark/core/lib/data/mappers/account/UserJSONMapper';
-import ErrorType from '@unimark/core/lib/error/ErrorType';
-import { APPLICATION_ERROR_FACTORY } from '@unimark/core/lib/data/errors/factories';
 import FirebaseProvider from '../FirebaseProvider';
+import { FirestoreUser } from '../../../interfaces/account/user';
+import { Options } from '@unimark/core/lib/interfaces/repository/options';
 
-const mapper: UserJSONMapper = new UserJSONMapper();
+export default class FirebaseUserProvider extends FirebaseProvider<FirestoreUser, User> {
 
-export default class FirebaseUserProvider extends FirebaseProvider {
-
-  public findUserById(id: string): Observable<User | null> {
-    return fromPromise(
-      this.db
-        .collection('users')
-        .doc(id)
-        .get(FirebaseProvider.GET_OPTIONS)
-    )
-      .pipe(
-        switchMap<firebase.firestore.DocumentSnapshot, Observable<User | null>>(
-          (doc: firebase.firestore.DocumentSnapshot): Observable<User | null> => {
-            if (!doc.exists) {
-              return of(null);
-            }
-            return of(mapper.toEntity(doc.data() as UserInterface));
-          }
-        )
-      );
-  }
-
-  public createUser(user: User): Observable<[User, boolean]> {
-    return this.findUserById(user.id)
-      .pipe(
-        switchMap<User | null, Observable<[User, boolean]>>(
-          (dbUser: User | null): Observable<[User, boolean]> => {
-            if (dbUser) {
-              return of([dbUser, false]);
-            }
-
-            return fromPromise(
-              this.db
-                .collection('users')
-                .doc(user.id)
-                .set(mapper.toJSON(user)))
-              .pipe(
-                switchMap<void, Observable<[User, boolean]>>(
-                  (): Observable<[User, boolean]> => of([user, true])
-                ),
-                catchError((err) => {
-                  throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create user: ${err}`);
-                })
-              );
-          }
-        ),
-      );
+  constructor(
+    db: firebase.firestore.Firestore,
+    auth: firebase.auth.Auth,
+  ) {
+    super(db, auth, 'users');
   }
 
   public getCurrentUser(): Observable<User | null> {
-    const user: firebase.User | null = this.auth.currentUser;
+    const user: firebase.User | null = this.currentUser;
 
     if (!user) {
       return of(null);
@@ -76,12 +30,51 @@ export default class FirebaseUserProvider extends FirebaseProvider {
   }
 
   public getCurrentUserToken(): Observable<string | null> {
-    const user: firebase.User | null = this.auth.currentUser;
+    const user: firebase.User | null = this.currentUser;
 
     if (!user) {
       return of(null);
     }
 
     return fromPromise(user.getIdToken());
+  }
+
+  public createUser(user: User): Observable<[User, boolean]> {
+    return this.create(user);
+  }
+
+  public findUsersBy(options: Options): Observable<User[]> {
+    return this.findBy(options);
+  }
+
+  public updateUser(user: User): Observable<[User, boolean]> {
+    return this.update(user);
+  }
+
+  public deleteUser(user: User): Observable<[User, boolean]> {
+    return this.create(user);
+  }
+
+  public countUsers(options: Options): Observable<number> {
+    return this.count(options);
+  }
+
+  protected project(entity: User): FirestoreUser {
+    return {
+      email: entity.email,
+      name: entity.name,
+      role: entity.role,
+      photo: entity.photo,
+    };
+  }
+
+  protected unproject(data: FirestoreUser): User {
+    const user: User = new User();
+    user.id = data.id as string;
+    user.email = data.email;
+    user.name = data.name;
+    user.role = data.role;
+    user.photo = data.photo;
+    return user;
   }
 }

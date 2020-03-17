@@ -1,14 +1,18 @@
 import mockFirebaseUserProvider, {
-  mockCreateUser,
-  mockFindUserById,
   mockGetCurrentUser,
   setCurrentUser,
   mockGetCurrentUserToken,
-  setCurrentUserToken
+  setCurrentUserToken,
+  mockCreateUser,
+  mockFindUsersBy,
+  mockUpdateUser,
+  mockDeleteUser,
+  mockCountUsers
 } from '../../../../__mocks__/account/FirebaseUserProivider';
 import UserRepository from '../../../../src/data/repositories/account/UserRepository';
 import User from '@unimark/core/lib/domain/entities/account/User';
 import { DEFAULT_USER } from '../../../../__mocks__/account/constant';
+import { DEFAULT_FIND_OPTIONS } from '@unimark/core/__mocks__/constant';
 
 describe('UserRepository', () => {
   const repository: UserRepository = new UserRepository(
@@ -16,37 +20,13 @@ describe('UserRepository', () => {
   );
 
   beforeEach(() => {
-    mockFindUserById.mockClear();
-    mockCreateUser.mockClear();
     mockGetCurrentUser.mockClear();
     mockGetCurrentUserToken.mockClear();
-  });
-
-  test('findUserById', async () => {
-    const user: User | null = await repository.findUserById(DEFAULT_USER.id).toPromise();
-    expect(mockFindUserById).toHaveBeenCalledTimes(1);
-    expect(mockFindUserById).toBeCalledWith(DEFAULT_USER.id);
-    if (user) {
-      expect(user.id).toBe(DEFAULT_USER.id);
-      expect(user.email).toBe(DEFAULT_USER.email);
-      expect(user.name).toBe(DEFAULT_USER.name);
-      expect(user.role).toBe(DEFAULT_USER.role);
-      expect(user.photo).toBe(DEFAULT_USER.photo);
-    } else {
-      expect(user).toBeNull();
-    }
-  });
-
-  test('createUser', async () => {
-    const [user, success]: [User, boolean] = await repository.createUser(DEFAULT_USER).toPromise();
-    expect(mockCreateUser).toHaveBeenCalledTimes(1);
-    expect(mockCreateUser).toBeCalledWith(DEFAULT_USER);
-    expect(success).toBeTruthy();
-    expect(user.id).toBe(DEFAULT_USER.id);
-    expect(user.email).toBe(DEFAULT_USER.email);
-    expect(user.name).toBe(DEFAULT_USER.name);
-    expect(user.role).toBe(DEFAULT_USER.role);
-    expect(user.photo).toBe(DEFAULT_USER.photo);
+    mockCreateUser.mockClear();
+    mockFindUsersBy.mockClear();
+    mockUpdateUser.mockClear();
+    mockDeleteUser.mockClear();
+    mockCountUsers.mockClear();
   });
 
   test('getCurrentUser', async () => {
@@ -84,5 +64,35 @@ describe('UserRepository', () => {
     const token: string | null = await repository.getCurrentUserToken().toPromise();
     expect(mockGetCurrentUserToken).toHaveBeenCalledTimes(1);
     expect(token).toBeNull();
+  });
+
+  test('createUser', async () => {
+    const _: [User, boolean] = await repository.createUser(DEFAULT_USER).toPromise();
+    expect(mockCreateUser).toHaveBeenCalledTimes(1);
+    expect(mockCreateUser).toBeCalledWith(DEFAULT_USER);
+  });
+
+  test('findUsersBy', async () => {
+    const _: User[] = await repository.findUsersBy(DEFAULT_FIND_OPTIONS).toPromise();
+    expect(mockFindUsersBy).toHaveBeenCalledTimes(1);
+    expect(mockFindUsersBy).toBeCalledWith(DEFAULT_FIND_OPTIONS);
+  });
+
+  test('updateUser', async () => {
+    const _: [User, boolean] = await repository.updateUser(DEFAULT_USER).toPromise();
+    expect(mockUpdateUser).toHaveBeenCalledTimes(1);
+    expect(mockUpdateUser).toBeCalledWith(DEFAULT_USER);
+  });
+
+  test('deleteUser', async () => {
+    const _: [User, boolean] = await repository.deleteUser(DEFAULT_USER).toPromise();
+    expect(mockDeleteUser).toHaveBeenCalledTimes(1);
+    expect(mockDeleteUser).toBeCalledWith(DEFAULT_USER);
+  });
+
+  test('countUsers', async () => {
+    const _: number= await repository.countUsers(DEFAULT_FIND_OPTIONS).toPromise();
+    expect(mockCountUsers).toHaveBeenCalledTimes(1);
+    expect(mockCountUsers).toBeCalledWith(DEFAULT_FIND_OPTIONS);
   });
 });

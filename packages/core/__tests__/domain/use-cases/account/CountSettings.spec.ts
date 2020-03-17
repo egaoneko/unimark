@@ -5,7 +5,6 @@ import mockSettingRepository, {
   mockCountSettings,
 } from '../../../../__mocks__/account/SettingRepository';
 import CountSettings from '../../../../src/domain/use-cases/account/CountSettings';
-import Setting from '../../../../src/domain/entities/account/Setting';
 import { DEFAULT_FIND_OPTIONS } from '../../../../__mocks__/constant';
 
 describe('CountSettings UseCase', () => {

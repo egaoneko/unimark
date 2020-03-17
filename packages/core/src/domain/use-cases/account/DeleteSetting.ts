@@ -25,10 +25,6 @@ export default class DeleteSetting extends UseCase<[Setting, boolean]> {
       return false;
     }
 
-    if (!this.setting.user) {
-      return false;
-    }
-
     return true;
   }
 }

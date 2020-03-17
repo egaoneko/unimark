@@ -48,16 +48,4 @@ describe('DeleteSetting UseCase', () => {
         .runOnce(async, queue)
     }).toThrowError('Invalid params in UseCase');
   });
-
-  test('throw exception with invalid user', () => {
-    const repository = new mockSettingRepository();
-    const useCase: DeleteSetting = new DeleteSetting(repository);
-    const setting: Setting = DEFAULT_SETTING;
-    setting.user = null as any;
-
-    expect(() => {
-      apply(useCase, ((it: DeleteSetting) => it.setting = setting))
-        .runOnce(async, queue)
-    }).toThrowError('Invalid params in UseCase');
-  });
 });

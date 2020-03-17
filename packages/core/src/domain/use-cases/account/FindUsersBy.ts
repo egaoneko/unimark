@@ -2,9 +2,10 @@ import { Observable } from 'rxjs';
 import UseCase from '../UseCase';
 import User from '../../entities/account/User';
 import UserRepository from '../../repositories/account/UserRepository';
+import { Options } from '../../../interfaces/repository/options';
 
-export default class FindUserById extends UseCase<User | null> {
-  public id: string = '';
+export default class FindUsersBy extends UseCase<User[]> {
+  public options: Options = {};
 
   constructor(
     private repository: UserRepository
@@ -12,11 +13,7 @@ export default class FindUserById extends UseCase<User | null> {
     super();
   }
 
-  protected build(): Observable<User | null> {
-    return this.repository.findUserById(this.id);
-  }
-
-  protected validate(): boolean {
-    return !!this.id;
+  protected build(): Observable<User[]> {
+    return this.repository.findUsersBy(this.options);
   }
 }

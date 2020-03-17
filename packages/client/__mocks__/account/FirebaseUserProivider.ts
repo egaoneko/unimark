@@ -3,19 +3,7 @@ import {
   Observable
 } from 'rxjs';
 import User from '@unimark/core/lib/domain/entities/account/User';
-import { DEFAULT_USER } from './constant';
-
-export const mockFindUserById = jest.fn().mockImplementation((id: string): Observable<User | null> => {
-  if (DEFAULT_USER.id !== id) {
-    return of(null);
-  }
-
-  return of(DEFAULT_USER);
-});
-
-export const mockCreateUser = jest.fn().mockImplementation((user: User): Observable<[User, boolean]> => {
-  return of([user, true]);
-});
+import { Options } from '@unimark/core/lib/interfaces/repository/options';
 
 let currentUser: User | null;
 
@@ -37,12 +25,36 @@ export const mockGetCurrentUserToken = jest.fn().mockImplementation((): Observab
   return of(currentUserToken);
 });
 
+export const mockCreateUser = jest.fn().mockImplementation((user: User): Observable<null> => {
+  return of(null);
+});
+
+export const mockFindUsersBy = jest.fn().mockImplementation((options: Options): Observable<null> => {
+  return of(null);
+});
+
+export const mockUpdateUser = jest.fn().mockImplementation((user: User): Observable<null> => {
+  return of(null);
+});
+
+export const mockDeleteUser = jest.fn().mockImplementation((user: User): Observable<null> => {
+  return of(null);
+});
+
+export const mockCountUsers = jest.fn().mockImplementation((options: Options): Observable<null> => {
+  return of(null);
+});
+
+
 const mockFirebaseUserProvider = jest.fn().mockImplementation(() => {
   return {
-    createUser: mockCreateUser,
-    findUserById: mockFindUserById,
     getCurrentUser: mockGetCurrentUser,
     getCurrentUserToken: mockGetCurrentUserToken,
+    createUser: mockCreateUser,
+    findUsersBy: mockFindUsersBy,
+    updateUser: mockUpdateUser,
+    deleteUser: mockDeleteUser,
+    countUsers: mockCountUsers,
   };
 });
 
