@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import {
   Observable,
-  of
+  of,
 } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import {
@@ -12,10 +12,9 @@ import { APPLICATION_ERROR_FACTORY } from '@unimark/core/lib/data/errors/factori
 import ErrorType from '@unimark/core/lib/error/ErrorType';
 import { Options } from '@unimark/core/lib/interfaces/repository/options';
 import Serializable from '@unimark/core/lib/interfaces/definitions/Serializable';
+import Entity from '@unimark/core/lib/domain/entities/Entity';
 
-export default abstract class FirebaseProvider<S extends Serializable, T extends Serializable> {
-
-  protected static GET_OPTIONS: firebase.firestore.GetOptions = {};
+export default abstract class FirebaseProvider<S extends Serializable, T extends Entity> {
 
   protected get collection(): firebase.firestore.CollectionReference {
     return this.db.collection(this.collectionPath);
@@ -32,7 +31,7 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
   ) {
   }
 
-  public create(entity: T): Observable<[T, boolean]> {
+  protected create(entity: T): Observable<[T, boolean]> {
     const data: S = this.project(entity);
 
     if (entity.id) {
@@ -70,11 +69,58 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
     }
   }
 
-  public findBy(options: Options): Observable<T[]> {
-    throw 'Not Implements';
+  protected findBy(options: Options): Observable<T[]> {
+    const query: firebase.firestore.CollectionReference = this.collection;
+
+    if (options.where) {
+      options.where.forEach(w => {
+        query.where(w[0], w[1], w[2]);
+      });
+    }
+
+    if (options.sort) {
+      options.sort.forEach(s => {
+        query.orderBy(s[0], s[1]);
+      });
+    }
+
+    if (options.last) {
+      query.startAfter(options.last);
+    } else if (options.first) {
+      query.endBefore(options.first);
+    }
+
+    if (options.limit) {
+      if (options.first) {
+        query.limitToLast(options.limit);
+      } else {
+        query.limit(options.limit);
+      }
+    }
+
+    return fromPromise(
+      query
+        .get()
+    ).pipe(
+      switchMap<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>, Observable<T[]>>(
+        (querySnapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>): Observable<T[]> => {
+          const list: T[] = [];
+          querySnapshot.forEach(doc => {
+            list.push(this.unproject({
+              ...doc.data(),
+              id: doc.id,
+            } as S))
+          });
+          return of(list);
+        }
+      ),
+      catchError((err) => {
+        throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail find settings: ${err}`);
+      })
+    );
   }
 
-  public update(entity: T): Observable<[T, boolean]> {
+  protected update(entity: T): Observable<[T, boolean]> {
     const data: S = this.project(entity);
     if (!data.id) {
       throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Invalid data: empty id`);
@@ -97,12 +143,36 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
       );
   }
 
-  public delete(data: S): Observable<[T, boolean]> {
-    throw 'Not Implements';
+  protected delete(entity: T): Observable<[T, boolean]> {
+    const data: S = this.project(entity);
+    if (!data.id) {
+      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Invalid data: empty id`);
+    }
+
+    return fromPromise(
+      this.collection
+        .doc(data.id.toString())
+        .delete()
+    )
+      .pipe(
+        switchMap<void, Observable<[T, boolean]>>(
+          (): Observable<[T, boolean]> => {
+            return of([this.unproject(data), true]);
+          }
+        ),
+        catchError((err) => {
+          throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail delete settings: ${err}`);
+        })
+      );
   }
 
-  public count(options: Options): Observable<number> {
-    throw 'Not Implements';
+  protected count(options: Options): Observable<number> {
+    return this.findBy(options)
+      .pipe(
+        switchMap<T[], Observable<number>>(
+          (list: T[]): Observable<number> => of(list.length)
+        )
+      );
   }
 
   protected abstract project(entity: T): S;
