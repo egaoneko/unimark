@@ -4,6 +4,7 @@ import {
 } from 'rxjs';
 import User from '@unimark/core/lib/domain/entities/account/User';
 import { Options } from '@unimark/core/lib/interfaces/repository/options';
+import { DEFAULT_USER } from './constant';
 
 let currentUser: User | null;
 
@@ -29,8 +30,8 @@ export const mockCreateUser = jest.fn().mockImplementation((user: User): Observa
   return of(null);
 });
 
-export const mockFindUsersBy = jest.fn().mockImplementation((options: Options): Observable<null> => {
-  return of(null);
+export const mockFindUsersBy = jest.fn().mockImplementation((options: Options): Observable<User[]> => {
+  return of([DEFAULT_USER]);
 });
 
 export const mockUpdateUser = jest.fn().mockImplementation((user: User): Observable<null> => {

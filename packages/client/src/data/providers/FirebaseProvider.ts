@@ -1,11 +1,13 @@
 import firebase from 'firebase';
 import {
+  forkJoin,
   Observable,
   of,
 } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import {
   catchError,
+  flatMap,
   switchMap
 } from 'rxjs/operators';
 import { APPLICATION_ERROR_FACTORY } from '@unimark/core/lib/data/errors/factories';
@@ -32,44 +34,79 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
   }
 
   protected create(entity: T): Observable<[T, boolean]> {
-    const data: S = this.project(entity);
+    const id: string | number | undefined = entity.id;
 
-    if (entity.id) {
-      return fromPromise(
-        this.collection
-          .doc(entity.id.toString())
-          .set(data)
-      )
+    if (id) {
+      return this.project(entity)
         .pipe(
+          flatMap<S, Observable<void>>((data: S): Observable<void> => {
+            return fromPromise(
+              this.collection
+                .doc(id.toString())
+                .set(data)
+            )
+          }),
           switchMap<void, Observable<[T, boolean]>>(
             (): Observable<[T, boolean]> => {
-              return of([this.unproject(data), true]);
+              return of([entity, true]);
             }
           ),
           catchError((err) => {
-            throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create ${this.collectionPath}: ${err}`);
+            throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create settings: ${err}`);
           })
         );
     } else {
-      return fromPromise(
-        this.collection
-          .add(data)
-      )
+      return this.project(entity)
         .pipe(
+          flatMap<S, Observable<firebase.firestore.DocumentReference<firebase.firestore.DocumentData>>>(
+            (data: S): Observable<firebase.firestore.DocumentReference<firebase.firestore.DocumentData>> => {
+              return fromPromise(
+                this.collection
+                  .add(data)
+              )
+            }
+          ),
           switchMap<firebase.firestore.DocumentReference<firebase.firestore.DocumentData>, Observable<[T, boolean]>>(
             (doc: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>): Observable<[T, boolean]> => {
-              data.id = doc.id;
-              return of([this.unproject(data), true]);
+              entity.id = doc.id;
+              return of([entity, true]);
             }
           ),
           catchError((err) => {
-            throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create ${this.collectionPath}: ${err}`);
+            throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail create settings: ${err}`);
           })
         );
     }
   }
 
   protected findBy(options: Options): Observable<T[]> {
+    if (options.id) {
+      return fromPromise(
+        this.collection
+          .doc(options.id.toString())
+          .get()
+      )
+        .pipe(
+          switchMap<firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>, Observable<T[]>>(
+            (doc: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>): Observable<T[]> => {
+              if (!doc.exists) {
+                return of([]);
+              }
+
+              const data: S = doc.data() as S;
+              data.id = doc.id;
+              return this.unproject(data)
+                .pipe(
+                  flatMap<T, Observable<T[]>>((entity: T): Observable<T[]> => of([entity]))
+                );
+            }
+          ),
+          catchError((err) => {
+            throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Fail findBy ${this.collectionPath}: ${err}`);
+          })
+        );
+    }
+
     const query: firebase.firestore.CollectionReference = this.collection;
 
     if (options.where) {
@@ -104,14 +141,14 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
     ).pipe(
       switchMap<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>, Observable<T[]>>(
         (querySnapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>): Observable<T[]> => {
-          const list: T[] = [];
+          const list: Observable<T>[] = [];
           querySnapshot.forEach(doc => {
             list.push(this.unproject({
               ...doc.data(),
               id: doc.id,
             } as S))
           });
-          return of(list);
+          return forkJoin<Observable<T>[]>(list);
         }
       ),
       catchError((err) => {
@@ -121,20 +158,23 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
   }
 
   protected update(entity: T): Observable<[T, boolean]> {
-    const data: S = this.project(entity);
-    if (!data.id) {
-      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Invalid data: empty id`);
+    const id: string | number | undefined = entity.id;
+    if (!id) {
+      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Invalid entity: empty id`);
     }
 
-    return fromPromise(
-      this.collection
-        .doc(data.id.toString())
-        .set(data)
-    )
+    return this.project(entity)
       .pipe(
+        flatMap<S, Observable<void>>((data: S): Observable<void> => {
+          return fromPromise(
+            this.collection
+              .doc(id.toString())
+              .set(data)
+          )
+        }),
         switchMap<void, Observable<[T, boolean]>>(
           (): Observable<[T, boolean]> => {
-            return of([this.unproject(data), true]);
+            return of([entity, true]);
           }
         ),
         catchError((err) => {
@@ -144,20 +184,20 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
   }
 
   protected delete(entity: T): Observable<[T, boolean]> {
-    const data: S = this.project(entity);
-    if (!data.id) {
-      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Invalid data: empty id`);
+    const id: string | number | undefined = entity.id;
+    if (!id) {
+      throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, `Invalid entity: empty id`);
     }
 
     return fromPromise(
       this.collection
-        .doc(data.id.toString())
+        .doc(id.toString())
         .delete()
     )
       .pipe(
         switchMap<void, Observable<[T, boolean]>>(
           (): Observable<[T, boolean]> => {
-            return of([this.unproject(data), true]);
+            return of([entity, true]);
           }
         ),
         catchError((err) => {
@@ -175,7 +215,7 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
       );
   }
 
-  protected abstract project(entity: T): S;
+  protected abstract project(entity: T): Observable<S>;
 
-  protected abstract unproject(data: S): T;
+  protected abstract unproject(data: S): Observable<T>;
 }

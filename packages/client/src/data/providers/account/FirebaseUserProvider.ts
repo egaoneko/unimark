@@ -52,29 +52,29 @@ export default class FirebaseUserProvider extends FirebaseProvider<FirestoreUser
   }
 
   public deleteUser(user: User): Observable<[User, boolean]> {
-    return this.create(user);
+    return this.delete(user);
   }
 
   public countUsers(options: Options): Observable<number> {
     return this.count(options);
   }
 
-  protected project(entity: User): FirestoreUser {
-    return {
+  protected project(entity: User): Observable<FirestoreUser> {
+    return of({
       email: entity.email,
       name: entity.name,
       role: entity.role,
       photo: entity.photo,
-    };
+    });
   }
 
-  protected unproject(data: FirestoreUser): User {
+  protected unproject(data: FirestoreUser): Observable<User> {
     const user: User = new User();
     user.id = data.id as string;
     user.email = data.email;
     user.name = data.name;
     user.role = data.role;
     user.photo = data.photo;
-    return user;
+    return of(user);
   }
 }
