@@ -1,9 +1,4 @@
 import { AxiosInstance } from 'axios';
-import {
-  auth,
-  db
-} from './externals/firebase';
-import FirebaseUserProvider from './data/providers/account/FirebaseUserProvider';
 import UserRepository from './data/repositories/account/UserRepository';
 import GetCurrentUser from '@unimark/core/lib/domain/use-cases/account/GetCurrentUser';
 import GetCurrentUserToken from '@unimark/core/lib/domain/use-cases/account/GetCurrentUserToken';
@@ -12,9 +7,9 @@ import FindUsersBy from '@unimark/core/lib/domain/use-cases/account/FindUsersBy'
 import UpdateUser from '@unimark/core/lib/domain/use-cases/account/UpdateUser';
 import DeleteUser from '@unimark/core/lib/domain/use-cases/account/DeleteUser';
 import CountUsers from '@unimark/core/lib/domain/use-cases/account/CountUsers';
+import FirebaseContext from '@unimark/firebase/lib/FirebaseContext';
 
 interface ProviderDependencies {
-  firebaseUser: FirebaseUserProvider;
 }
 
 interface RepositoryDependencies {
@@ -32,18 +27,19 @@ interface UseCaseDependencies {
 }
 
 export default class AppContext {
+  public useCases: UseCaseDependencies;
+
   private axiosInstance: AxiosInstance;
   private providers: ProviderDependencies;
   private repositories: RepositoryDependencies;
-  useCases: UseCaseDependencies;
 
   constructor(axiosInstance: AxiosInstance) {
+    const firebaseContext: FirebaseContext = new FirebaseContext(axiosInstance);
+
     this.axiosInstance = axiosInstance;
-    this.providers = {
-      firebaseUser: new FirebaseUserProvider(db, auth),
-    };
+    this.providers = {};
     this.repositories = {
-      user: new UserRepository(this.providers.firebaseUser),
+      user: new UserRepository(firebaseContext.providers.user),
     };
     this.useCases = {
       getCurrentUser: new GetCurrentUser(this.repositories.user),

@@ -1,11 +1,11 @@
-# `search`
+# `firebase`
 
 > TODO: description
 
 ## Usage
 
 ```
-const core = require('search');
+const core = require('firebase');
 
 // TODO: DEMONSTRATE API
 ```

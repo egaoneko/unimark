@@ -7,10 +7,10 @@ import Logo from '../../molecules/layout/Logo';
 import Avatar from '../../molecules/layout/Avartar';
 import styled from 'styled-components';
 import { signIn } from '../../../utils/router';
-import { auth } from '../../../externals/firebase';
 import useStores from '../../../utils/mobx';
 import { observer } from 'mobx-react';
-import User from '@unimark/core/lib/src/domain/entities/account/User';
+import User from '@unimark/core/lib/domain/entities/account/User';
+import { signOut } from '@unimark/firebase/lib/utils/auth';
 
 const Header = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ const RightMenuContainer = styled.div`
 const DropdownMenu = () => {
   const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    auth.signOut();
+    signOut();
     signIn();
   };
   return (
@@ -43,7 +43,7 @@ const DropdownMenu = () => {
   );
 };
 
-const AvatarDropdown: React.FC<{ user: User }> = ({ user }) => {
+const AvatarDropdown: React.FC<{ user: User | null }> = ({ user }) => {
   function onClickAvatar() {
     signIn();
   }

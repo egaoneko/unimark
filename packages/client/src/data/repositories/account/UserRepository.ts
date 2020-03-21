@@ -3,8 +3,8 @@ import {
 } from 'rxjs';
 import UserRepositoryInterface from '@unimark/core/lib/domain/repositories/account/UserRepository';
 import User from '@unimark/core/lib/domain/entities/account/User';
-import FirebaseUserProvider from '../../providers/account/FirebaseUserProvider';
 import { Options } from '@unimark/core/lib/interfaces/repository/options';
+import FirebaseUserProvider from '@unimark/firebase/lib/data/providers/account/FirebaseUserProvider';
 
 export default class UserRepository implements UserRepositoryInterface {
   constructor(
