@@ -40,6 +40,13 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
     load();
   }, [userStore.user]);
 
+  useEffect(() => {
+    if (!setting) {
+      return;
+    }
+
+  }, [setting]);
+
   async function load() {
     if (!userStore.user) {
       return;
@@ -78,21 +85,14 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
       layouts={setting.layouts[App.WEB_MAIN]}
       rowHeight={30}
       onLayoutChange={async (layout: Layout[], allLayouts: Layouts) => {
-        console.log(
-          layout[15],
-          allLayouts.lg && allLayouts.lg[15],
-          allLayouts.md && allLayouts.md[15],
-        );
-
         await updateLayout(setting, allLayouts);
         setSetting(setting);
       }}
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-      compactType='vertical'
-      verticalCompact={false}
+      compactType={null}
       preventCollision={true}
       measureBeforeMount={true}
-      useCSSTransforms={true}
+      useCSSTransforms={false}
     >
       {generateDOM()}
     </ResponsiveReactGridLayout>
