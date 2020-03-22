@@ -13,10 +13,12 @@ import Loadable from 'react-loadable';
 import MDSpinner from 'react-md-spinner';
 import FullLayoutTemplate from '../layout/FullLayoutTemplate';
 import CenterTemplate from '../layout/CenterTemplate';
-import { StyledFirebaseAuth } from 'react-firebaseui';
-import { auth } from '../../../externals/firebase';
 import Logo from '../../molecules/layout/Logo';
 import { main } from '../../../utils/router';
+import FirebaseAuth, {
+  AuthUIError,
+  UiConfig
+} from '@unimark/firebase/lib/components/molecules/FirebaseAuth';
 
 const Particles = Loadable({
   loader: () => import('react-particles-js'),
@@ -45,7 +47,7 @@ const AuthContainer = styled(Col)`
 `;
 
 const Auth: React.FC<{
-  uiConfig: firebaseui.auth.Config,
+  uiConfig: UiConfig,
   loading: boolean,
   error: string | null,
   onClose: () => void
@@ -80,9 +82,9 @@ const Auth: React.FC<{
         />
       </SpinnerContainer>
       <FirebaseAuthContainer>
-        <StyledFirebaseAuth
-          uiConfig={uiConfig}
-          firebaseAuth={auth}/>
+        <FirebaseAuthContent>
+          <FirebaseAuth uiConfig={uiConfig}/>
+        </FirebaseAuthContent>
       </FirebaseAuthContainer>
     </>
   );
@@ -93,6 +95,10 @@ const FirebaseAuthContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 150px;
+`;
+
+const FirebaseAuthContent = styled.div`
+  width: 100%;
 `;
 
 const SpinnerContainer = styled.div`
@@ -138,7 +144,7 @@ const GlobalStyles = createGlobalStyle`
 
 
 interface PropsType {
-  uiConfig: firebaseui.auth.Config;
+  uiConfig: UiConfig;
 }
 
 const SignInTemplate: React.FC<PropsType> = ({ uiConfig }) => {
@@ -161,7 +167,7 @@ const SignInTemplate: React.FC<PropsType> = ({ uiConfig }) => {
     ...uiConfig,
     callbacks: {
       ...uiConfig.callbacks,
-      signInFailure: async error => {
+      signInFailure: async (error: AuthUIError) => {
         setLoading(false);
         setError(error.message);
         return orgSignInFailure && await orgSignInFailure(error);

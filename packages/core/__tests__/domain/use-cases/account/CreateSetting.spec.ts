@@ -8,7 +8,6 @@ import CreateSetting from '../../../../src/domain/use-cases/account/CreateSettin
 import Setting from '../../../../src/domain/entities/account/Setting';
 import {
   DEFAULT_SETTING,
-  DEFAULT_USER
 } from '../../../../__mocks__/account/constant';
 
 describe('CreateSetting UseCase', () => {
@@ -38,22 +37,11 @@ describe('CreateSetting UseCase', () => {
     }).toThrowError('Invalid params in UseCase');
   });
 
-  test('throw exception with invalid id', () => {
-    const repository = new mockSettingRepository();
-    const useCase: CreateSetting = new CreateSetting(repository);
-    const setting: Setting = new Setting(DEFAULT_USER);
-    (setting as any).id = null;
-
-    expect(() => {
-      apply(useCase, ((it: CreateSetting) => it.setting = setting))
-        .runOnce(async, queue)
-    }).toThrowError('Invalid params in UseCase');
-  });
-
   test('throw exception with invalid user', () => {
     const repository = new mockSettingRepository();
     const useCase: CreateSetting = new CreateSetting(repository);
-    const setting: Setting = new Setting(null as any);
+    const setting: Setting = DEFAULT_SETTING;
+    setting.user = null as any;
 
     expect(() => {
       apply(useCase, ((it: CreateSetting) => it.setting = setting))

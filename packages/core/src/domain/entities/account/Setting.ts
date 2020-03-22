@@ -1,7 +1,7 @@
 import Entity from '../Entity';
 import User, { UserInterface } from './User';
-import { v4 as uuidV4 } from 'uuid';
 import { Layouts } from '../../../interfaces/account/setting';
+import { equals } from '../../../utils/common';
 
 export interface SettingInterface {
   id: string;
@@ -14,20 +14,17 @@ export interface AppLayouts {
 }
 
 export default class Setting implements Entity {
-  public id: string = uuidV4();
-  public layouts: AppLayouts = {};
-
-  constructor(
-    public user: User,
-  ) {
-  }
+  public id!: string;
+  public user!: User;
+  public layouts!: AppLayouts;
 
   public equal(other: Setting): boolean {
-    return this.id === other.id;
+    return equals(this, other);
   }
 
   public clone(): Setting {
-    const setting: Setting = new Setting(this.user);
+    const setting: Setting = new Setting();
+    setting.user = this.user;
     setting.id = this.id;
     setting.layouts = this.layouts;
     return setting;
@@ -36,7 +33,7 @@ export default class Setting implements Entity {
   public toString(): string {
     return [
       this.id,
-      this.user.id,
+      this.user?.id,
     ].join(',');
   }
 }

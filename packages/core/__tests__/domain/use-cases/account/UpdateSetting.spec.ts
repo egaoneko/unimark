@@ -8,7 +8,6 @@ import UpdateSetting from '../../../../src/domain/use-cases/account/UpdateSettin
 import Setting from '../../../../src/domain/entities/account/Setting';
 import {
   DEFAULT_SETTING,
-  DEFAULT_USER
 } from '../../../../__mocks__/account/constant';
 
 describe('UpdateSetting UseCase', () => {
@@ -41,8 +40,8 @@ describe('UpdateSetting UseCase', () => {
   test('throw exception with invalid id', () => {
     const repository = new mockSettingRepository();
     const useCase: UpdateSetting = new UpdateSetting(repository);
-    const setting: Setting = new Setting(DEFAULT_USER);
-    (setting as any).id = null;
+    const setting: Setting = DEFAULT_SETTING;
+    setting.id = null as any;
 
     expect(() => {
       apply(useCase, ((it: UpdateSetting) => it.setting = setting))
@@ -53,7 +52,8 @@ describe('UpdateSetting UseCase', () => {
   test('throw exception with invalid user', () => {
     const repository = new mockSettingRepository();
     const useCase: UpdateSetting = new UpdateSetting(repository);
-    const setting: Setting = new Setting(null as any);
+    const setting: Setting = DEFAULT_SETTING;
+    setting.user = null as any;
 
     expect(() => {
       apply(useCase, ((it: UpdateSetting) => it.setting = setting))

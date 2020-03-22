@@ -13,12 +13,11 @@ export default class UserJSONMapper implements JSONMapper<UserInterface, User> {
     ) {
       throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, 'Invalid json');
     }
-    const user: User = new User(
-      json.id,
-      json.email,
-      json.name,
-      json.role,
-    );
+    const user: User = new User();
+    user.id = json.id;
+    user.email = json.email;
+    user.name = json.name;
+    user.role = json.role;
     user.photo = json.photo;
     return user;
   }

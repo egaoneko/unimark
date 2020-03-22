@@ -1,7 +1,8 @@
 export interface Options {
   id?: string;
   limit?: number;
-  page?: number;
+  first?: any;
+  last?: any;
   sort?: any[];
-  where?: any;
+  where?: any[];
 }

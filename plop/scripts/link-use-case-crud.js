@@ -128,7 +128,7 @@ function getImportActions(answer) {
       pattern: /(\/\/ --ADD_IMPORT--)/gi,
       template: answer.repositoryPackage === 'core' ?
         'import {{entityClass}} from \'../../entities/{{entityModule}}/{{entityClass}}\';\r\n$1' :
-        'import {{entityClass}} from \'@stocker/core/lib/domain/entities/{{entityModule}}/{{entityClass}}\';\r\n$1',
+        'import {{entityClass}} from \'@unimark/core/lib/domain/entities/{{entityModule}}/{{entityClass}}\';\r\n$1',
       abortOnFail: true
     });
   }
@@ -140,7 +140,7 @@ function getImportActions(answer) {
       pattern: /(\/\/ --ADD_IMPORT--)/gi,
       template: answer.repositoryPackage === 'core' ?
         'import { Options } from \'../../../interfaces/repository/options\';\r\n$1' :
-        'import { Options } from \'@stocker/core/lib/interfaces/repository/options\';\r\n$1',
+        'import { Options } from \'@unimark/core/lib/interfaces/repository/options\';\r\n$1',
       abortOnFail: true
     });
   }
@@ -153,7 +153,7 @@ function getImportActions(answer) {
         type: 'modify',
         path: `packages/{{repositoryPackage}}/src/{{repositoryLayer}}/repositories/{{repositoryModule}}/{{repositoryClass}}.ts`,
         pattern: /(\/\/ --ADD_IMPORT--)/gi,
-        template: 'import ApplicationErrorFactory from \'@stocker/core/lib/data/errors/ApplicationErrorFactory\';\r\n$1',
+        template: 'import ApplicationErrorFactory from \'@unimark/core/lib/data/errors/ApplicationErrorFactory\';\r\n$1',
         abortOnFail: true
       });
     }
@@ -164,7 +164,7 @@ function getImportActions(answer) {
         type: 'modify',
         path: `packages/{{repositoryPackage}}/src/{{repositoryLayer}}/repositories/{{repositoryModule}}/{{repositoryClass}}.ts`,
         pattern: /(\/\/ --ADD_IMPORT--)/gi,
-        template: 'import ErrorType from \'@stocker/core/lib/error/ErrorType\';\r\n$1',
+        template: 'import ErrorType from \'@unimark/core/lib/error/ErrorType\';\r\n$1',
         abortOnFail: true
       });
     }
