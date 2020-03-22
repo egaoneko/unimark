@@ -22,7 +22,7 @@
     "change-case": "~4.1.0",
     "inquirer-autocomplete-prompt": "~1.0.1",
     "lerna": "~3.20.2",
-    "minimist": "~1.2.5",
+    "minimist": "~1.2.2",
     "plop": "~2.6.0"
   }
 }
