@@ -148,6 +148,7 @@ export const doc = jest.fn().mockImplementation((_id: string) => {
   return {
     get,
     set,
+    update,
     delete: mDelete,
   };
 });
@@ -173,6 +174,11 @@ export const set = jest.fn().mockImplementation((test: TestFirestoreData): Promi
   return Promise.resolve();
 });
 
+export const update = jest.fn().mockImplementation((test: TestFirestoreData): Promise<any> => {
+  cache.set(id, test);
+  return Promise.resolve();
+});
+
 export const mDelete = jest.fn().mockImplementation((test: TestFirestoreData): Promise<any> => {
   cache.delete(id);
   return Promise.resolve();
@@ -193,6 +199,7 @@ export const clear = () => {
   data.mockClear();
   forEach.mockClear();
   set.mockClear();
+  update.mockClear();
   mDelete.mockClear();
   id = '';
 };

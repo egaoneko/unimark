@@ -21,10 +21,6 @@ export default class CreateSetting extends UseCase<[Setting, boolean]> {
       return false;
     }
 
-    if (!this.setting.id) {
-      return false;
-    }
-
     if (!this.setting.user) {
       return false;
     }

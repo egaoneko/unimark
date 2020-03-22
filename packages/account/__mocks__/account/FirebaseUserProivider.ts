@@ -30,8 +30,8 @@ export const mockCreateUser = jest.fn().mockImplementation((user: User): Observa
   return of(null);
 });
 
-export const mockFindUsersBy = jest.fn().mockImplementation((options: Options): Observable<User[]> => {
-  return of([DEFAULT_USER]);
+export const mockFindUsersBy = jest.fn().mockImplementation((options: Options): Observable<null> => {
+  return of(null);
 });
 
 export const mockUpdateUser = jest.fn().mockImplementation((user: User): Observable<null> => {

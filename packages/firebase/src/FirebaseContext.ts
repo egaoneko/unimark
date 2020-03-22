@@ -4,9 +4,11 @@ import {
   db
 } from './externals/firebase';
 import FirebaseUserProvider from './data/providers/account/FirebaseUserProvider';
+import FirebaseSettingProvider from './data/providers/account/FirebaseSettingProvider';
 
 interface ProviderDependencies {
   user: FirebaseUserProvider;
+  setting: FirebaseSettingProvider;
 }
 
 export default class FirebaseContext {
@@ -16,8 +18,11 @@ export default class FirebaseContext {
 
   constructor(axiosInstance: AxiosInstance) {
     this.axiosInstance = axiosInstance;
+
+    const user: FirebaseUserProvider = new FirebaseUserProvider(db, auth);
     this.providers = {
-      user: new FirebaseUserProvider(db, auth),
+      user,
+      setting: new FirebaseSettingProvider(db, auth, user),
     };
   }
 }

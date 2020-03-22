@@ -5,38 +5,40 @@ import UserRepositoryInterface from '@unimark/core/lib/domain/repositories/accou
 import User from '@unimark/core/lib/domain/entities/account/User';
 import { Options } from '@unimark/core/lib/interfaces/repository/options';
 import FirebaseUserProvider from '@unimark/firebase/lib/data/providers/account/FirebaseUserProvider';
+// --ADD_IMPORT--
 
 export default class UserRepository implements UserRepositoryInterface {
   constructor(
-    private firebaseProvider: FirebaseUserProvider,
+    private provider: FirebaseUserProvider,
   ) {
   }
 
   public getCurrentUser(): Observable<User | null> {
-    return this.firebaseProvider.getCurrentUser();
+    return this.provider.getCurrentUser();
   }
 
   public getCurrentUserToken(): Observable<string | null> {
-    return this.firebaseProvider.getCurrentUserToken();
+    return this.provider.getCurrentUserToken();
   }
 
   public createUser(user: User): Observable<[User, boolean]> {
-    return this.firebaseProvider.createUser(user);
+    return this.provider.createUser(user);
   }
 
   public findUsersBy(options: Options): Observable<User[]> {
-    return this.firebaseProvider.findUsersBy(options);
+    return this.provider.findUsersBy(options);
   }
 
   public updateUser(user: User): Observable<[User, boolean]> {
-    return this.firebaseProvider.updateUser(user);
+    return this.provider.updateUser(user);
   }
 
   public deleteUser(user: User): Observable<[User, boolean]> {
-    return this.firebaseProvider.deleteUser(user);
+    return this.provider.deleteUser(user);
   }
 
   public countUsers(options: Options): Observable<number> {
-    return this.firebaseProvider.countUsers(options);
+    return this.provider.countUsers(options);
   }
+  // --ADD_METHOD--
 }

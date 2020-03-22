@@ -5,17 +5,7 @@ import {
   WrapRootElementNodeArgs
 } from 'gatsby';
 import User from '@unimark/core/lib/domain/entities/account/User';
-import {
-  apply,
-  NOOP
-} from '@unimark/core/lib/utils/common';
-import CreateUser from '@unimark/core/lib/domain/use-cases/account/CreateUser';
-import { async } from 'rxjs/internal/scheduler/async';
-import { queue } from 'rxjs/internal/scheduler/queue';
 import UserStore from '../stores/UserStore';
-import {
-  CONTEXT
-} from '../constant/context';
 import { IS_SSR } from '../constant/common';
 import FirebaseUserMapper from '@unimark/firebase/lib/data/mappers/account/FirebaseUserMapper';
 import firebase from '@unimark/firebase/lib/externals/firebase';
@@ -47,13 +37,6 @@ async function initObserve(): Promise<void> {
 
     if (fbUser) {
       user = new FirebaseUserMapper().toEntity(fbUser);
-
-      apply<CreateUser>(
-        CONTEXT.contexts.account.useCases.createUser,
-        (it: CreateUser) => it.user = user
-      )
-        .run(async, queue)
-        .subscribe(NOOP);
     }
 
     userStore.updateUser(user);

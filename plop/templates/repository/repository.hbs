@@ -6,7 +6,7 @@ import {
 import {{parentClass}} from '../{{#if parentModule}}{{parentModule}}/{{/if}}{{parentClass}}';
 {{/ifEquals}}
 {{#ifNotEquals package "core"}}
-import {{parentClass}}{{#ifEquals type "class"}}Interface{{/ifEquals}} from '@stocker/core/lib/{{parentLayer}}/repositories/{{#if parentModule}}{{parentModule}}/{{/if}}{{parentClass}}';
+import {{parentClass}}{{#ifEquals type "class"}}Interface{{/ifEquals}} from '@unimark/core/lib/{{parentLayer}}/repositories/{{#if parentModule}}{{parentModule}}/{{/if}}{{parentClass}}';
 {{/ifNotEquals}}
 // --ADD_IMPORT--
 

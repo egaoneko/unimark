@@ -11,6 +11,7 @@ import {
   doc,
   get,
   set,
+  update,
   mDelete,
   data,
   TestFirestoreData,
@@ -155,7 +156,7 @@ describe('FirebaseProvider', () => {
     expect(collection).toBeCalledWith('tests');
     expect(doc).toHaveBeenCalledTimes(1);
     expect(doc).toBeCalledWith(DEFAULT_ID);
-    expect(set).toHaveBeenCalledTimes(1);
+    expect(update).toHaveBeenCalledTimes(1);
     expect(projectSpyFn).toHaveBeenCalledTimes(1);
   });
 

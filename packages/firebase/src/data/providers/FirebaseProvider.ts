@@ -141,6 +141,10 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
     ).pipe(
       switchMap<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>, Observable<T[]>>(
         (querySnapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>): Observable<T[]> => {
+          if (querySnapshot.empty) {
+            return of([]);
+          }
+
           const list: Observable<T>[] = [];
           querySnapshot.forEach(doc => {
             list.push(this.unproject({
@@ -169,7 +173,7 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
           return fromPromise(
             this.collection
               .doc(id.toString())
-              .set(data)
+              .update(data)
           )
         }),
         switchMap<void, Observable<[T, boolean]>>(
