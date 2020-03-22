@@ -8,11 +8,13 @@
     "test": "lerna run test --stream",
     "test:core": "lerna run test --stream --scope @unimark/core",
     "test:firebase": "lerna run test --stream --scope @unimark/firebase",
+    "test:account": "lerna run test --stream --scope @unimark/account",
     "test:client": "lerna run test --stream --scope @unimark/client",
     "build": "lerna run build",
-    "build:lib": "npm run build:core&&npm run build:firebase",
+    "build:lib": "npm run build:core&&npm run build:firebase&&npm run build:account",
     "build:core": "lerna run build --scope @unimark/core",
     "build:firebase": "lerna run build --scope @unimark/firebase",
+    "build:account": "lerna run build --scope @unimark/account",
     "build:client": "lerna run build --scope @unimark/client"
   },
   "devDependencies": {

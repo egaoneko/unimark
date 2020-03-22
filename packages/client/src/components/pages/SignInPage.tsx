@@ -27,7 +27,7 @@ const SignInPage: React.FC<PropsType> = () => {
       signInSuccessWithAuthResult: (credential: firebase.auth.UserCredential, redirectUrl: string) => {
         if (credential && credential.user) {
           apply<CreateUser>(
-            CONTEXT.useCases.createUser,
+            CONTEXT.contexts.account.useCases.createUser,
             (it: CreateUser) => it.user = new FirebaseUserMapper().toEntity(credential.user as firebase.User)
           )
             .runOnce(async, queue)

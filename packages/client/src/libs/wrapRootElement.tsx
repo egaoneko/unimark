@@ -49,7 +49,7 @@ async function initObserve(): Promise<void> {
       user = new FirebaseUserMapper().toEntity(fbUser);
 
       apply<CreateUser>(
-        CONTEXT.useCases.createUser,
+        CONTEXT.contexts.account.useCases.createUser,
         (it: CreateUser) => it.user = user
       )
         .run(async, queue)
