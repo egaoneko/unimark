@@ -1,8 +1,10 @@
 {{#ifEquals package "core"}}
 import {{parentClass}} from '../{{#if parentModule}}{{parentModule}}/{{/if}}{{parentClass}}';
+import { equals } from '../../../utils/common';
 {{/ifEquals}}
 {{#ifNotEquals package "core"}}
 import {{parentClass}} from '@unimark/core/lib/{{parentLayer}}/entities/{{#if parentModule}}{{parentModule}}/{{/if}}{{parentClass}}';
+import { equals } from '@unimark/core/lib/utils/common';
 {{/ifNotEquals}}
 
 export interface {{class}}Interface {
@@ -10,17 +12,16 @@ export interface {{class}}Interface {
 }
 
 export default class {{class}} implements {{parentClass}} {
-  constructor(
-    public prop: any,
-  ) {
-  }
+  public prop!: any;
 
   public equal(other: {{class}}): boolean {
-    return this.prop === other.prop;
+    return equals(this, other);
   }
 
   public clone(): {{class}} {
-    return new {{class}}(this.prop);
+    const clone: {{class}} = new {{class}}();
+    clone.prop = this.prop;
+    return clone;
   }
 
   public toString(): string {

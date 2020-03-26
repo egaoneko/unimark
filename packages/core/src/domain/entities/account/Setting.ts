@@ -1,4 +1,5 @@
 import Entity from '../Entity';
+import Serializable from '../../../interfaces/definitions/Serializable';
 import User, { UserInterface } from './User';
 import { Layouts } from '../../../interfaces/account/setting';
 import { equals } from '../../../utils/common';
@@ -13,7 +14,7 @@ export interface AppLayouts {
   [App: string]: Layouts;
 }
 
-export default class Setting implements Entity {
+export default class Setting implements Entity, Serializable {
   public id!: string;
   public user!: User;
   public layouts!: AppLayouts;

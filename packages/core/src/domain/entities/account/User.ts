@@ -1,4 +1,5 @@
 import Entity from '../Entity';
+import Serializable from '../../../interfaces/definitions/Serializable';
 import { Role } from '../../../enums/account/user';
 import { equals } from '../../../utils/common';
 
@@ -10,7 +11,7 @@ export interface UserInterface {
   photo?: string;
 }
 
-export default class User implements Entity {
+export default class User implements Entity, Serializable {
   public id!: string;
   public email!: string;
   public name!: string;
