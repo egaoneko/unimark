@@ -1,5 +1,3 @@
-import Serializable from '../../interfaces/definitions/Serializable';
-
-export default interface Entity extends Serializable {
+export default interface Entity {
   /* explicitly empty */
 }
