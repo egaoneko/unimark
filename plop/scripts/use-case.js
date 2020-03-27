@@ -60,7 +60,7 @@ module.exports = (plop) => {
 
       actions.push({
         type: 'add',
-        path: `packages/core/__tests__/domain/repositories/{{repositoryModule}}/{{class}}.spec.ts`,
+        path: `packages/core/__tests__/domain/use-cases/{{repositoryModule}}/{{class}}.spec.ts`,
         templateFile: `${TEMPLATES_PATH}/use-case/use-case-spec.hbs`,
         abortOnFail: true
       });
