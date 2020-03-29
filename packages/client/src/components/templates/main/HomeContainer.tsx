@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Layout,
 } from 'antd';
-import FullLayoutTemplate from '../layout/FullLayoutTemplate';
 import styled from 'styled-components';
 import MainGridContainer from '../grid/MainGridContainer';
 
@@ -27,13 +26,11 @@ interface PropsType {
 
 const HomeContainer: React.FC<PropsType> = () => {
   return (
-    <FullLayoutTemplate>
-      <Container>
-        <Content>
-          <MainGridContainer/>
-        </Content>
-      </Container>
-    </FullLayoutTemplate>
+    <Container>
+      <Content>
+        <MainGridContainer/>
+      </Content>
+    </Container>
   );
 };
 

@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "outDir": "./lib",
     "alwaysStrict": false,
-    "noImplicitUseStrict": true
+    "noImplicitUseStrict": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*"

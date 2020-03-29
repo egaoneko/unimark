@@ -10,7 +10,9 @@ export const DEFAULT_QUERY: Query = new Query();
 DEFAULT_QUERY.word = DEFAULT_WORD;
 DEFAULT_QUERY.engine = DEFAULT_ENGINE;
 
+export const DEFAULT_LINK: string = 'http://example.com?q=test';
 export const DEFAULT_CONTENT: string = 'Hello <b>world</b>!';
 
 export const DEFAULT_RESULT: Result = new Result();
-DEFAULT_RESULT.content = DEFAULT_CONTENT;
+DEFAULT_RESULT.link = DEFAULT_LINK;
+DEFAULT_RESULT.content = [DEFAULT_CONTENT];

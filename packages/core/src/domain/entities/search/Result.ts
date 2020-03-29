@@ -2,11 +2,13 @@ import Entity from '../Entity';
 import { equals } from '../../../utils/common';
 
 export interface ResultInterface {
-  content: string;
+  link: string;
+  content: string[];
 }
 
 export default class Result implements Entity {
-  public content!: string;
+  public link!: string;
+  public content!: string[];
 
   public equal(other: Result): boolean {
     return equals(this, other);
@@ -14,12 +16,14 @@ export default class Result implements Entity {
 
   public clone(): Result {
     const clone: Result = new Result();
+    clone.link = this.link;
     clone.content = this.content;
     return clone;
   }
 
   public toString(): string {
     return [
+      this.link,
       this.content,
     ].join(',');
   }

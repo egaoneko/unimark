@@ -4,7 +4,6 @@ import React, {
 } from 'react';
 import {
   Responsive,
-  WidthProvider
 } from 'react-grid-layout';
 import './grid.css';
 import { DEFAULT_WEB_MAIN_LAYOUTS } from '../../../constant/grid';
@@ -26,6 +25,7 @@ import { App } from '@unimark/core/lib/enums/account/setting';
 import User from '@unimark/core/lib/domain/entities/account/User';
 import UpdateSetting from '@unimark/core/lib/domain/use-cases/account/UpdateSetting';
 import { observer } from 'mobx-react';
+import WidthProvider from '../../organisms/grid/WidthProvider';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
