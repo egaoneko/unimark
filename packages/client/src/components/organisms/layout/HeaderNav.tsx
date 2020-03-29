@@ -19,6 +19,7 @@ const Header = styled.div`
   line-height: 37px;
   padding: 10px 20px;
   z-index: 100;
+  background: #282a36;
 `;
 
 const RightMenuContainer = styled.div`
