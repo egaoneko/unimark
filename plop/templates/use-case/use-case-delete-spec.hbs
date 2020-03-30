@@ -6,7 +6,6 @@ import mock{{repositoryClass}}, {
 } from '../../../../__mocks__/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
 import Delete{{entity}} from '../../../../src/domain/use-cases/{{module}}/Delete{{entity}}';
 import {{entity}} from '../../../../src/domain/entities/{{module}}/{{entity}}';
-import { DEFAULT_ID } from '../../../../__mocks__/constant';
 
 describe('Delete{{entity}} UseCase', () => {
   beforeEach(() => {
@@ -39,8 +38,7 @@ describe('Delete{{entity}} UseCase', () => {
   //   const repository = new mock{{repositoryClass}}();
   //   const useCase: Delete{{entity}} = new Delete{{entity}}(repository);
   //   const {{camelCase entity}}: {{entity}} = new {{entity}}();
-  //   ({{camelCase entity}} as any).prop = null;
-  //   {{camelCase entity}}.id = DEFAULT_ID;
+  //   {{camelCase entity}}.prop = null as any;
   //
   //   expect(() => {
   //     apply(useCase, ((it: Delete{{entity}}) => it.{{camelCase entity}} = {{camelCase entity}}))

@@ -10,6 +10,9 @@ const {
   readFile,
   readDir,
 } = require('./utils/file');
+const {
+  pascalCase,
+} = require('./utils/transform');
 module.exports = (plop) => {
   plop.setGenerator('link-use-case-crud', {
     description: 'Link CRUD use-case to repository',
@@ -100,6 +103,7 @@ module.exports = (plop) => {
       let actions = [];
 
       actions = [...actions, ...getImportActions(answer)];
+      actions = [...actions, ...getUtilActions(answer)];
 
       answer.targets.forEach(target => {
         actions = [...actions, ...getTargetActions(target, answer)]
@@ -113,6 +117,7 @@ module.exports = (plop) => {
 function getImportActions(answer) {
   const actions = [];
   const repository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/src/${answer.repositoryLayer}/repositories/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
+  const mockRepository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/__mocks__/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
   const entityRegex = new RegExp(`import ${answer.entityClass} from .*`);
   const optionRegex = new RegExp(`import { Options } from .*`);
 
@@ -123,7 +128,7 @@ function getImportActions(answer) {
       pattern: /(\/\/ --ADD_IMPORT--)/gi,
       template: answer.repositoryPackage === 'core' ?
         'import {{entityClass}} from \'../../entities/{{entityModule}}/{{entityClass}}\';\r\n$1' :
-        'import {{entityClass}} from \'@stocker/core/lib/domain/entities/{{entityModule}}/{{entityClass}}\';\r\n$1',
+        'import {{entityClass}} from \'@unimark/core/lib/domain/entities/{{entityModule}}/{{entityClass}}\';\r\n$1',
       abortOnFail: true
     });
   }
@@ -135,7 +140,7 @@ function getImportActions(answer) {
       pattern: /(\/\/ --ADD_IMPORT--)/gi,
       template: answer.repositoryPackage === 'core' ?
         'import { Options } from \'../../../interfaces/repository/options\';\r\n$1' :
-        'import { Options } from \'@stocker/core/lib/interfaces/repository/options\';\r\n$1',
+        'import { Options } from \'@unimark/core/lib/interfaces/repository/options\';\r\n$1',
       abortOnFail: true
     });
   }
@@ -148,7 +153,7 @@ function getImportActions(answer) {
         type: 'modify',
         path: `packages/{{repositoryPackage}}/src/{{repositoryLayer}}/repositories/{{repositoryModule}}/{{repositoryClass}}.ts`,
         pattern: /(\/\/ --ADD_IMPORT--)/gi,
-        template: 'import ApplicationErrorFactory from \'@stocker/core/lib/data/errors/ApplicationErrorFactory\';\r\n$1',
+        template: 'import ApplicationErrorFactory from \'@unimark/core/lib/data/errors/ApplicationErrorFactory\';\r\n$1',
         abortOnFail: true
       });
     }
@@ -159,7 +164,60 @@ function getImportActions(answer) {
         type: 'modify',
         path: `packages/{{repositoryPackage}}/src/{{repositoryLayer}}/repositories/{{repositoryModule}}/{{repositoryClass}}.ts`,
         pattern: /(\/\/ --ADD_IMPORT--)/gi,
-        template: 'import ErrorType from \'@stocker/core/lib/error/ErrorType\';\r\n$1',
+        template: 'import ErrorType from \'@unimark/core/lib/error/ErrorType\';\r\n$1',
+        abortOnFail: true
+      });
+    }
+  }
+
+  if (answer.repositoryPackage === 'core') {
+    if (!entityRegex.test(mockRepository)) {
+      actions.push({
+        type: 'modify',
+        path: `packages/{{repositoryPackage}}/__mocks__/{{repositoryModule}}/{{repositoryClass}}.ts`,
+        pattern: /(\/\/ --ADD_IMPORT--)/gi,
+        template: 'import {{entityClass}} from \'../../src/domain/entities/{{entityModule}}/{{entityClass}}\';\r\n$1',
+        abortOnFail: true
+      });
+    }
+
+    if (!optionRegex.test(mockRepository)) {
+      actions.push({
+        type: 'modify',
+        path: `packages/{{repositoryPackage}}/__mocks__/{{repositoryModule}}/{{repositoryClass}}.ts`,
+        pattern: /(\/\/ --ADD_IMPORT--)/gi,
+        template: 'import { Options } from \'../../src/interfaces/repository/options\';\r\n$1',
+        abortOnFail: true
+      });
+    }
+  }
+
+  return actions;
+}
+
+function getUtilActions(answer) {
+  const actions = [];
+  const mockRepository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/__mocks__/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
+  const utilRegex = new RegExp(`const cache: .*`);
+
+  if (answer.repositoryPackage === 'core') {
+    if (!utilRegex.test(mockRepository)) {
+      actions.push({
+        type: 'modify',
+        path: `packages/{{repositoryPackage}}/__mocks__/{{repositoryModule}}/{{repositoryClass}}.ts`,
+        pattern: /(\/\/ --ADD_UTIL--)/gi,
+        template: `const cache: Map<string, {{entityClass}}> = new Map();
+reset();
+
+export function reset(empty: boolean = false): void {
+  cache.clear();
+
+  if (empty) {
+    return;
+  }
+  const {{camelCase entityClass}}: {{entityClass}} = DEFAULT_{{upperCase (snakeCase entityClass)}};
+  cache.set({{camelCase entityClass}}.id as string, {{camelCase entityClass}});
+}\r\n$1`,
         abortOnFail: true
       });
     }
@@ -172,19 +230,39 @@ function getTargetActions(target, answer) {
   const actions = [];
 
   let methodTemplate;
+  let methodContentTemplate;
   let propTemplate;
   let retTemplate;
 
   if (target === 'find') {
-    methodTemplate = `${target}{{pluralEntity}}By`;
+    methodTemplate = `{{pluralEntity}}By`;
+    methodContentTemplate = `  return of(Array.from(cache.values()));`;
     propTemplate = 'options: Options';
     retTemplate = '{{entityClass}}[]';
   } else if (target === 'count') {
-    methodTemplate = `${target}{{pluralEntity}}`;
+    methodTemplate = `{{pluralEntity}}`;
+    methodContentTemplate = `  return of(cache.size);`;
     propTemplate = 'options: Options';
     retTemplate = 'number';
   } else {
-    methodTemplate = `${target}{{entityClass}}`;
+    methodTemplate = `{{entityClass}}`;
+
+    if (target === 'create') {
+      methodContentTemplate = `  if (cache.has({{camelCase entityClass}}.id as string)) {
+    return of([cache.get({{camelCase entityClass}}.id as string) as {{entityClass}}, false]);
+  } else {
+    cache.set({{camelCase entityClass}}.id as string, {{camelCase entityClass}});
+    return of([{{camelCase entityClass}}, true]);
+  }`;
+    } else {
+      methodContentTemplate = `  if (cache.has({{camelCase entityClass}}.id as string)) {
+    cache.set({{camelCase entityClass}}.id as string, {{camelCase entityClass}});
+    return of([cache.get({{camelCase entityClass}}.id as string) as {{entityClass}}, true]);
+  } else {
+    return of([{{camelCase entityClass}}, false]);
+  }`;
+    }
+
     propTemplate = '{{camelCase entityClass}}: {{entityClass}}';
     retTemplate = '[{{entityClass}}, boolean]';
   }
@@ -194,8 +272,8 @@ function getTargetActions(target, answer) {
     path: `packages/{{repositoryPackage}}/src/{{repositoryLayer}}/repositories/{{repositoryModule}}/{{repositoryClass}}.ts`,
     pattern: /(\/\/ --ADD_METHOD--)/gi,
     template: answer.repositoryPackage === 'core' ?
-      `${methodTemplate}(${propTemplate}): Observable<${retTemplate}>;\r\n\n  $1` :
-      `public ${methodTemplate}(${propTemplate}): Observable<${retTemplate}> {\n    throw ApplicationErrorFactory.getError(ErrorType.GENERAL, 'method is not implemented.');\n  }\r\n\n  $1`,
+      `${target}${methodTemplate}(${propTemplate}): Observable<${retTemplate}>;\r\n\n  $1` :
+      `public ${target}${methodTemplate}(${propTemplate}): Observable<${retTemplate}> {\n    throw ApplicationErrorFactory.getError(ErrorType.GENERAL, 'method is not implemented.');\n  }\r\n\n  $1`,
     abortOnFail: true
   });
 
@@ -204,8 +282,8 @@ function getTargetActions(target, answer) {
       type: 'modify',
       path: `packages/{{repositoryPackage}}/__mocks__/{{repositoryModule}}/{{repositoryClass}}.ts`,
       pattern: /(\/\/ --ADD_METHOD--)/gi,
-      template: `export const mock{{pascalCase ${methodTemplate}}} = jest.fn().mockImplementation((${propTemplate}): Observable<${retTemplate}> => {
-  return of(null);
+      template: `export const mock${pascalCase(target)}${methodTemplate} = jest.fn().mockImplementation((${propTemplate}): Observable<${retTemplate}> => {
+${methodContentTemplate}
 });
 $1`,
       abortOnFail: true
@@ -215,7 +293,7 @@ $1`,
       type: 'modify',
       path: `packages/{{repositoryPackage}}/__mocks__/{{repositoryModule}}/{{repositoryClass}}.ts`,
       pattern: /(\/\/ --APPLY_METHOD--)/gi,
-      template: `${methodTemplate}: {{pascalCase ${methodTemplate}}},\n    $1`,
+      template: `${target}${methodTemplate}: mock${pascalCase(target)}${methodTemplate},\n    $1`,
       abortOnFail: true
     });
   }

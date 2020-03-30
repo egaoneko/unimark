@@ -2,21 +2,22 @@ import {{class}} from '../../../../src/{{layer}}/entities/{{module}}/{{class}}';
 
 describe('{{class}}', () => {
   test('equal', () => {
-    const {{camelCase class}}: {{class}} = new {{class}}('test');
-    expect({{camelCase class}}.equal(new {{class}}('test'))).toBeTruthy();
-    expect({{camelCase class}}.equal(new {{class}}('fail'))).toBeFalsy();
+    const other: {{class}} = new {{class}}();
+    other.prop = DEFAULT_PROP;
+    expect(DEFAULT_{{upperCase (snakeCase class)}}.equal(other)).toBeTruthy();
+
+    other.prop = null as any;
+    expect(DEFAULT_{{upperCase (snakeCase class)}}.equal(other)).toBeFalsy();
   });
 
   test('clone', () => {
-    const {{camelCase class}}: {{class}} = new {{class}}('test');
-    const clone: {{class}} = {{camelCase class}}.clone();
-    expect(clone.prop).toBe({{camelCase class}}.prop);
+    const clone: {{class}} = DEFAULT_{{upperCase (snakeCase class)}}.clone();
+    expect(clone.prop).toBe(DEFAULT_{{upperCase (snakeCase class)}}.prop);
   });
 
   test('toString', () => {
-    const {{camelCase class}}: {{class}} = new {{class}}('test');
-    expect({{camelCase class}}.toString()).toBe([
-      {{camelCase class}}.prop,
+    expect(DEFAULT_{{upperCase (snakeCase class)}}.toString()).toBe([
+      DEFAULT_{{upperCase (snakeCase class)}}.prop,
     ].join(','));
   });
 });

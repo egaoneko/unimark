@@ -61,14 +61,6 @@ module.exports = {
         path: `${__dirname}/src/assets/images`,
       },
     },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `data`,
-        path: `${__dirname}/src/assets/data/`,
-        ignore: [`**/\.*`],
-      },
-    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
 
@@ -87,25 +79,8 @@ module.exports = {
       },
     },
 
-    // Firebase
-    {
-      resolve: "gatsby-plugin-firebase",
-      options: {
-        credentials: {
-          appId: '1:845966195286:web:c5597abcc470f6597e19f7',
-          apiKey: 'AIzaSyA9Mj3huKl-TMxlv0xeIuTFcqEcq8DXp9k',
-          authDomain: 'personal-fb.firebaseapp.com',
-          databaseURL: 'personal-fb.firebaseio.com',
-          projectId: 'personal-fb',
-          storageBucket: 'personal-fb.appspot.com',
-          messagingSenderId: '845966195286',
-          measurementId: 'G-F78SJ2SEKJ'
-        }
-      }
-    }
-
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    `gatsby-plugin-offline`
   ],
 };

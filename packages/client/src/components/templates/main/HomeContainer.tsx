@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-  Col,
   Layout,
-  Row
 } from 'antd';
-import FullLayoutTemplate from '../layout/FullLayoutTemplate';
 import styled from 'styled-components';
-import firebase from 'gatsby-plugin-firebase';
+import MainGridContainer from '../grid/MainGridContainer';
 
 const Container = styled(Layout)`
   display: flex;
@@ -20,6 +17,7 @@ const Container = styled(Layout)`
 
 const Content = styled(Layout.Content)`
   width: 100%;
+  height: 100%;
   background: #fff;
 `;
 
@@ -28,16 +26,11 @@ interface PropsType {
 
 const HomeContainer: React.FC<PropsType> = () => {
   return (
-    <FullLayoutTemplate>
-      <Container>
-        <Content>
-          <Row>
-            <Col span={24}>
-            </Col>
-          </Row>
-        </Content>
-      </Container>
-    </FullLayoutTemplate>
+    <Container>
+      <Content>
+        <MainGridContainer/>
+      </Content>
+    </Container>
   );
 };
 

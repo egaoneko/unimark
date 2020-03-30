@@ -1,21 +1,20 @@
-import React from 'react';
-import {
-  Layout as AntLayout,
-} from 'antd';
+import React, { CSSProperties } from 'react';
 import styled from 'styled-components';
 
-const Layout = styled(AntLayout)`
+const Layout = styled.div`
   height: 100%;
-  background: #ffffff;
 `;
 
 interface PropsType {
+  style?: CSSProperties;
   children?: React.ReactNode;
 }
 
-const BaseLayout: React.FC<PropsType> = ({ children }) => {
+const BaseLayout: React.FC<PropsType> = ({ style, children }) => {
   return (
-    <Layout>
+    <Layout style={{
+      ...style
+    }}>
       {children}
     </Layout>
   );

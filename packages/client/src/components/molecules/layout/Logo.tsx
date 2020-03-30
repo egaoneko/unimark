@@ -15,6 +15,8 @@ const Container = styled.div`
 `;
 
 const Span = styled.span`
+  font-family: sans-serif;
+  font-weight: bold;
   background: linear-gradient(to left, #8be9fd, #50fa7b, #ffb86c, #ff79c6, #bd93f9, #ff5555, #f1fa8c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -34,14 +36,13 @@ const Span = styled.span`
 `;
 
 interface PropsType {
-  width: number;
-  height: number;
+  size: number;
   style?: CSSProperties;
   onClick?: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const Logo: React.FC<PropsType> = props => {
-  const { width, height, style, onClick }: PropsType = props;
+  const { size, style, onClick }: PropsType = props;
   const { site } = useStaticQuery(graphql`
       query {
           site {
@@ -57,15 +58,13 @@ const Logo: React.FC<PropsType> = props => {
       role="button"
       tabIndex={0}
       style={{
-        width: width,
-        height: height,
         cursor: `${onClick ? 'pointer' : 'auto'}`,
         ...style
       }}
       onClick={onClick}>
       <Container>
         <Span style={{
-          fontSize: height,
+          fontSize: size,
         }}>
           {site.siteMetadata.title}
         </Span>

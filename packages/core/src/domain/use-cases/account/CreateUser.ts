@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import UseCase from '../UseCase';
 import User from '../../entities/account/User';
 import UserRepository from '../../repositories/account/UserRepository';
-import { Role } from '../../../enums/account';
+import { Role } from '../../../enums/account/user';
 
 export default class CreateUser extends UseCase<[User, boolean]> {
   public user: User | null = null;

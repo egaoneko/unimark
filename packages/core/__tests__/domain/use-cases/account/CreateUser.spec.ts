@@ -6,7 +6,6 @@ import mockUserRepository, {
 import { queue } from 'rxjs/internal/scheduler/queue';
 import CreateUser from '../../../../src/domain/use-cases/account/CreateUser';
 import User from '../../../../src/domain/entities/account/User';
-import { Role } from '../../../../src/enums/account';
 import { apply } from '../../../../src/utils/common';
 import { DEFAULT_USER } from '../../../../__mocks__/account/constant';
 
@@ -45,7 +44,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid id', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('', 'test@test.com', 'test', Role.USER);
+    const user: User = DEFAULT_USER.clone();
+    user.id = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)
@@ -56,7 +56,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid email', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('1234', '', 'test', Role.USER);
+    const user: User = DEFAULT_USER.clone();
+    user.email = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)
@@ -67,7 +68,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid name', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('1234', 'test@test.com', '', Role.USER);
+    const user: User = DEFAULT_USER.clone();
+    user.name = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)
@@ -78,7 +80,8 @@ describe('CreateUser UseCase', () => {
   test('throw exception with invalid role', () => {
     const repository = new mockUserRepository();
     const useCase: CreateUser = new CreateUser(repository);
-    const user: User = new User('1234', 'test@test.com', 'test', '' as any);
+    const user: User = DEFAULT_USER.clone();
+    user.role = null as any;
 
     expect(() => {
       apply(useCase, (it: CreateUser) => it.user = user)

@@ -1,0 +1,25 @@
+import {{entity}}, { {{entity}}Interface } from '../../../../src/domain/entities/{{module}}/{{entity}}';
+import {{entity}}JSONMapper from '../../../../src/data/mappers/{{module}}/{{entity}}JSONMapper';
+
+describe('{{entity}}JSONMapper', () => {
+  const mapper: {{entity}}JSONMapper = new {{entity}}JSONMapper();
+  const json: {{entity}}Interface = {
+    prop: 'test',
+  };
+  const entity: {{entity}} = new {{entity}}(
+    'test',
+  );
+  entity.prop = 'test';
+
+  test('toEntity', () => {
+    expect(mapper.toEntity(json).equal(entity)).toBeTruthy();
+  });
+
+  test('toEntity with wrong json', () => {
+    expect(() => mapper.toEntity({} as any)).toThrowError('Invalid json');
+  });
+
+  test('toJSON', () => {
+    expect(mapper.toJSON(entity)).toEqual(json);
+  });
+});

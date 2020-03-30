@@ -1,6 +1,4 @@
-import React, {
-  useState
-} from 'react';
+import React from 'react';
 import {
   Dropdown,
   Menu
@@ -8,6 +6,11 @@ import {
 import Logo from '../../molecules/layout/Logo';
 import Avatar from '../../molecules/layout/Avartar';
 import styled from 'styled-components';
+import { signIn } from '../../../utils/router';
+import useStores from '../../../utils/mobx';
+import { observer } from 'mobx-react';
+import User from '@unimark/core/lib/domain/entities/account/User';
+import { signOut } from '@unimark/firebase/lib/utils/auth';
 
 const Header = styled.div`
   display: flex;
@@ -16,6 +19,7 @@ const Header = styled.div`
   line-height: 37px;
   padding: 10px 20px;
   z-index: 100;
+  background: #282a36;
 `;
 
 const RightMenuContainer = styled.div`
@@ -26,8 +30,8 @@ const RightMenuContainer = styled.div`
 const DropdownMenu = () => {
   const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // firebase.auth().signOut();
-    // Router.push('/sign-in');
+    signOut();
+    signIn();
   };
   return (
     <Menu>
@@ -40,40 +44,45 @@ const DropdownMenu = () => {
   );
 };
 
+const AvatarDropdown: React.FC<{ user: User | null }> = ({ user }) => {
+  function onClickAvatar() {
+    signIn();
+  }
+
+  if (!user) {
+    return <Avatar onClick={onClickAvatar} user={user}/>;
+  }
+
+  return (
+    <Dropdown
+      overlay={DropdownMenu}
+      trigger={['click']}
+      placement="bottomRight">
+      <Avatar
+        user={user}/>
+    </Dropdown>
+  );
+};
+
 interface PropsType {
-  selectedKey: string;
-  user?: any | null;
 }
 
-const HeaderNav: React.FC<PropsType> = ({ selectedKey, user }) => {
-  const [visible, setVisible] = useState<boolean>(false);
-
-  function onClickAvatar(user?: any | null) {
-    setVisible(true);
-  }
+const HeaderNav: React.FC<PropsType> = observer(() => {
+  const { userStore } = useStores();
 
   return (
     <Header>
       <Logo
-        width={200}
-        height={38}
+        size={38}
         style={{
           margin: '2px 10px 2px 0',
           float: 'left',
         }}/>
       <RightMenuContainer>
-        <Dropdown
-          overlay={DropdownMenu}
-          trigger={['click']}
-          visible={!!user && visible}
-          placement="bottomRight">
-          <Avatar
-            onClick={onClickAvatar}
-            user={user}/>
-        </Dropdown>
+        <AvatarDropdown user={userStore.user}/>
       </RightMenuContainer>
     </Header>
   );
-};
+});
 
 export default HeaderNav;

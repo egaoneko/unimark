@@ -1,36 +1,75 @@
 import User from '../../../../src/domain/entities/account/User';
-import { Role } from '../../../../src/enums/account';
+import {
+  DEFAULT_EMAIL,
+  DEFAULT_ID,
+  DEFAULT_NAME,
+  DEFAULT_PHOTO,
+  DEFAULT_ROLE,
+  DEFAULT_USER
+} from '../../../../__mocks__/account/constant';
 
 describe('User', () => {
   test('equal', () => {
-    const user: User = new User('0', 'test@test.com', 'Test', Role.USER);
-    expect(user.equal(new User('0', 'test@test.com', 'T', Role.USER))).toBeTruthy();
-    expect(user.equal(new User('0', 'test@test.com', 'Test', Role.ADMIN))).toBeTruthy();
-    expect(user.equal(new User('1', 't@t.com', 'Test', Role.USER))).toBeFalsy();
-    expect(user.equal(new User('1', 'test@test.com', 'Test', Role.USER))).toBeFalsy();
+    const other: User = new User();
+    other.id = DEFAULT_ID;
+    other.email = DEFAULT_EMAIL;
+    other.name = DEFAULT_NAME;
+    other.role = DEFAULT_ROLE;
+    other.photo = DEFAULT_PHOTO;
+    expect(DEFAULT_USER.equal(other)).toBeTruthy();
+
+    other.id = null as any;
+    other.email = DEFAULT_EMAIL;
+    other.name = DEFAULT_NAME;
+    other.role = DEFAULT_ROLE;
+    other.photo = DEFAULT_PHOTO;
+    expect(DEFAULT_USER.equal(other)).toBeFalsy();
+
+    other.id = DEFAULT_ID;
+    other.email = null as any;
+    other.name = DEFAULT_NAME;
+    other.role = DEFAULT_ROLE;
+    other.photo = DEFAULT_PHOTO;
+    expect(DEFAULT_USER.equal(other)).toBeFalsy();
+
+    other.id = DEFAULT_ID;
+    other.email = DEFAULT_EMAIL;
+    other.name = null as any;
+    other.role = DEFAULT_ROLE;
+    other.photo = DEFAULT_PHOTO;
+    expect(DEFAULT_USER.equal(other)).toBeFalsy();
+
+    other.id = DEFAULT_ID;
+    other.email = DEFAULT_EMAIL;
+    other.name = DEFAULT_NAME;
+    other.role = null as any;
+    other.photo = DEFAULT_PHOTO;
+    expect(DEFAULT_USER.equal(other)).toBeFalsy();
+
+    other.id = DEFAULT_ID;
+    other.email = DEFAULT_EMAIL;
+    other.name = DEFAULT_NAME;
+    other.role = DEFAULT_ROLE;
+    other.photo = null as any;
+    expect(DEFAULT_USER.equal(other)).toBeFalsy();
   });
 
   test('clone', () => {
-    const user: User = new User('0', 'test@test.com', 'Test', Role.USER);
-    user.photo = 'photo';
-
-    const clone: User = user.clone();
-    expect(clone.id).toBe(user.id);
-    expect(clone.email).toBe(user.email);
-    expect(clone.name).toBe(user.name);
-    expect(clone.role).toBe(user.role);
-    expect(clone.photo).toBe(user.photo);
+    const clone: User = DEFAULT_USER.clone();
+    expect(clone.id).toBe(DEFAULT_USER.id);
+    expect(clone.email).toBe(DEFAULT_USER.email);
+    expect(clone.name).toBe(DEFAULT_USER.name);
+    expect(clone.role).toBe(DEFAULT_USER.role);
+    expect(clone.photo).toBe(DEFAULT_USER.photo);
   });
 
   test('toString', () => {
-    const user: User = new User('0', 'test@test.com', 'Test', Role.USER);
-    user.photo = 'photo';
-
-    expect(user.toString()).toBe([
-      user.id,
-      user.email,
-      user.name,
-      user.role,
+    expect(DEFAULT_USER.toString()).toBe([
+      DEFAULT_USER.id,
+      DEFAULT_USER.email,
+      DEFAULT_USER.name,
+      DEFAULT_USER.role,
+      DEFAULT_USER.photo,
     ].join(','));
   });
 });

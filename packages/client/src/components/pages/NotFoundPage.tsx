@@ -16,6 +16,6 @@ const NotFoundPage: React.FC = () => {
       />
     </FullLayout>
   );
-}
+};
 
 export default NotFoundPage;

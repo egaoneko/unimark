@@ -1,5 +1,7 @@
 import Entity from '../Entity';
-import { Role } from '../../../enums/account';
+import Serializable from '../../../interfaces/definitions/Serializable';
+import { Role } from '../../../enums/account/user';
+import { equals } from '../../../utils/common';
 
 export interface UserInterface {
   id: string;
@@ -9,27 +11,23 @@ export interface UserInterface {
   photo?: string;
 }
 
-export default class User implements Entity {
+export default class User implements Entity, Serializable {
+  public id!: string;
+  public email!: string;
+  public name!: string;
+  public role!: Role;
   public photo?: string;
 
-  constructor(
-    public id: string,
-    public email: string,
-    public name: string,
-    public role: Role,
-  ) {
-  }
-
   public equal(other: User): boolean {
-    if (!this.id || !other.id) {
-      return false;
-    }
-
-    return this.id === other.id;
+    return equals(this, other);
   }
 
   public clone(): User {
-    const clone: User = new User(this.id, this.email, this.name, this.role);
+    const clone: User = new User();
+    clone.id = this.id;
+    clone.email = this.email;
+    clone.name = this.name;
+    clone.role = this.role;
     clone.photo = this.photo;
     return clone;
   }
@@ -40,6 +38,7 @@ export default class User implements Entity {
       this.email,
       this.name,
       this.role,
+      this.photo,
     ].join(',');
   }
 }

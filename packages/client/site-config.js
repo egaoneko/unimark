@@ -6,7 +6,7 @@ const config = {
   email: 'donghyun.seo91@gmail.com',
   logo: 'src/images/logo.jpg', // Logo used for SEO and manifest.
   url: 'https://unimark.smilecat.dev', // Domain of your website without pathPrefix.
-  copyright: `© 2019-${new Date().getFullYear()} smilecat.dev`, // Copyright string for the footer of the website and RSS feed.
+  copyright: `© 2020-${new Date().getFullYear()} smilecat.dev`, // Copyright string for the footer of the website and RSS feed.
 };
 
 // Validate

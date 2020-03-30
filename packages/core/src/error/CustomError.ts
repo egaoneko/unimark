@@ -9,7 +9,7 @@ export default abstract class CustomError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
-  initialize(message: string, data: ErrorDataType): void {
+  public initialize(message: string, data: ErrorDataType): void {
     this.message = message;
     this.data = data;
   }

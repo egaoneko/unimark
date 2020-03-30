@@ -6,7 +6,6 @@ import mock{{repositoryClass}}, {
 } from '../../../../__mocks__/{{#if repositoryModule}}{{repositoryModule}}/{{/if}}{{repositoryClass}}';
 import Update{{entity}} from '../../../../src/domain/use-cases/{{module}}/Update{{entity}}';
 import {{entity}} from '../../../../src/domain/entities/{{module}}/{{entity}}';
-import { DEFAULT_ID } from '../../../../__mocks__/constant';
 
 describe('Update{{entity}} UseCase', () => {
   beforeEach(() => {
@@ -39,8 +38,7 @@ describe('Update{{entity}} UseCase', () => {
   //   const repository = new mock{{repositoryClass}}();
   //   const useCase: Update{{entity}} = new Update{{entity}}(repository);
   //   const {{camelCase entity}}: {{entity}} = new {{entity}}();
-  //   ({{camelCase entity}} as any).prop = null;
-  //   {{camelCase entity}}.id = DEFAULT_ID;
+  //   {{camelCase entity}}.prop = null as any;
   //
   //   expect(() => {
   //     apply(useCase, ((it: Update{{entity}}) => it.{{camelCase entity}} = {{camelCase entity}}))

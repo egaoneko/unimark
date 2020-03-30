@@ -4,6 +4,8 @@ import {
 } from 'rxjs';
 import User from '../../src/domain/entities/account/User';
 import { DEFAULT_USER } from './constant';
+import { Options } from '../../src/interfaces/repository/options';
+// --ADD_IMPORT--
 
 const cache: Map<string, User> = new Map();
 reset();
@@ -14,17 +16,7 @@ export function reset(): void {
   const user: User = DEFAULT_USER;
   cache.set(user.id, user)
 }
-
-export const mockCreateUser = jest.fn().mockImplementation((user: User): Observable<[User, boolean]> => {
-  return of([user, true]);
-});
-
-export const mockFindUserById = jest.fn().mockImplementation((id: string): Observable<User | null> => {
-  if (!cache.has(id)) {
-    return of(null);
-  }
-  return of(cache.get(id) as User);
-});
+// --ADD_UTIL--
 
 let currentUser: User | null;
 
@@ -46,12 +38,43 @@ export const mockGetCurrentUserToken = jest.fn().mockImplementation((): Observab
   return of(currentUserToken);
 });
 
+export const mockCreateUser = jest.fn().mockImplementation((user: User): Observable<[User, boolean]> => {
+  return of([user, true]);
+});
+export const mockFindUsersBy = jest.fn().mockImplementation((options: Options): Observable<User[]> => {
+  return of(Array.from(cache.values()));
+});
+export const mockUpdateUser = jest.fn().mockImplementation((user: User): Observable<[User, boolean]> => {
+  if (cache.has(user.id as string)) {
+    cache.set(user.id as string, user);
+    return of([cache.get(user.id as string) as User, true]);
+  } else {
+    return of([user, false]);
+  }
+});
+export const mockDeleteUser = jest.fn().mockImplementation((user: User): Observable<[User, boolean]> => {
+  if (cache.has(user.id as string)) {
+    cache.set(user.id as string, user);
+    return of([cache.get(user.id as string) as User, true]);
+  } else {
+    return of([user, false]);
+  }
+});
+export const mockCountUsers = jest.fn().mockImplementation((options: Options): Observable<number> => {
+  return of(cache.size);
+});
+// --ADD_METHOD--
+
 const mockUserRepository = jest.fn().mockImplementation(() => {
   return {
-    findUserById: mockFindUserById,
     createUser: mockCreateUser,
     getCurrentUser: mockGetCurrentUser,
     getCurrentUserToken: mockGetCurrentUserToken,
+    findUsersBy: mockFindUsersBy,
+    updateUser: mockUpdateUser,
+    deleteUser: mockDeleteUser,
+    countUsers: mockCountUsers,
+    // --APPLY_METHOD--
   };
 });
 
