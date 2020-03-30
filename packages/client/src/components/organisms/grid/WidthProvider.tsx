@@ -79,6 +79,7 @@ export default function WidthProvider(
       window.addEventListener('resize', onWindowResize);
       checkScrollbarVisible();
       onWindowResize();
+      setTimeout(() => checkScrollbarVisible(), 100);
       return () => {
         setMounted(false);
         window.removeEventListener('resize', onWindowResize);
