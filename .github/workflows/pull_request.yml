@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  push:
+  pull_request:
     branches: [ master ]
 
 env:
@@ -24,7 +24,7 @@ jobs:
         run: |
           yarn install
           yarn run build
-          yarn run deploy
+          yarn run test
       - uses: actions/upload-artifact@v1
         with:
           name: public
