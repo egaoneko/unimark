@@ -17,7 +17,11 @@
     "build:firebase": "lerna run build --scope @unimark/firebase",
     "build:account": "lerna run build --scope @unimark/account",
     "build:search": "lerna run build --scope @unimark/search",
-    "build:client": "lerna run build --scope @unimark/client"
+    "build:client": "lerna run build --scope @unimark/client",
+    "build:functions": "lerna run build --scope @unimark/functions",
+    "deploy": "npm run deploy",
+    "deploy:client": "lerna run deploy --scope @unimark/client",
+    "deploy:functions": "lerna run deploy --scope @unimark/functions"
   },
   "devDependencies": {
     "@types/jest": "~25.1.4",

@@ -6,6 +6,7 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
+    "deploy": "firebase deploy --only hosting --token \"$FIREBASE_TOKEN\" --non-interactive",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",

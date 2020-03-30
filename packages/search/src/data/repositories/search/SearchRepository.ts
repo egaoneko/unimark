@@ -8,7 +8,7 @@ import Result from '@unimark/core/lib/domain/entities/search/Result';
 // --ADD_IMPORT--
 
 export default class SearchRepository implements SearchRepositoryInterface {
-  public searchQuery(query: Query): Observable<Result[]> {
+  public searchQuery(query: Query): Observable<Result> {
     throw 'Not implements';
   }
   // --ADD_METHOD--
