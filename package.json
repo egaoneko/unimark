@@ -1,6 +1,17 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/**"
+    ],
+    "nohoist": [
+      "**/firebase-admin",
+      "**/firebase-admin/**",
+      "**/firebase-functions",
+      "**/firebase-functions/**"
+    ]
+  },
   "scripts": {
     "postinstall": "npm run bootstrap",
     "bootstrap": "lerna bootstrap",
@@ -19,16 +30,16 @@
     "build:search": "lerna run build --scope @unimark/search",
     "build:client": "lerna run build --scope @unimark/client",
     "build:functions": "lerna run build --scope @unimark/functions",
-    "deploy": "npm run deploy",
-    "deploy:client": "lerna run deploy --scope @unimark/client",
-    "deploy:functions": "lerna run deploy --scope @unimark/functions"
+    "deploy": "firebase deploy --only hosting,functions --token \"$FIREBASE_TOKEN\" --non-interactive",
+    "deploy:client": "firebase deploy --only hosting --token \"$FIREBASE_TOKEN\" --non-interactive",
+    "deploy:functions": "firebase deploy --only functions --token \"$FIREBASE_TOKEN\" --non-interactive"
   },
   "devDependencies": {
     "@types/jest": "~25.1.4",
     "change-case": "~4.1.0",
+    "firebase-tools": "^7.16.1",
     "inquirer-autocomplete-prompt": "~1.0.1",
     "lerna": "~3.20.2",
-    "minimist": "^1.2.5",
     "plop": "~2.6.0"
   }
 }

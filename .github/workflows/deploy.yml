@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 env:
-  NODE_VERSION: '12.x'
+  NODE_VERSION: '10.x'
   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
 jobs:
@@ -27,5 +27,9 @@ jobs:
           yarn run deploy
       - uses: actions/upload-artifact@v1
         with:
-          name: public
+          name: client
           path: packages/client/public
+      - uses: actions/upload-artifact@v1
+        with:
+          name: functions
+          path: packages/functions/lib
