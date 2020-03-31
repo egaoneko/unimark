@@ -23,7 +23,7 @@
     "test:search": "lerna run test --stream --scope @unimark/search",
     "test:client": "lerna run test --stream --scope @unimark/client",
     "build": "lerna run build",
-    "build:lib": "npm run build:core&&npm run build:firebase&&npm run build:account&npm run build:search",
+    "build:lib": "lerna run build --no-private",
     "build:core": "lerna run build --scope @unimark/core",
     "build:firebase": "lerna run build --scope @unimark/firebase",
     "build:account": "lerna run build --scope @unimark/account",
@@ -32,7 +32,8 @@
     "build:functions": "lerna run build --scope @unimark/functions",
     "deploy": "firebase deploy --only hosting,functions --token \"$FIREBASE_TOKEN\" --non-interactive",
     "deploy:client": "firebase deploy --only hosting --token \"$FIREBASE_TOKEN\" --non-interactive",
-    "deploy:functions": "firebase deploy --only functions --token \"$FIREBASE_TOKEN\" --non-interactive"
+    "deploy:functions": "firebase deploy --only functions --token \"$FIREBASE_TOKEN\" --non-interactive",
+    "publish": "lerna publish --yes"
   },
   "devDependencies": {
     "@types/jest": "~25.1.4",
