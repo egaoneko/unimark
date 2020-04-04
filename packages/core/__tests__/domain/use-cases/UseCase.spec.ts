@@ -30,7 +30,7 @@ describe('UseCase', () => {
     const subject: ReplaySubject<number> = new ReplaySubject();
 
     let count: number = 0;
-    let interval: NodeJS.Timeout = setInterval(() => {
+    let interval: number = setInterval(() => {
       if (count > 2) {
         clearInterval(interval);
         subject.complete();
