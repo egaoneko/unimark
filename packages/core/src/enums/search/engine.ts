@@ -1,3 +1,4 @@
 export enum SearchEngine {
-  GOOGLE = 'GOOGLE'
+  GOOGLE = 'GOOGLE',
+  NAVER = 'NAVER',
 }
