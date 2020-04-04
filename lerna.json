@@ -8,9 +8,12 @@
   "command": {
     "publish": {
       "ignoreChanges": [
-        "*.md"
+        "**/__tests__/**",
+        "**/__mocks__/**",
+        "**/lib/**",
+        "**/*.md"
       ],
-      "message": "chore(release): publish"
+      "message": "chore: Release"
     }
   }
 }
