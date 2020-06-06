@@ -29,7 +29,3 @@ jobs:
         with:
           name: client
           path: packages/client/public
-      - uses: actions/upload-artifact@v1
-        with:
-          name: functions
-          path: packages/functions/lib
