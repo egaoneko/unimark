@@ -11,7 +11,7 @@ export interface SettingInterface {
 }
 
 export interface AppLayouts {
-  [App: string]: Layouts;
+  [Platform: string]: Layouts;
 }
 
 export default class Setting implements Entity, Serializable {
