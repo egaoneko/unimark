@@ -21,7 +21,9 @@ import FindSettingsBy from '@unimark/core/lib/domain/use-cases/account/FindSetti
 import Setting from '@unimark/core/lib/domain/entities/account/Setting';
 import CreateSetting from '@unimark/core/lib/domain/use-cases/account/CreateSetting';
 import useStores from '../../../utils/mobx';
-import { App } from '@unimark/core/lib/enums/account/setting';
+import {
+  Platform
+} from '@unimark/core/lib/enums/account/setting';
 import User from '@unimark/core/lib/domain/entities/account/User';
 import UpdateSetting from '@unimark/core/lib/domain/use-cases/account/UpdateSetting';
 import { observer } from 'mobx-react';
@@ -60,19 +62,20 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
       return <></>;
     }
 
-    const layouts: Layouts = setting.layouts[App.WEB_MAIN];
-    return layouts?.lg.map((l, i) => {
+    const layouts: Layouts = setting.layouts[Platform.WEB_MAIN];
+    console.log(layouts);
+    return layouts?.lg.map((l) => {
       return (
-        <div key={i} className={l.static ? 'static' : ''}>
+        <div key={l.i} className={l.static ? 'static' : ''}>
           {l.static ? (
             <span
               className="text"
               title="This item is static and cannot be removed or resized."
             >
-              Static - {i}
+              Static - {l.i}
             </span>
           ) : (
-            <span className="text">{i}</span>
+            <span className="text">{l.i}</span>
           )}
         </div>
       );
@@ -82,9 +85,10 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
   return (
     setting && <ResponsiveReactGridLayout
       className='layout'
-      layouts={setting.layouts[App.WEB_MAIN]}
+      layouts={setting.layouts[Platform.WEB_MAIN]}
       rowHeight={30}
       onLayoutChange={async (layout: Layout[], allLayouts: Layouts) => {
+        console.log(layout, allLayouts);
         await updateLayout(setting, allLayouts);
         setSetting(setting);
       }}
@@ -113,10 +117,19 @@ async function loadSetting(user: User): Promise<Setting> {
 
   setting = settings[0];
 
+  let update = false;
   if (!setting) {
     setting = new Setting();
     setting.user = user;
-    setting.layouts = { [App.WEB_MAIN]: DEFAULT_WEB_MAIN_LAYOUTS };
+    setting.layouts = { [Platform.WEB_MAIN]: DEFAULT_WEB_MAIN_LAYOUTS };
+  } else if (
+    !setting.layouts ||
+    !setting.layouts[Platform.WEB_MAIN]
+  ) {
+    setting.layouts = { [Platform.WEB_MAIN]: DEFAULT_WEB_MAIN_LAYOUTS };
+  }
+
+  if (update) {
     await apply<CreateSetting>(
       CONTEXT.contexts.account.useCases.createSetting,
       (it: CreateSetting) => it.setting = setting
@@ -130,7 +143,7 @@ async function loadSetting(user: User): Promise<Setting> {
 
 async function updateLayout(setting: Setting, allLayouts: Layouts): Promise<boolean> {
   allLayouts = JSON.parse(JSON.stringify(allLayouts)); // clear undefined
-  setting.layouts[App.WEB_MAIN] = allLayouts;
+  setting.layouts[Platform.WEB_MAIN] = allLayouts;
 
   const [_, success]: [Setting, boolean] = await apply<UpdateSetting>(
     CONTEXT.contexts.account.useCases.updateSetting,
