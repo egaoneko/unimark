@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Result
 } from 'antd';
-import SEO from '../organisms/SEO';
+import SEO from '../organisms/common/SEO';
 import FullLayout from '../templates/layout/FullLayoutTemplate';
 
 const NotFoundPage: React.FC = () => {

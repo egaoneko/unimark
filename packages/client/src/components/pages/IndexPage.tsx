@@ -1,5 +1,5 @@
 import React from 'react';
-import SEO from '../organisms/SEO';
+import SEO from '../organisms/common/SEO';
 import HeaderLayoutTemplate from '../templates/layout/HeaderLayoutTemplate';
 import HomeContainer from '../templates/main/HomeContainer';
 
