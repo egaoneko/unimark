@@ -5,7 +5,6 @@ export const DEFAULT_WEB_MAIN_LAYOUTS: Layouts = {
   lg: [
     {
       i: App.SEARCH,
-      app: App.SEARCH,
       x: 2,
       y: 1,
       w: 9,
@@ -16,7 +15,6 @@ export const DEFAULT_WEB_MAIN_LAYOUTS: Layouts = {
   md: [
     {
       i: App.SEARCH,
-      app: App.SEARCH,
       x: 1,
       y: 1,
       w: 8,

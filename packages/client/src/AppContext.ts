@@ -1,11 +1,13 @@
 import { AxiosInstance } from 'axios';
 import AccountContext from '@unimark/account/lib/AccountContext';
+import SearchContext from '@unimark/search/lib/SearchContext';
 
 interface ProviderDependencies {
 }
 
 interface ContextDependencies {
   account: AccountContext;
+  search: SearchContext;
 }
 
 interface RepositoryDependencies {
@@ -27,6 +29,7 @@ export default class AppContext {
     this.providers = {};
     this.contexts = {
       account: new AccountContext(axiosInstance),
+      search: new SearchContext(axiosInstance),
     };
     this.repositories = {};
     this.useCases = {};

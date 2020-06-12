@@ -28,7 +28,7 @@ import User from '@unimark/core/lib/domain/entities/account/User';
 import UpdateSetting from '@unimark/core/lib/domain/use-cases/account/UpdateSetting';
 import { observer } from 'mobx-react';
 import WidthProvider from '../../organisms/grid/WidthProvider';
-import SearchApp from '../../organisms/app/SearchApp';
+import AppContainer from '../../organisms/app/AppContainer';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -64,13 +64,11 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
     }
 
     const layouts: Layouts = setting.layouts[Platform.WEB_MAIN];
-    return layouts?.lg.map((l) => {
-      return (
-        <div key={l.i} className={l.static ? 'static' : ''}>
-          <SearchApp/>
-        </div>
-      );
-    });
+    return layouts?.lg.map(layout => (
+      <div key={layout.i} className={layout.static ? 'static' : ''}>
+        <AppContainer layout={layout}/>
+      </div>)
+    );
   }
 
   return (

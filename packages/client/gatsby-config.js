@@ -28,7 +28,7 @@ module.exports = {
         javascriptEnabled: true,
         modifyVars: {
           '@font-family': 'Noto Sans KR, -apple-system, sans-serif',
-          '@primary-color': '#1890ff', // primary color for all components
+          '@primary-color': '#282a36', // primary color for all components
           '@link-color': '##1890ff', // link color
           '@success-color': '#52c41a', // success state color
           '@warning-color': '#faad14', // warning state color
