@@ -28,6 +28,7 @@ import User from '@unimark/core/lib/domain/entities/account/User';
 import UpdateSetting from '@unimark/core/lib/domain/use-cases/account/UpdateSetting';
 import { observer } from 'mobx-react';
 import WidthProvider from '../../organisms/grid/WidthProvider';
+import AppContainer from '../../organisms/app/AppContainer';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -63,23 +64,11 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
     }
 
     const layouts: Layouts = setting.layouts[Platform.WEB_MAIN];
-    console.log(layouts);
-    return layouts?.lg.map((l) => {
-      return (
-        <div key={l.i} className={l.static ? 'static' : ''}>
-          {l.static ? (
-            <span
-              className="text"
-              title="This item is static and cannot be removed or resized."
-            >
-              Static - {l.i}
-            </span>
-          ) : (
-            <span className="text">{l.i}</span>
-          )}
-        </div>
-      );
-    });
+    return layouts?.lg.map(layout => (
+      <div key={layout.i} className={layout.static ? 'static' : ''}>
+        <AppContainer layout={layout}/>
+      </div>)
+    );
   }
 
   return (
@@ -88,7 +77,6 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
       layouts={setting.layouts[Platform.WEB_MAIN]}
       rowHeight={30}
       onLayoutChange={async (layout: Layout[], allLayouts: Layouts) => {
-        console.log(layout, allLayouts);
         await updateLayout(setting, allLayouts);
         setSetting(setting);
       }}

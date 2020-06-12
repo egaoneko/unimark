@@ -52,8 +52,6 @@ li b {
     font-size: 19px;
     line-height: 14px;
 }
-
-
 .react-grid-layout {
     position: relative;
     transition: height 200ms ease;
@@ -69,13 +67,11 @@ li b {
     z-index: 1;
     will-change: width, height;
 }
-
 .react-grid-item.react-draggable-dragging {
     transition: none;
     z-index: 3;
     will-change: transform;
 }
-
 .react-grid-item.react-grid-placeholder {
     background: red;
     opacity: 0.2;
@@ -87,7 +83,6 @@ li b {
     -o-user-select: none;
     user-select: none;
 }
-
 .react-grid-item > .react-resizable-handle {
     position: absolute;
     width: 20px;
