@@ -4,19 +4,20 @@ import {
   equals
 } from '../../../utils/common';
 import { AppType } from '../../../enums/account/app';
+import User, { UserInterface } from './User';
 
-export interface AppInterface<T = any> {
+export interface AppInterface {
   id: string;
-  userId: string;
+  user: UserInterface;
   type: AppType;
-  data: T;
+  data: any;
 }
 
-export default class App<T = any> implements Entity {
+export default class App implements Entity {
   public id!: string;
-  public userId!: string;
+  public user!: User;
   public type!: AppType;
-  public data: T = {} as T;
+  public data: any = {};
 
   public equal(other: App): boolean {
     return equals(this, other);
@@ -25,16 +26,16 @@ export default class App<T = any> implements Entity {
   public clone(): App {
     const clone: App = new App();
     clone.id = this.id;
-    clone.userId = this.userId;
+    clone.user = this.user;
     clone.type = this.type;
-    clone.data = deepClone<T>(this.data);
+    clone.data = deepClone(this.data);
     return clone;
   }
 
   public toString(): string {
     return [
       this.id,
-      this.userId,
+      this.user?.id,
       this.type,
     ].join(',');
   }

@@ -15,7 +15,7 @@ export default class SettingJSONMapper implements JSONMapper<SettingInterface, S
     }
     const setting: Setting = new Setting();
     setting.id = json.id;
-    setting.user = userMapper.toEntity(json.user);
+    setting.user = json.user && userMapper.toEntity(json.user);
     setting.layouts = json.layouts;
     return setting;
   }
@@ -23,7 +23,7 @@ export default class SettingJSONMapper implements JSONMapper<SettingInterface, S
   public toJSON(entity: Setting): SettingInterface {
     return {
       id: entity.id,
-      user: userMapper.toJSON(entity.user),
+      user: entity.user && userMapper.toJSON(entity.user),
       layouts: entity.layouts,
     };
   }

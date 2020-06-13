@@ -51,7 +51,7 @@ describe('DeleteApp UseCase', () => {
     const repository = new mockAppRepository();
     const useCase: DeleteApp = new DeleteApp(repository);
     const app: App = new App();
-    app.userId = null as any;
+    app.user = null as any;
 
     expect(() => {
       apply(useCase, ((it: DeleteApp) => it.app = app))

@@ -117,7 +117,6 @@ module.exports = (plop) => {
 function getImportActions(answer) {
   const actions = [];
   const repository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/src/${answer.repositoryLayer}/repositories/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
-  const mockRepository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/__mocks__/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
   const entityRegex = new RegExp(`import ${answer.entityClass} from .*`);
   const optionRegex = new RegExp(`import { Options } from .*`);
 
@@ -146,14 +145,14 @@ function getImportActions(answer) {
   }
 
   if (answer.repositoryPackage !== 'core') {
-    const errorFactoryRegex = new RegExp(`import ApplicationErrorFactory from .*`);
+    const errorFactoryRegex = new RegExp(`import { APPLICATION_ERROR_FACTORY } from .*`);
 
     if (!errorFactoryRegex.test(repository)) {
       actions.push({
         type: 'modify',
         path: `packages/{{repositoryPackage}}/src/{{repositoryLayer}}/repositories/{{repositoryModule}}/{{repositoryClass}}.ts`,
         pattern: /(\/\/ --ADD_IMPORT--)/gi,
-        template: 'import ApplicationErrorFactory from \'@unimark/core/lib/data/errors/ApplicationErrorFactory\';\r\n$1',
+        template: 'import { APPLICATION_ERROR_FACTORY } from \'@unimark/core/lib/data/errors/factories\';\r\n$1',
         abortOnFail: true
       });
     }
@@ -171,6 +170,8 @@ function getImportActions(answer) {
   }
 
   if (answer.repositoryPackage === 'core') {
+    const mockRepository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/__mocks__/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
+
     if (!entityRegex.test(mockRepository)) {
       actions.push({
         type: 'modify',
@@ -197,10 +198,11 @@ function getImportActions(answer) {
 
 function getUtilActions(answer) {
   const actions = [];
-  const mockRepository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/__mocks__/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
   const utilRegex = new RegExp(`const cache: .*`);
 
   if (answer.repositoryPackage === 'core') {
+    const mockRepository = readFile(`${PACKAGE_ROOT_PATH}/${answer.repositoryPackage}/__mocks__/${answer.repositoryModule}/${answer.repositoryClass}.ts`);
+
     if (!utilRegex.test(mockRepository)) {
       actions.push({
         type: 'modify',
@@ -273,7 +275,7 @@ function getTargetActions(target, answer) {
     pattern: /(\/\/ --ADD_METHOD--)/gi,
     template: answer.repositoryPackage === 'core' ?
       `${target}${methodTemplate}(${propTemplate}): Observable<${retTemplate}>;\r\n\n  $1` :
-      `public ${target}${methodTemplate}(${propTemplate}): Observable<${retTemplate}> {\n    throw ApplicationErrorFactory.getError(ErrorType.GENERAL, 'method is not implemented.');\n  }\r\n\n  $1`,
+      `public ${target}${methodTemplate}(${propTemplate}): Observable<${retTemplate}> {\n    throw APPLICATION_ERROR_FACTORY.getError(ErrorType.GENERAL, 'method is not implemented.');\n  }\r\n\n  $1`,
     abortOnFail: true
   });
 

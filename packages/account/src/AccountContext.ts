@@ -14,6 +14,12 @@ import FindSettingsBy from '@unimark/core/lib/domain/use-cases/account/FindSetti
 import UpdateSetting from '@unimark/core/lib/domain/use-cases/account/UpdateSetting';
 import DeleteSetting from '@unimark/core/lib/domain/use-cases/account/DeleteSetting';
 import CountSettings from '@unimark/core/lib/domain/use-cases/account/CountSettings';
+import AppRepository from './data/repositories/account/AppRepository';
+import CreateApp from '@unimark/core/lib/domain/use-cases/account/CreateApp';
+import FindAppsBy from '@unimark/core/lib/domain/use-cases/account/FindAppsBy';
+import UpdateApp from '@unimark/core/lib/domain/use-cases/account/UpdateApp';
+import DeleteApp from '@unimark/core/lib/domain/use-cases/account/DeleteApp';
+import CountApps from '@unimark/core/lib/domain/use-cases/account/CountApps';
 
 interface ProviderDependencies {
 }
@@ -25,6 +31,7 @@ interface ContextDependencies {
 interface RepositoryDependencies {
   user: UserRepository;
   setting: SettingRepository;
+  app: AppRepository;
 }
 
 interface UseCaseDependencies {
@@ -40,6 +47,11 @@ interface UseCaseDependencies {
   updateSetting: UpdateSetting;
   deleteSetting: DeleteSetting;
   countSettings: CountSettings;
+  createApp: CreateApp;
+  findAppsBy: FindAppsBy;
+  updateApp: UpdateApp;
+  deleteApp: DeleteApp;
+  countApps: CountApps;
 }
 
 export default class AccountContext {
@@ -60,6 +72,7 @@ export default class AccountContext {
     this.repositories = {
       user: new UserRepository(this.contexts.firebase.providers.user),
       setting: new SettingRepository(this.contexts.firebase.providers.setting),
+      app: new AppRepository(this.contexts.firebase.providers.app),
     };
     this.useCases = {
       getCurrentUser: new GetCurrentUser(this.repositories.user),
@@ -74,6 +87,11 @@ export default class AccountContext {
       updateSetting: new UpdateSetting(this.repositories.setting),
       deleteSetting: new DeleteSetting(this.repositories.setting),
       countSettings: new CountSettings(this.repositories.setting),
+      createApp: new CreateApp(this.repositories.app),
+      findAppsBy: new FindAppsBy(this.repositories.app),
+      updateApp: new UpdateApp(this.repositories.app),
+      deleteApp: new DeleteApp(this.repositories.app),
+      countApps: new CountApps(this.repositories.app),
     };
 
   }

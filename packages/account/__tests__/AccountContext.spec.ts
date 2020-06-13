@@ -14,6 +14,12 @@ import FindSettingsBy from '@unimark/core/lib/domain/use-cases/account/FindSetti
 import DeleteSetting from '@unimark/core/lib/domain/use-cases/account/DeleteSetting';
 import UpdateSetting from '@unimark/core/lib/domain/use-cases/account/UpdateSetting';
 import CountSettings from '@unimark/core/lib/domain/use-cases/account/CountSettings';
+import AppRepository from '../src/data/repositories/account/AppRepository';
+import CreateApp from '@unimark/core/lib/domain/use-cases/account/CreateApp';
+import FindAppsBy from '@unimark/core/lib/domain/use-cases/account/FindAppsBy';
+import UpdateApp from '@unimark/core/lib/domain/use-cases/account/UpdateApp';
+import DeleteApp from '@unimark/core/lib/domain/use-cases/account/DeleteApp';
+import CountApps from '@unimark/core/lib/domain/use-cases/account/CountApps';
 
 describe('AccountContext', () => {
   const axiosInstance: any = {};
@@ -41,5 +47,14 @@ describe('AccountContext', () => {
     expect((application as any).useCases.updateSetting).toBeInstanceOf(UpdateSetting);
     expect((application as any).useCases.deleteSetting).toBeInstanceOf(DeleteSetting);
     expect((application as any).useCases.countSettings).toBeInstanceOf(CountSettings);
+  });
+
+  test('app', () => {
+    expect((application as any).repositories.app).toBeInstanceOf(AppRepository);
+    expect((application as any).useCases.createApp).toBeInstanceOf(CreateApp);
+    expect((application as any).useCases.findAppsBy).toBeInstanceOf(FindAppsBy);
+    expect((application as any).useCases.updateApp).toBeInstanceOf(UpdateApp);
+    expect((application as any).useCases.deleteApp).toBeInstanceOf(DeleteApp);
+    expect((application as any).useCases.countApps).toBeInstanceOf(CountApps);
   });
 });
