@@ -1,5 +1,6 @@
 import {
   apply,
+  deepClone,
   equals,
   lets,
   uuid
@@ -33,5 +34,12 @@ describe('common utils', () => {
     const c: object = { a: 1, b: 2 };
     expect(equals(a, b)).toBeTruthy();
     expect(equals(a, c)).toBeFalsy();
+  });
+
+  test('deepClone', () => {
+    const a: object = { a: 1, b: 2, c: 3 };
+    const b: object = { a: 1, b: 2, c: 3 };
+    expect(deepClone(a)).toEqual(b);
+    expect(deepClone(a)).toStrictEqual(b);
   });
 });

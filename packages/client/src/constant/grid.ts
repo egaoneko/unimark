@@ -1,10 +1,10 @@
 import { Layouts } from '@unimark/core/lib/interfaces/account/setting';
-import { App } from '@unimark/core/lib/enums/account/setting';
+import { AppType } from '@unimark/core/lib/enums/account/app';
 
 export const DEFAULT_WEB_MAIN_LAYOUTS: Layouts = {
   lg: [
     {
-      i: App.SEARCH,
+      i: AppType.SEARCH,
       x: 2,
       y: 1,
       w: 9,
@@ -14,7 +14,7 @@ export const DEFAULT_WEB_MAIN_LAYOUTS: Layouts = {
   ],
   md: [
     {
-      i: App.SEARCH,
+      i: AppType.SEARCH,
       x: 1,
       y: 1,
       w: 8,

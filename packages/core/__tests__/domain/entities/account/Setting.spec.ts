@@ -32,9 +32,9 @@ describe('Setting', () => {
 
   test('clone', () => {
     const clone: Setting = DEFAULT_SETTING.clone();
-    expect(clone.id).toBe(DEFAULT_SETTING.id);
-    expect(clone.user).toBe(DEFAULT_SETTING.user);
-    expect(clone.layouts).toBe(DEFAULT_SETTING.layouts);
+    expect(clone.id).toEqual(DEFAULT_SETTING.id);
+    expect(clone.user).toEqual(DEFAULT_SETTING.user);
+    expect(clone.layouts).toEqual(DEFAULT_SETTING.layouts);
   });
 
   test('toString', () => {
