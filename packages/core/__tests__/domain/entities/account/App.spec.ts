@@ -10,21 +10,31 @@ describe('App', () => {
   test('equal', () => {
     const other: App = new App();
     other.id = DEFAULT_UUID;
+    other.userId = DEFAULT_UUID;
     other.type = DEFAULT_APP_TYPE;
     other.data = DEFAULT_APP_DATA;
     expect(DEFAULT_APP.equal(other)).toBeTruthy();
 
     other.id = null as any;
+    other.userId = DEFAULT_UUID;
     other.type = DEFAULT_APP_TYPE;
     other.data = DEFAULT_APP_DATA;
     expect(DEFAULT_APP.equal(other)).toBeFalsy();
 
     other.id = DEFAULT_UUID;
+    other.userId = null as any;
+    other.type = DEFAULT_APP_TYPE;
+    other.data = DEFAULT_APP_DATA;
+    expect(DEFAULT_APP.equal(other)).toBeFalsy();
+
+    other.id = DEFAULT_UUID;
+    other.userId = DEFAULT_UUID;
     other.type = null as any;
     other.data = DEFAULT_APP_DATA;
     expect(DEFAULT_APP.equal(other)).toBeFalsy();
 
     other.id = DEFAULT_UUID;
+    other.userId = DEFAULT_UUID;
     other.type = DEFAULT_APP_TYPE;
     other.data = null as any;
     expect(DEFAULT_APP.equal(other)).toBeFalsy();
@@ -33,6 +43,7 @@ describe('App', () => {
   test('clone', () => {
     const clone: App = DEFAULT_APP.clone();
     expect(clone.id).toEqual(DEFAULT_APP.id);
+    expect(clone.userId).toEqual(DEFAULT_APP.userId);
     expect(clone.type).toEqual(DEFAULT_APP.type);
     expect(clone.data).toEqual(DEFAULT_APP.data);
   });
@@ -40,6 +51,7 @@ describe('App', () => {
   test('toString', () => {
     expect(DEFAULT_APP.toString()).toBe([
       DEFAULT_APP.id,
+      DEFAULT_APP.userId,
       DEFAULT_APP.type,
     ].join(','));
   });

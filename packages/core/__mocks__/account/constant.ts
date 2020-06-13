@@ -47,11 +47,13 @@ export const DEFAULT_APP_DATA: any = {};
 
 export const DEFAULT_APP: App = new App();
 DEFAULT_APP.id = DEFAULT_UUID;
+DEFAULT_APP.userId = DEFAULT_UUID;
 DEFAULT_APP.type = DEFAULT_APP_TYPE;
 DEFAULT_APP.data = DEFAULT_APP_DATA;
 
 export const DEFAULT_APP_JSON: AppInterface = {
   id: DEFAULT_UUID,
+  userId: DEFAULT_UUID,
   type: DEFAULT_APP_TYPE,
   data: DEFAULT_APP_DATA,
 };

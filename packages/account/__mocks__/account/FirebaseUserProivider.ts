@@ -4,7 +4,6 @@ import {
 } from 'rxjs';
 import User from '@unimark/core/lib/domain/entities/account/User';
 import { Options } from '@unimark/core/lib/interfaces/repository/options';
-import { DEFAULT_USER } from './constant';
 
 let currentUser: User | null;
 
