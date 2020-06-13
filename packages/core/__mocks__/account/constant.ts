@@ -5,6 +5,8 @@ import Setting, {
   SettingInterface
 } from '../../src/domain/entities/account/Setting';
 import { DEFAULT_UUID } from '../constant';
+import App, { AppInterface } from '../../src/domain/entities/account/App';
+import { AppType } from '../../src/enums/account/app';
 
 export const DEFAULT_ID: string = 'KpE7RIpfbYQMFAm713eeQNy2oNv1';
 export const DEFAULT_NAME: string = 'donghyun.seo91@gmail.com';
@@ -38,4 +40,18 @@ export const DEFAULT_SETTING_JSON: SettingInterface = {
   id: DEFAULT_UUID,
   user: DEFAULT_USER_JSON,
   layouts: DEFAULT_APP_LAYOUTS,
+};
+
+export const DEFAULT_APP_TYPE: AppType = AppType.SEARCH;
+export const DEFAULT_APP_DATA: any = {};
+
+export const DEFAULT_APP: App = new App();
+DEFAULT_APP.id = DEFAULT_UUID;
+DEFAULT_APP.type = DEFAULT_APP_TYPE;
+DEFAULT_APP.data = DEFAULT_APP_DATA;
+
+export const DEFAULT_APP_JSON: AppInterface = {
+  id: DEFAULT_UUID,
+  type: DEFAULT_APP_TYPE,
+  data: DEFAULT_APP_DATA,
 };

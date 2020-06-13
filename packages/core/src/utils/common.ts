@@ -23,4 +23,23 @@ export function equals(a: any, b: any): boolean {
   return keys.every(k => equals(a[k], b[k]));
 }
 
-export const NOOP: (...args: any) => any = () => {};
+export function NOOP(...args: any): any {
+}
+
+export function deepClone<T>(obj: T): T {
+  if (obj === null) {
+    return obj;
+  }
+
+  const origin: any = obj;
+  let clone: any = Object.assign({}, origin);
+
+  Object.keys(clone).forEach(
+    key => (clone[key] = typeof origin[key] === 'object' ? deepClone(origin[key]) : origin[key])
+  );
+  return Array.isArray(origin) && origin.length
+    ? (clone.length = origin.length) && Array.from(clone)
+    : Array.isArray(origin)
+      ? Array.from(origin)
+      : clone;
+}

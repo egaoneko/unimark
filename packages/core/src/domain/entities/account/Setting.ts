@@ -2,7 +2,10 @@ import Entity from '../Entity';
 import Serializable from '../../../interfaces/definitions/Serializable';
 import User, { UserInterface } from './User';
 import { Layouts } from '../../../interfaces/account/setting';
-import { equals } from '../../../utils/common';
+import {
+  deepClone,
+  equals
+} from '../../../utils/common';
 
 export interface SettingInterface {
   id: string;
@@ -27,7 +30,7 @@ export default class Setting implements Entity, Serializable {
     const setting: Setting = new Setting();
     setting.user = this.user;
     setting.id = this.id;
-    setting.layouts = this.layouts;
+    setting.layouts = deepClone<AppLayouts>(this.layouts);
     return setting;
   }
 
