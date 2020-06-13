@@ -7,6 +7,8 @@ import Setting, {
 import { DEFAULT_UUID } from '@unimark/core/__mocks__/constant';
 import { FirestoreUser } from '@unimark/firebase/lib/interfaces/account/user';
 import { FirestoreSetting } from '@unimark/firebase/lib/interfaces/account/setting';
+import { AppType } from '@unimark/core/lib/enums/account/app';
+import App, { AppInterface } from '@unimark/core/lib/domain/entities/account/App';
 
 export const DEFAULT_ID: string = 'KpE7RIpfbYQMFAm713eeQNy2oNv1';
 export const DEFAULT_NAME: string = 'donghyun.seo91@gmail.com';
@@ -52,4 +54,20 @@ export const DEFAULT_SETTING_JSON: SettingInterface = {
 export const DEFAULT_SETTING_FIRESTORE: FirestoreSetting = {
   userId: DEFAULT_USER.id,
   layouts: DEFAULT_APP_LAYOUTS,
+};
+
+export const DEFAULT_APP_TYPE: AppType = AppType.SEARCH;
+export const DEFAULT_APP_DATA: any = {};
+
+export const DEFAULT_APP: App = new App();
+DEFAULT_APP.id = DEFAULT_UUID;
+DEFAULT_APP.user = DEFAULT_USER;
+DEFAULT_APP.type = DEFAULT_APP_TYPE;
+DEFAULT_APP.data = DEFAULT_APP_DATA;
+
+export const DEFAULT_APP_JSON: AppInterface = {
+  id: DEFAULT_UUID,
+  user: DEFAULT_USER_JSON,
+  type: DEFAULT_APP_TYPE,
+  data: DEFAULT_APP_DATA,
 };

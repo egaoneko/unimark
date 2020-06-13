@@ -25,7 +25,7 @@ export default class UpdateApp extends UseCase<[App, boolean]> {
       return false;
     }
 
-    if (!this.app.userId) {
+    if (!this.app.user) {
       return false;
     }
 

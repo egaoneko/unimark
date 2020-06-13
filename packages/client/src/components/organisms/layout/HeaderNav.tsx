@@ -20,6 +20,9 @@ const Header = styled.div`
   padding: 10px 20px;
   z-index: 100;
   background: #282a36;
+  * {
+    user-select: none;
+  }
 `;
 
 const RightMenuContainer = styled.div`
@@ -28,9 +31,9 @@ const RightMenuContainer = styled.div`
 `;
 
 const DropdownMenu = () => {
-  const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
+  const onClick = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    signOut();
+    await signOut();
     signIn();
   };
   return (

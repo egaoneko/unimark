@@ -51,7 +51,7 @@ describe('UpdateApp UseCase', () => {
     const repository = new mockAppRepository();
     const useCase: UpdateApp = new UpdateApp(repository);
     const app: App = new App();
-    app.userId = null as any;
+    app.user = null as any;
 
     expect(() => {
       apply(useCase, ((it: UpdateApp) => it.app = app))

@@ -6,26 +6,15 @@ import {
   Responsive,
 } from 'react-grid-layout';
 import './grid.css';
-import { DEFAULT_WEB_MAIN_LAYOUTS } from '../../../constant/grid';
 import {
   Layout,
   Layouts
 } from '@unimark/core/lib/interfaces/account/setting';
-import { CONTEXT } from '../../../constant/context';
-import {
-  apply,
-} from '@unimark/core/lib/utils/common';
-import { async } from 'rxjs/internal/scheduler/async';
-import { queue } from 'rxjs/internal/scheduler/queue';
-import FindSettingsBy from '@unimark/core/lib/domain/use-cases/account/FindSettingsBy';
 import Setting from '@unimark/core/lib/domain/entities/account/Setting';
-import CreateSetting from '@unimark/core/lib/domain/use-cases/account/CreateSetting';
 import useStores from '../../../utils/mobx';
 import {
   Platform
 } from '@unimark/core/lib/enums/account/setting';
-import User from '@unimark/core/lib/domain/entities/account/User';
-import UpdateSetting from '@unimark/core/lib/domain/use-cases/account/UpdateSetting';
 import { observer } from 'mobx-react';
 import WidthProvider from '../../organisms/grid/WidthProvider';
 import AppContainer from '../../organisms/app/AppContainer';
@@ -40,23 +29,8 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
   const [setting, setSetting] = useState<Setting | null>(null);
 
   useEffect(() => {
-    load();
-  }, [userStore.user]);
-
-  useEffect(() => {
-    if (!setting) {
-      return;
-    }
-
-  }, [setting]);
-
-  async function load() {
-    if (!userStore.user) {
-      return;
-    }
-
-    setSetting(await loadSetting(userStore.user));
-  }
+    setSetting(userStore.setting);
+  }, [userStore.setting]);
 
   function generateDOM() {
     if (!setting) {
@@ -77,7 +51,7 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
       layouts={setting.layouts[Platform.WEB_MAIN]}
       rowHeight={30}
       onLayoutChange={async (layout: Layout[], allLayouts: Layouts) => {
-        await updateLayout(setting, allLayouts);
+        await userStore.updateLayout(setting, allLayouts);
         setSetting(setting);
       }}
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
@@ -90,57 +64,5 @@ const MainGridContainer: React.FC<PropsType> = observer(() => {
     </ResponsiveReactGridLayout>
   )
 });
-
-async function loadSetting(user: User): Promise<Setting> {
-  let setting: Setting;
-
-  const settings: Setting[] = await apply<FindSettingsBy>(
-    CONTEXT.contexts.account.useCases.findSettingsBy,
-    (it: FindSettingsBy) => it.options = {
-      where: [['userId', '==', user.id]]
-    }
-  )
-    .runOnce(async, queue)
-    .toPromise();
-
-  setting = settings[0];
-
-  let update = false;
-  if (!setting) {
-    setting = new Setting();
-    setting.user = user;
-    setting.layouts = { [Platform.WEB_MAIN]: DEFAULT_WEB_MAIN_LAYOUTS };
-  } else if (
-    !setting.layouts ||
-    !setting.layouts[Platform.WEB_MAIN]
-  ) {
-    setting.layouts = { [Platform.WEB_MAIN]: DEFAULT_WEB_MAIN_LAYOUTS };
-  }
-
-  if (update) {
-    await apply<CreateSetting>(
-      CONTEXT.contexts.account.useCases.createSetting,
-      (it: CreateSetting) => it.setting = setting
-    )
-      .runOnce(async, queue)
-      .toPromise();
-  }
-
-  return setting;
-}
-
-async function updateLayout(setting: Setting, allLayouts: Layouts): Promise<boolean> {
-  allLayouts = JSON.parse(JSON.stringify(allLayouts)); // clear undefined
-  setting.layouts[Platform.WEB_MAIN] = allLayouts;
-
-  const [_, success]: [Setting, boolean] = await apply<UpdateSetting>(
-    CONTEXT.contexts.account.useCases.updateSetting,
-    (it: UpdateSetting) => it.setting = setting
-  )
-    .runOnce(async, queue)
-    .toPromise();
-
-  return success;
-}
 
 export default MainGridContainer;

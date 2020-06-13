@@ -5,10 +5,12 @@ import {
 } from './externals/firebase';
 import FirebaseUserProvider from './data/providers/account/FirebaseUserProvider';
 import FirebaseSettingProvider from './data/providers/account/FirebaseSettingProvider';
+import FirebaseAppProvider from './data/providers/account/FirebaseAppProvider';
 
 interface ProviderDependencies {
   user: FirebaseUserProvider;
   setting: FirebaseSettingProvider;
+  app: FirebaseAppProvider;
 }
 
 export default class FirebaseContext {
@@ -23,6 +25,7 @@ export default class FirebaseContext {
     this.providers = {
       user,
       setting: new FirebaseSettingProvider(db, auth, user),
+      app: new FirebaseAppProvider(db, auth, user),
     };
   }
 }
