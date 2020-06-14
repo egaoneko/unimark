@@ -5,6 +5,7 @@ import { AppType } from '@unimark/core/lib/enums/account/app';
 import { observer } from 'mobx-react';
 import useStores from '../../../utils/mobx';
 import ErrorContainer from '../../molecules/app/common/ErrorContainer';
+import App from "@unimark/core/lib/domain/entities/account/App";
 
 interface PropsType {
   layout: Layout;
@@ -21,13 +22,13 @@ const AppContainer: React.FC<PropsType> = observer(({ layout }) => {
 
   return (
     <>
-      {factory(app.type)}
+      {factory(app)}
     </>
   );
 });
 
-function factory(appType: AppType): React.ReactNode {
-  switch (appType) {
+function factory(app: App): React.ReactNode {
+  switch (app.type) {
     case AppType.SEARCH:
       return <SearchApp/>;
     default:

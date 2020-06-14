@@ -1,11 +1,11 @@
 import React, {
+  useCallback,
   useEffect,
   useState
 } from 'react';
 import {
   Responsive,
 } from 'react-grid-layout';
-import './grid.css';
 import {
   Layout,
   Layouts
@@ -18,6 +18,7 @@ import {
 import { observer } from 'mobx-react';
 import WidthProvider from '../../organisms/grid/WidthProvider';
 import AppContainer from '../../organisms/app/AppContainer';
+import './grid.less';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -27,40 +28,55 @@ interface PropsType {
 const MainGridContainer: React.FC<PropsType> = observer(() => {
   const { userStore } = useStores();
   const [setting, setSetting] = useState<Setting | null>(null);
+  const [breakpoint, setBreakpoint] = useState<string | null>(null);
 
   useEffect(() => {
     setSetting(userStore.setting);
   }, [userStore.setting]);
 
-  function generateDOM() {
-    if (!setting) {
-      return <></>;
+  const generateContents = useCallback(() => {
+    if (
+      !breakpoint ||
+      !setting
+    ) {
+      return null;
     }
 
     const layouts: Layouts = setting.layouts[Platform.WEB_MAIN];
-    return layouts?.lg.map(layout => (
+
+    if (!layouts) {
+      return null;
+    }
+
+    return layouts[breakpoint].map(layout => (
       <div key={layout.i} className={layout.static ? 'static' : ''}>
         <AppContainer layout={layout}/>
       </div>)
     );
-  }
+  }, [userStore.appMap, setting, breakpoint]);
 
   return (
     setting && <ResponsiveReactGridLayout
-      className='layout'
+      className={[
+        'layout',
+        userStore.isLayoutEditable ? 'edit' : ''
+      ].join(' ')}
       layouts={setting.layouts[Platform.WEB_MAIN]}
       rowHeight={30}
       onLayoutChange={async (layout: Layout[], allLayouts: Layouts) => {
         await userStore.updateLayout(setting, allLayouts);
         setSetting(setting);
       }}
+      onBreakpointChange={(breakpoint: string) => setBreakpoint(breakpoint)}
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
       compactType={null}
       preventCollision={true}
       measureBeforeMount={true}
       useCSSTransforms={false}
+      isDraggable={userStore.isLayoutEditable}
+      isResizable={userStore.isLayoutEditable}
     >
-      {generateDOM()}
+      {generateContents()}
     </ResponsiveReactGridLayout>
   )
 });
