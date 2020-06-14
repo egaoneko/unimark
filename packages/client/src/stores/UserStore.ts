@@ -17,7 +17,6 @@ import { getDefaultLayouts } from '../utils/setting';
 import CreateSetting from '@unimark/core/lib/domain/use-cases/account/CreateSetting';
 import SettingJSONMapper from '@unimark/core/lib/data/mappers/account/SettingJSONMapper';
 import AppJSONMapper from '@unimark/core/lib/data/mappers/account/AppJSONMapper';
-import { IS_SSR } from '../constant/common';
 import firebase from '@unimark/firebase/lib/externals/firebase';
 import {
   getCurrentUser,
@@ -31,6 +30,7 @@ import { AppType } from '@unimark/core/lib/enums/account/app';
 import { DEFAULT_SEARCH_APP } from '../constant/app';
 import CreateApp from '@unimark/core/lib/domain/use-cases/account/CreateApp';
 import FindAppsBy from '@unimark/core/lib/domain/use-cases/account/FindAppsBy';
+import { avoid } from '../decorator/ssr';
 
 const userMapper = new UserJSONMapper();
 const settingMapper = new SettingJSONMapper();
@@ -53,6 +53,9 @@ export default class UserStore {
   @observable
   public appMap: Map<string, App> = new Map();
 
+  @observable
+  public isLayoutEditable: boolean = false;
+
   private unsubscribe: firebase.Unsubscribe | null = null;
 
   constructor() {
@@ -71,11 +74,8 @@ export default class UserStore {
     await this.setSetting(settingJson && settingMapper.toEntity(settingJson));
   }
 
+  @avoid
   public async initObserve(): Promise<void> {
-    if (IS_SSR) {
-      return;
-    }
-
     const currentUser: firebase.User | null = getCurrentUser();
     if (currentUser) {
       const user: User = new FirebaseUserMapper().toEntity(currentUser);
@@ -134,6 +134,11 @@ export default class UserStore {
       .toPromise();
 
     return success;
+  }
+
+  @action
+  public setLayoutEditable(editable: boolean): void {
+    this.isLayoutEditable = editable;
   }
 
   private async clear(): Promise<void> {

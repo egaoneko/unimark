@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-  Dropdown,
-  Menu
-} from 'antd';
-import Logo from '../../molecules/layout/Logo';
-import Avatar from '../../molecules/layout/Avartar';
 import styled from 'styled-components';
-import { signIn } from '../../../utils/router';
-import useStores from '../../../utils/mobx';
 import { observer } from 'mobx-react';
-import User from '@unimark/core/lib/domain/entities/account/User';
-import { signOut } from '@unimark/firebase/lib/utils/auth';
+import Logo from '../../molecules/layout/Logo';
+import useStores from '../../../utils/mobx';
+import AvatarDropdown from './AvatarDropdown';
+import SettingButton from './SettingButton';
+import { DRACULA_THEME_COLOR } from '../../../constant/theme/dracula';
 
 const Header = styled.div`
   display: flex;
@@ -19,7 +14,7 @@ const Header = styled.div`
   line-height: 37px;
   padding: 10px 20px;
   z-index: 100;
-  background: #282a36;
+  background: ${DRACULA_THEME_COLOR.BACKGROUND};
   * {
     user-select: none;
   }
@@ -28,44 +23,13 @@ const Header = styled.div`
 const RightMenuContainer = styled.div`
   margin: 0 0 0 auto;
   order: 2;
+  display: flex;
+  align-items: center;
+  
+  div {
+    margin-left: 8px;
+  }
 `;
-
-const DropdownMenu = () => {
-  const onClick = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    await signOut();
-    signIn();
-  };
-  return (
-    <Menu>
-      <Menu.Item>
-        <a href="/#" onClick={onClick} onKeyDown={onClick}>
-          Sign Out
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
-};
-
-const AvatarDropdown: React.FC<{ user: User | null }> = ({ user }) => {
-  function onClickAvatar() {
-    signIn();
-  }
-
-  if (!user) {
-    return <Avatar onClick={onClickAvatar} user={user}/>;
-  }
-
-  return (
-    <Dropdown
-      overlay={DropdownMenu}
-      trigger={['click']}
-      placement="bottomRight">
-      <Avatar
-        user={user}/>
-    </Dropdown>
-  );
-};
 
 interface PropsType {
 }
@@ -82,6 +46,7 @@ const HeaderNav: React.FC<PropsType> = observer(() => {
           float: 'left',
         }}/>
       <RightMenuContainer>
+        { userStore.user && <SettingButton/> }
         <AvatarDropdown user={userStore.user}/>
       </RightMenuContainer>
     </Header>

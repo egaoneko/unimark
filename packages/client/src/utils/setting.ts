@@ -28,8 +28,38 @@ export function getDefaultLayouts(params: GetDefaultLayoutsParams): AppLayouts {
         h: 5,
         static: false
       }
+    ],
+    sm: [
+      {
+        i: params.searchApp.id,
+        x: 0,
+        y: 1,
+        w: 6,
+        h: 5,
+        static: false
+      }
+    ],
+    xs: [
+      {
+        i: params.searchApp.id,
+        x: 0,
+        y: 1,
+        w: 4,
+        h: 5,
+        static: false
+      }
+    ],
+    xxs: [
+      {
+        i: params.searchApp.id,
+        x: 0,
+        y: 1,
+        w: 2,
+        h: 5,
+        static: false
+      }
     ]
-  }
+  };
 
   return { [Platform.WEB_MAIN]: layouts };
 }
