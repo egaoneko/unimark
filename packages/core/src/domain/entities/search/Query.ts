@@ -3,7 +3,7 @@ import { SearchEngine } from '../../../enums/search/engine';
 import { equals } from '../../../utils/common';
 
 export interface QueryInterface {
-  query: string;
+  word: string;
   engine: SearchEngine;
 }
 
