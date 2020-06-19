@@ -40,8 +40,20 @@ describe('CreateSetting UseCase', () => {
   test('throw exception with invalid user', () => {
     const repository = new mockSettingRepository();
     const useCase: CreateSetting = new CreateSetting(repository);
-    const setting: Setting = DEFAULT_SETTING;
+    const setting: Setting = DEFAULT_SETTING.clone();
     setting.user = null as any;
+
+    expect(() => {
+      apply(useCase, ((it: CreateSetting) => it.setting = setting))
+        .runOnce(async, queue)
+    }).toThrowError('Invalid params in UseCase');
+  });
+
+  test('throw exception with invalid user', () => {
+    const repository = new mockSettingRepository();
+    const useCase: CreateSetting = new CreateSetting(repository);
+    const setting: Setting = DEFAULT_SETTING.clone();
+    setting.user.id = null as any;
 
     expect(() => {
       apply(useCase, ((it: CreateSetting) => it.setting = setting))

@@ -38,32 +38,8 @@ describe('DeleteApp UseCase', () => {
   test('throw exception with invalid id', () => {
     const repository = new mockAppRepository();
     const useCase: DeleteApp = new DeleteApp(repository);
-    const app: App = new App();
+    const app: App = DEFAULT_APP.clone();
     app.id = null as any;
-
-    expect(() => {
-      apply(useCase, ((it: DeleteApp) => it.app = app))
-        .runOnce(async, queue)
-    }).toThrowError('Invalid params in UseCase');
-  });
-
-  test('throw exception with invalid id', () => {
-    const repository = new mockAppRepository();
-    const useCase: DeleteApp = new DeleteApp(repository);
-    const app: App = new App();
-    app.user = null as any;
-
-    expect(() => {
-      apply(useCase, ((it: DeleteApp) => it.app = app))
-        .runOnce(async, queue)
-    }).toThrowError('Invalid params in UseCase');
-  });
-
-  test('throw exception with invalid id', () => {
-    const repository = new mockAppRepository();
-    const useCase: DeleteApp = new DeleteApp(repository);
-    const app: App = new App();
-    app.type = null as any;
 
     expect(() => {
       apply(useCase, ((it: DeleteApp) => it.app = app))

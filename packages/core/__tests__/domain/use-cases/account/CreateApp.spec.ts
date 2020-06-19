@@ -35,11 +35,11 @@ describe('CreateApp UseCase', () => {
     }).toThrowError('Invalid params in UseCase');
   });
 
-  test('throw exception with invalid id', () => {
+  test('throw exception with invalid user', () => {
     const repository = new mockAppRepository();
     const useCase: CreateApp = new CreateApp(repository);
-    const app: App = new App();
-    app.id = null as any;
+    const app: App = DEFAULT_APP.clone();
+    app.user = null as any;
 
     expect(() => {
       apply(useCase, ((it: CreateApp) => it.app = app))
@@ -47,11 +47,11 @@ describe('CreateApp UseCase', () => {
     }).toThrowError('Invalid params in UseCase');
   });
 
-  test('throw exception with invalid userId', () => {
+  test('throw exception with invalid user id', () => {
     const repository = new mockAppRepository();
     const useCase: CreateApp = new CreateApp(repository);
-    const app: App = new App();
-    app.user = null as any;
+    const app: App = DEFAULT_APP.clone();
+    app.user.id = null as any;
 
     expect(() => {
       apply(useCase, ((it: CreateApp) => it.app = app))
@@ -62,7 +62,7 @@ describe('CreateApp UseCase', () => {
   test('throw exception with invalid type', () => {
     const repository = new mockAppRepository();
     const useCase: CreateApp = new CreateApp(repository);
-    const app: App = new App();
+    const app: App = DEFAULT_APP.clone();
     app.type = null as any;
 
     expect(() => {

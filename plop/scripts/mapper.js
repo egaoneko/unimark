@@ -13,7 +13,7 @@ const {
 
 module.exports = (plop) => {
   plop.setGenerator('mapper', {
-    description: 'Create entity in package',
+    description: 'Create mapper in package',
     prompts: [
       genAutocompletePrompt(
         'module',

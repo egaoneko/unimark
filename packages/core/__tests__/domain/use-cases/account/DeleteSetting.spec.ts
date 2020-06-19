@@ -40,7 +40,7 @@ describe('DeleteSetting UseCase', () => {
   test('throw exception with invalid id', () => {
     const repository = new mockSettingRepository();
     const useCase: DeleteSetting = new DeleteSetting(repository);
-    const setting: Setting = DEFAULT_SETTING;
+    const setting: Setting = DEFAULT_SETTING.clone();
     setting.id = null as any;
 
     expect(() => {

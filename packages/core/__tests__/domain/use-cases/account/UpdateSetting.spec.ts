@@ -40,7 +40,7 @@ describe('UpdateSetting UseCase', () => {
   test('throw exception with invalid id', () => {
     const repository = new mockSettingRepository();
     const useCase: UpdateSetting = new UpdateSetting(repository);
-    const setting: Setting = DEFAULT_SETTING;
+    const setting: Setting = DEFAULT_SETTING.clone();
     setting.id = null as any;
 
     expect(() => {
@@ -52,8 +52,20 @@ describe('UpdateSetting UseCase', () => {
   test('throw exception with invalid user', () => {
     const repository = new mockSettingRepository();
     const useCase: UpdateSetting = new UpdateSetting(repository);
-    const setting: Setting = DEFAULT_SETTING;
+    const setting: Setting = DEFAULT_SETTING.clone();
     setting.user = null as any;
+
+    expect(() => {
+      apply(useCase, ((it: UpdateSetting) => it.setting = setting))
+        .runOnce(async, queue)
+    }).toThrowError('Invalid params in UseCase');
+  });
+
+  test('throw exception with invalid user id', () => {
+    const repository = new mockSettingRepository();
+    const useCase: UpdateSetting = new UpdateSetting(repository);
+    const setting: Setting = DEFAULT_SETTING.clone();
+    setting.user.id = null as any;
 
     expect(() => {
       apply(useCase, ((it: UpdateSetting) => it.setting = setting))
