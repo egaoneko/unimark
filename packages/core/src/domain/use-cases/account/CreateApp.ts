@@ -25,6 +25,10 @@ export default class CreateApp extends UseCase<[App, boolean]> {
       return false;
     }
 
+    if (!this.app.user.id) {
+      return false;
+    }
+
     if (!this.app.type) {
       return false;
     }

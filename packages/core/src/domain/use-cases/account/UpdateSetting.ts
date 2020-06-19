@@ -29,6 +29,10 @@ export default class UpdateSetting extends UseCase<[Setting, boolean]> {
       return false;
     }
 
+    if (!this.setting.user.id) {
+      return false;
+    }
+
     return true;
   }
 }

@@ -25,14 +25,6 @@ export default class DeleteApp extends UseCase<[App, boolean]> {
       return false;
     }
 
-    if (!this.app.user) {
-      return false;
-    }
-
-    if (!this.app.type) {
-      return false;
-    }
-
     return true;
   }
 }
