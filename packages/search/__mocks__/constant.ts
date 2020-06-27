@@ -17,6 +17,7 @@ export const DEFAULT_ENGINE: SearchEngine = SearchEngine.GOOGLE;
 export const DEFAULT_QUERY: Query = new Query();
 DEFAULT_QUERY.word = DEFAULT_WORD;
 DEFAULT_QUERY.engine = DEFAULT_ENGINE;
+DEFAULT_QUERY.user = DEFAULT_USER;
 
 export const DEFAULT_LINK: string = 'http://example.com?q=test';
 export const DEFAULT_CONTENT: string = 'Hello <b>world</b>!';

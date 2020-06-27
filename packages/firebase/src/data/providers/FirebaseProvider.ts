@@ -106,11 +106,11 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
         );
     }
 
-    const query: firebase.firestore.CollectionReference = this.collection;
+    let query: firebase.firestore.Query<firebase.firestore.DocumentData> = this.collection;
 
     if (options.where) {
       options.where.forEach(w => {
-        query.where(w[0], w[1], w[2]);
+        query = query.where(w[0], w[1], w[2]);
       });
     }
 

@@ -18,7 +18,7 @@ export default class FirebaseHistoryProvider extends FirebaseProvider<FirestoreH
     auth: firebase.auth.Auth,
     private user: FirebaseUserProvider,
   ) {
-    super(db, auth, 'histories');
+    super(db, auth, 'search-histories');
   }
 
   public createHistory(history: History): Observable<[History, boolean]> {
