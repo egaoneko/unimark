@@ -70,9 +70,9 @@ export default class AccountContext {
       firebase: new FirebaseContext(axiosInstance),
     };
     this.repositories = {
-      user: new UserRepository(this.contexts.firebase.providers.user),
-      setting: new SettingRepository(this.contexts.firebase.providers.setting),
-      app: new AppRepository(this.contexts.firebase.providers.app),
+      user: new UserRepository(this.contexts.firebase.providers.account.user),
+      setting: new SettingRepository(this.contexts.firebase.providers.account.setting),
+      app: new AppRepository(this.contexts.firebase.providers.account.app),
     };
     this.useCases = {
       getCurrentUser: new GetCurrentUser(this.repositories.user),
