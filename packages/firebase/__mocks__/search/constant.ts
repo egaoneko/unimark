@@ -1,15 +1,15 @@
-import axios, { AxiosInstance } from 'axios';
-import Result from '@unimark/core/lib/domain/entities/search/Result';
+import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
 import Query from '@unimark/core/lib/domain/entities/search/Query';
-import History, { HistoryInterface } from '@unimark/core/lib/domain/entities/search/History';
-import { DEFAULT_UUID } from '@unimark/core/__mocks__/constant';
+import Result from '@unimark/core/lib/domain/entities/search/Result';
+import History from '@unimark/core/lib/domain/entities/search/History';
+import { HistoryInterface } from '@unimark/core/lib/domain/entities/search/History';
+import { DEFAULT_UUID } from '../constant';
 import {
   DEFAULT_USER,
   DEFAULT_USER_JSON
-} from '@unimark/core/__mocks__/account/constant';
-import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
+} from '../account/constant';
+import { FirestoreHistory } from '../../src/interfaces/search/history';
 
-export const DEFAULT_TEST_AXIOS_INSTANCE: AxiosInstance = axios.create();
 
 export const DEFAULT_WORD: string = 'uni';
 export const DEFAULT_ENGINE: SearchEngine = SearchEngine.GOOGLE;
@@ -40,6 +40,15 @@ DEFAULT_HISTORY.updatedAt = DEFAULT_UPDATED_AT;
 export const DEFAULT_HISTORY_JSON: HistoryInterface = {
   id: DEFAULT_UUID,
   user: DEFAULT_USER_JSON,
+  word: DEFAULT_WORD,
+  engine: DEFAULT_ENGINE,
+  link: DEFAULT_LINK,
+  createdAt: DEFAULT_CREATED_AT,
+  updatedAt: DEFAULT_UPDATED_AT,
+};
+
+export const DEFAULT_HISTORY_FIRESTORE: FirestoreHistory = {
+  userId: DEFAULT_USER.id,
   word: DEFAULT_WORD,
   engine: DEFAULT_ENGINE,
   link: DEFAULT_LINK,
