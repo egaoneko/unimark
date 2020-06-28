@@ -2,56 +2,58 @@ import React, { useState } from 'react';
 import { Input } from 'antd';
 import SearchEngineSelect from './SearchEngineSelect';
 import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
-import User from '@unimark/core/lib/domain/entities/account/User';
-import Query from '@unimark/core/lib/domain/entities/search/Query';
-import Result from '@unimark/core/lib/domain/entities/search/Result';
-import { apply } from '@unimark/core/lib/utils/common';
-import SearchQuery from '@unimark/core/lib/domain/use-cases/search/SearchQuery';
-import { CONTEXT } from '../../../../constant/context';
-import { async } from 'rxjs/internal/scheduler/async';
-import { queue } from 'rxjs/internal/scheduler/queue';
+import History from '@unimark/core/lib/domain/entities/search/History';
+import styled from 'styled-components';
+import HistoryList from './history/HistoryList';
 
-async function onSearch(word: string, engine: SearchEngine, user: User | null): Promise<void> {
-  if (!word) {
-    return;
-  }
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+`;
 
-  const query = new Query();
-  query.word = word;
-  query.engine = engine;
-
-  if (user) {
-    query.user = user;
-  }
-
-  const result: Result = await apply<SearchQuery>(
-    CONTEXT.contexts.search.useCases.searchQuery,
-    (it: SearchQuery) => it.query = query
-  )
-    .runOnce(async, queue)
-    .toPromise();
-  // redirect(result.link);
-}
 
 interface PropsType {
-  user: User | null;
+  onSearch?: (word: string, engine: SearchEngine) => Promise<void>;
+  loadHistories?: () => Promise<History[]>;
 }
 
 const Search: React.FC<PropsType> = (props) => {
+  const {
+    onSearch,
+    loadHistories,
+  } = props;
   const [engine, setEngine] = useState<SearchEngine>(SearchEngine.GOOGLE);
+  const [histories, setHistories] = useState<History[]>([]);
+  const [timer, setTimer] = useState<number>(null);
 
   return (
-    <Input.Search
-      addonBefore={(
-        <SearchEngineSelect
-          value={engine}
-          onChange={setEngine}
-        />
-      )}
-      size="large"
-      enterButton
-      onSearch={value => onSearch(value, engine, props.user)}
-    />
+    <Container>
+      <Input.Search
+        addonBefore={(
+          <SearchEngineSelect
+            value={engine}
+            onChange={setEngine}
+          />
+        )}
+        size="large"
+        enterButton
+        onSearch={value => onSearch && onSearch(value, engine)}
+        onFocus={async () => loadHistories && setHistories(await loadHistories())}
+        onBlur={() => {
+          clearTimeout(timer);
+          setTimer(
+            setTimeout(() => {
+              setHistories([]);
+              setTimer(null);
+            }, 100)
+          );
+        }}
+      />
+      <HistoryList
+        histories={histories}
+        onSearch={onSearch}
+      />
+    </Container>
   );
 };
 

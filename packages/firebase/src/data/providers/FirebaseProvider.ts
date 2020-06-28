@@ -116,21 +116,21 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
 
     if (options.sort) {
       options.sort.forEach(s => {
-        query.orderBy(s[0], s[1]);
+        query = query.orderBy(s[0], s[1]);
       });
     }
 
     if (options.last) {
-      query.startAfter(options.last);
+      query = query.startAfter(options.last);
     } else if (options.first) {
-      query.endBefore(options.first);
+      query = query.endBefore(options.first);
     }
 
     if (options.limit) {
       if (options.first) {
-        query.limitToLast(options.limit);
+        query = query.limitToLast(options.limit);
       } else {
-        query.limit(options.limit);
+        query = query.limit(options.limit);
       }
     }
 

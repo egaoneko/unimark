@@ -14,7 +14,6 @@ import HistoryRepository from './HistoryRepository';
 import History from '@unimark/core/lib/domain/entities/search/History';
 import {
   first,
-  map,
   switchMap,
   tap
 } from 'rxjs/operators';

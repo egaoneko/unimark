@@ -3,6 +3,7 @@ import {
   observable
 } from 'mobx';
 import User, { UserInterface } from '@unimark/core/lib/domain/entities/account/User';
+import History from '@unimark/core/lib/domain/entities/search/History';
 import Storage from '../utils/Storage';
 import UserJSONMapper from '@unimark/core/lib/data/mappers/account/UserJSONMapper';
 import Setting, { SettingInterface } from '@unimark/core/lib/domain/entities/account/Setting';
@@ -31,6 +32,7 @@ import { DEFAULT_SEARCH_APP } from '../constant/app';
 import CreateApp from '@unimark/core/lib/domain/use-cases/account/CreateApp';
 import FindAppsBy from '@unimark/core/lib/domain/use-cases/account/FindAppsBy';
 import { avoid } from '../decorator/ssr';
+import FindHistoriesBy from '@unimark/core/lib/domain/use-cases/search/FindHistoriesBy';
 
 const userMapper = new UserJSONMapper();
 const settingMapper = new SettingJSONMapper();
@@ -139,6 +141,19 @@ export default class UserStore {
   @action
   public setLayoutEditable(editable: boolean): void {
     this.isLayoutEditable = editable;
+  }
+
+  public async getSearchHistories(): Promise<History[]> {
+    if (!this.user) {
+      return [];
+    }
+
+    return await apply<FindHistoriesBy>(
+      CONTEXT.contexts.search.useCases.findHistoriesBy,
+      (it: FindHistoriesBy) => it.options = {}
+    )
+      .runOnce(async, queue)
+      .toPromise();
   }
 
   private async clear(): Promise<void> {
