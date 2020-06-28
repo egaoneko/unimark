@@ -6,7 +6,10 @@ export default abstract class CustomError extends Error {
 
   protected constructor() {
     super();
-    Error.captureStackTrace(this, this.constructor);
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, CustomError);
+    }
   }
 
   public initialize(message: string, data: ErrorDataType): void {
