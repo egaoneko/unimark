@@ -24,7 +24,7 @@ const Search: React.FC<PropsType> = (props) => {
   } = props;
   const [engine, setEngine] = useState<SearchEngine>(SearchEngine.GOOGLE);
   const [histories, setHistories] = useState<History[]>([]);
-  const [timer, setTimer] = useState<number>(null);
+  const [timer, setTimer] = useState<number | null>(null);
 
   return (
     <Container>
@@ -40,7 +40,10 @@ const Search: React.FC<PropsType> = (props) => {
         onSearch={value => onSearch && onSearch(value, engine)}
         onFocus={async () => loadHistories && setHistories(await loadHistories())}
         onBlur={() => {
-          clearTimeout(timer);
+          if (timer) {
+            clearTimeout(timer as number);
+          }
+
           setTimer(
             setTimeout(() => {
               setHistories([]);
