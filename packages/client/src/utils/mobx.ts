@@ -1,13 +1,20 @@
 import { useContext } from 'react';
 import { MobXProviderContext } from 'mobx-react';
 import UserStore from '../stores/UserStore';
+import SearchStore from '../stores/SearchStore';
 
-export interface Stores {
+export interface StoresInterface {
   userStore: UserStore;
+  searchStore: SearchStore;
 }
 
-function useStores(): Stores {
-  return useContext(MobXProviderContext) as Stores;
+export const STORES = {
+  userStore: new UserStore(),
+  searchStore: new SearchStore(),
+};
+
+function useStores(): StoresInterface {
+  return useContext(MobXProviderContext) as StoresInterface;
 }
 
 export default useStores;

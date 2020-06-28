@@ -51,12 +51,15 @@ export default class SearchContext {
     this.contexts = {
       firebase: new FirebaseContext(axiosInstance),
     };
+
+    const history: HistoryRepository = new HistoryRepository(this.contexts.firebase.providers.search.history)
     this.repositories = {
       search: new SearchRepository(
         this.providers.google,
         this.providers.naver,
+        history,
       ),
-      history: new HistoryRepository(this.contexts.firebase.providers.search.history),
+      history,
     };
     this.useCases = {
       searchQuery: new SearchQuery(this.repositories.search),

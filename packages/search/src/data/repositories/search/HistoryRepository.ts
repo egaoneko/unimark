@@ -9,6 +9,7 @@ import FirebaseHistoryProvider from '@unimark/firebase/lib/data/providers/search
 // --ADD_IMPORT--
 
 export default class HistoryRepository implements HistoryRepositoryInterface {
+
   constructor(
     private provider: FirebaseHistoryProvider,
   ) {

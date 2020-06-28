@@ -106,31 +106,31 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
         );
     }
 
-    const query: firebase.firestore.CollectionReference = this.collection;
+    let query: firebase.firestore.Query<firebase.firestore.DocumentData> = this.collection;
 
     if (options.where) {
       options.where.forEach(w => {
-        query.where(w[0], w[1], w[2]);
+        query = query.where(w[0], w[1], w[2]);
       });
     }
 
     if (options.sort) {
       options.sort.forEach(s => {
-        query.orderBy(s[0], s[1]);
+        query = query.orderBy(s[0], s[1]);
       });
     }
 
     if (options.last) {
-      query.startAfter(options.last);
+      query = query.startAfter(options.last);
     } else if (options.first) {
-      query.endBefore(options.first);
+      query = query.endBefore(options.first);
     }
 
     if (options.limit) {
       if (options.first) {
-        query.limitToLast(options.limit);
+        query = query.limitToLast(options.limit);
       } else {
-        query.limit(options.limit);
+        query = query.limit(options.limit);
       }
     }
 

@@ -1,8 +1,27 @@
 import React from 'react';
 import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
 import { Select } from 'antd';
+import {
+  SEARCH_ENGINE_METADATA,
+  UNKNOWN_SEARCH_ENGINE_METADATA
+} from '../../../../constant/search';
 
 const { Option } = Select;
+
+const Options = [
+  SearchEngine.GOOGLE,
+  SearchEngine.NAVER,
+].map(engine => {
+  const metadata = SEARCH_ENGINE_METADATA.get(engine);
+  return (
+    <Option
+      key={engine}
+      value={engine}
+    >
+      {metadata?.name || UNKNOWN_SEARCH_ENGINE_METADATA.name}
+    </Option>
+  )
+});
 
 interface PropsType {
   defaultValue?: SearchEngine;
@@ -18,8 +37,7 @@ const SearchEngineSelect: React.FC<PropsType> = (props) => {
       value={props.value}
       onChange={props.onChange}
       className="select-before">
-      <Option value={SearchEngine.GOOGLE}>Google</Option>
-      <Option value={SearchEngine.NAVER}>Naver</Option>
+      {Options}
     </Select>
   );
 };
