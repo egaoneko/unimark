@@ -1,12 +1,14 @@
 import History from '../../../../src/domain/entities/search/History';
-import { DEFAULT_UUID } from '../../../../__mocks__/constant';
-import { DEFAULT_USER } from '../../../../__mocks__/account/constant';
 import {
   DEFAULT_CREATED_AT,
+  DEFAULT_UPDATED_AT,
+  DEFAULT_UUID
+} from '../../../../__mocks__/constant';
+import { DEFAULT_USER } from '../../../../__mocks__/account/constant';
+import {
   DEFAULT_ENGINE,
   DEFAULT_HISTORY,
   DEFAULT_LINK,
-  DEFAULT_UPDATED_AT,
   DEFAULT_WORD
 } from '../../../../__mocks__/search/constant';
 

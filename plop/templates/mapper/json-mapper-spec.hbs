@@ -3,13 +3,8 @@ import {{entity}}JSONMapper from '../../../../src/data/mappers/{{module}}/{{enti
 
 describe('{{entity}}JSONMapper', () => {
   const mapper: {{entity}}JSONMapper = new {{entity}}JSONMapper();
-  const json: {{entity}}Interface = {
-    prop: 'test',
-  };
-  const entity: {{entity}} = new {{entity}}(
-    'test',
-  );
-  entity.prop = 'test';
+  const json: {{entity}}Interface = DEFAULT_{{upperCase (snakeCase entity)}}_JSON;
+  const entity: {{entity}} = DEFAULT_{{upperCase (snakeCase entity)}};
 
   test('toEntity', () => {
     expect(mapper.toEntity(json).equal(entity)).toBeTruthy();

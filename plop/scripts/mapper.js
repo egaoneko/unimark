@@ -55,8 +55,6 @@ module.exports = (plop) => {
     actions: (answer) => {
       const actions = [];
 
-      console.log(answer);
-
       switch (answer.type) {
         case 'JSON':
           actions.push({

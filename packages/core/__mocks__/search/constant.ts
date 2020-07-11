@@ -2,7 +2,11 @@ import { SearchEngine } from '../../src/enums/search/engine';
 import Query from '../../src/domain/entities/search/Query';
 import Result from '../../src/domain/entities/search/Result';
 import History, { HistoryInterface } from '../../src/domain/entities/search/History';
-import { DEFAULT_UUID } from '../constant';
+import {
+  DEFAULT_CREATED_AT,
+  DEFAULT_UPDATED_AT,
+  DEFAULT_UUID
+} from '../constant';
 import {
   DEFAULT_USER,
   DEFAULT_USER_JSON
@@ -22,9 +26,6 @@ export const DEFAULT_CONTENT: string = 'Hello <b>world</b>!';
 export const DEFAULT_RESULT: Result = new Result();
 DEFAULT_RESULT.link = DEFAULT_LINK;
 DEFAULT_RESULT.content = [DEFAULT_CONTENT];
-
-export const DEFAULT_CREATED_AT: number = Date.now();
-export const DEFAULT_UPDATED_AT: number = Date.now();
 
 export const DEFAULT_HISTORY: History = new History();
 DEFAULT_HISTORY.id = DEFAULT_UUID;
