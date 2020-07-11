@@ -33,7 +33,7 @@ module.exports = (plop) => {
       ),
       genAutocompletePrompt(
         'parentLayer',
-        'Please choice layer',
+        'Please choice parent layer',
         LAYERS,
       ),
       genModuleInputPrompt(
