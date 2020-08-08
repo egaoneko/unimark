@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Spin as AntSpin } from 'antd';
 import styled from 'styled-components';
 
-const Spin = styled(AntSpin)`
-  position: absolute;
-  left: calc(50% - 18px);
-  top: calc(50% - 18px);
-`;
+interface PropsType {
+}
 
-const Loading: React.FC = () => {
+const Loading: FC<PropsType> = () => {
   return (
     <div className="animated delay-1s fadeIn" style={{
       position: 'relative',
@@ -23,3 +20,9 @@ const Loading: React.FC = () => {
 };
 
 export default Loading;
+
+const Spin = styled(AntSpin)`
+  position: absolute;
+  left: calc(50% - 18px);
+  top: calc(50% - 18px);
+`;

@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  FC,
+  ReactNode,
+  MouseEvent,
+  KeyboardEvent,
+} from 'react';
 import {
   Dropdown,
   Menu
@@ -8,29 +13,12 @@ import Avatar from '../../molecules/layout/Avartar';
 import User from '@unimark/core/lib/domain/entities/account/User';
 import { signOut } from '@unimark/firebase/lib/utils/auth';
 
-const DropdownMenu = () => {
-  const onClick = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.KeyboardEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    await signOut();
-    signIn();
-  };
-  return (
-    <Menu>
-      <Menu.Item>
-        <a href="/#" onClick={onClick} onKeyDown={onClick}>
-          Sign Out
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
-};
-
 interface PropsType {
   user: User | null
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const AvatarDropdown: React.FC<PropsType> = (props) => {
+const AvatarDropdown: FC<PropsType> = (props) => {
   const { user } = props;
 
   function onClickAvatar() {
@@ -53,3 +41,20 @@ const AvatarDropdown: React.FC<PropsType> = (props) => {
 };
 
 export default AvatarDropdown;
+
+const DropdownMenu = () => {
+  const onClick = async (e: MouseEvent<HTMLAnchorElement> | KeyboardEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    await signOut();
+    signIn();
+  };
+  return (
+    <Menu>
+      <Menu.Item>
+        <a href="/#" onClick={onClick} onKeyDown={onClick}>
+          Sign Out
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+};

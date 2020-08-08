@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   Layout,
 } from 'antd';
 import styled from 'styled-components';
 import MainGridContainer from '../grid/MainGridContainer';
+
+interface PropsType {
+}
+
+const HomeContainer: FC<PropsType> = () => {
+  return (
+    <Container>
+      <Content>
+        <MainGridContainer/>
+      </Content>
+    </Container>
+  );
+};
+
+export default HomeContainer;
 
 const Container = styled(Layout)`
   display: flex;
@@ -20,18 +35,3 @@ const Content = styled(Layout.Content)`
   height: 100%;
   background: #fff;
 `;
-
-interface PropsType {
-}
-
-const HomeContainer: React.FC<PropsType> = () => {
-  return (
-    <Container>
-      <Content>
-        <MainGridContainer/>
-      </Content>
-    </Container>
-  );
-};
-
-export default HomeContainer;

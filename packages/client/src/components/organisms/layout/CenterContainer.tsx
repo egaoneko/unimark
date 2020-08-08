@@ -1,19 +1,14 @@
-import React from 'react';
+import React, {
+  FC,
+  ReactNode
+} from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface PropsType {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const CenterContainer: React.FC<PropsType> = ({ children }) => {
+const CenterContainer: FC<PropsType> = ({ children }) => {
   return (
     <Container>
       {children}
@@ -22,3 +17,11 @@ const CenterContainer: React.FC<PropsType> = ({ children }) => {
 };
 
 export default CenterContainer;
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

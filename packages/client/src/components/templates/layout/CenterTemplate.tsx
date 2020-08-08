@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {
+  FC,
+  ReactNode
+} from 'react';
 import CenterContainer from '../../organisms/layout/CenterContainer';
 
 interface PropsType {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const CenterTemplate: React.FC<PropsType> = ({ children }) => {
+const CenterTemplate: FC<PropsType> = ({ children }) => {
   return (
     <CenterContainer>
       {children}

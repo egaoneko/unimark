@@ -1,4 +1,5 @@
 import React, {
+  FC,
   useCallback,
   useEffect,
   useState
@@ -25,7 +26,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 interface PropsType {
 }
 
-const MainGridContainer: React.FC<PropsType> = observer(() => {
+const MainGridContainer: FC<PropsType> = observer(() => {
   const { userStore } = useStores();
   const [setting, setSetting] = useState<Setting | null>(null);
   const [breakpoint, setBreakpoint] = useState<string | null>(null);

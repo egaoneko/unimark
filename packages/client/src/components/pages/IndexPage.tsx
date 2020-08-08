@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import SEO from '../organisms/common/SEO';
 import HeaderLayoutTemplate from '../templates/layout/HeaderLayoutTemplate';
 import HomeContainer from '../templates/main/HomeContainer';
 
-const IndexPage: React.FC = () => {
+interface PropsType {
+}
+
+const IndexPage: FC<PropsType> = () => {
   return (
     <HeaderLayoutTemplate>
-      <SEO title="Home" />
+      <SEO title="Home"/>
       <HomeContainer/>
     </HeaderLayoutTemplate>
   );

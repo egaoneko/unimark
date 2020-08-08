@@ -1,16 +1,14 @@
-import React, { ReactNode } from 'react';
+import React, {
+  FC,
+  ReactNode
+} from 'react';
 import styled from 'styled-components';
-
-const Content = styled.div`
-  width: 100%;
-  height: 100%;
-`;
 
 interface PropsType {
   children?: ReactNode;
 }
 
-const FullContent: React.FC<PropsType> = ({ children }) => {
+const FullContent: FC<PropsType> = ({ children }) => {
   return (
     <Content>
       {children}
@@ -19,3 +17,8 @@ const FullContent: React.FC<PropsType> = ({ children }) => {
 };
 
 export default FullContent;
+
+const Content = styled.div`
+  width: 100%;
+  height: 100%;
+`;

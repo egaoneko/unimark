@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { async } from 'rxjs/internal/scheduler/async';
 import { queue } from 'rxjs/internal/scheduler/queue';
 import CreateUser from '@unimark/core/lib/domain/use-cases/account/CreateUser';
@@ -16,7 +16,7 @@ import { UiConfig } from '@unimark/firebase/lib/components/molecules/FirebaseAut
 interface PropsType {
 }
 
-const SignInPage: React.FC<PropsType> = () => {
+const SignInPage: FC<PropsType> = () => {
   const uiConfig: UiConfig = {
     signInFlow: 'popup',
     signInSuccessUrl: '/',

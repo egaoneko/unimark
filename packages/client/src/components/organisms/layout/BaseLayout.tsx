@@ -1,16 +1,16 @@
-import React, { CSSProperties } from 'react';
+import React, {
+  FC,
+  ReactNode,
+  CSSProperties
+} from 'react';
 import styled from 'styled-components';
-
-const Layout = styled.div`
-  height: 100%;
-`;
 
 interface PropsType {
   style?: CSSProperties;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const BaseLayout: React.FC<PropsType> = ({ style, children }) => {
+const BaseLayout: FC<PropsType> = ({ style, children }) => {
   return (
     <Layout style={{
       ...style
@@ -21,3 +21,7 @@ const BaseLayout: React.FC<PropsType> = ({ style, children }) => {
 };
 
 export default BaseLayout;
+
+const Layout = styled.div`
+  height: 100%;
+`;

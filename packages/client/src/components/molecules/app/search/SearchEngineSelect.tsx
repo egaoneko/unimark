@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
 import { Select } from 'antd';
 import {
@@ -7,6 +7,27 @@ import {
 } from '../../../../constant/search';
 
 const { Option } = Select;
+
+interface PropsType {
+  defaultValue?: SearchEngine;
+  value?: SearchEngine;
+  onChange?: (engine: SearchEngine) => void;
+}
+
+const SearchEngineSelect: FC<PropsType> = (props) => {
+  return (
+    <Select
+      style={{ width: 100 }}
+      defaultValue={props.defaultValue}
+      value={props.value}
+      onChange={props.onChange}
+      className="select-before">
+      {Options}
+    </Select>
+  );
+};
+
+export default SearchEngineSelect;
 
 const Options = [
   SearchEngine.GOOGLE,
@@ -22,24 +43,3 @@ const Options = [
     </Option>
   )
 });
-
-interface PropsType {
-  defaultValue?: SearchEngine;
-  value?: SearchEngine;
-  onChange?: (engine: SearchEngine) => void;
-}
-
-const SearchEngineSelect: React.FC<PropsType> = (props) => {
-  return (
-    <Select
-      style={{ width: 100 }}
-      defaultValue={props.defaultValue}
-      value={props.value}
-      onChange={props.onChange}
-      className="select-before">
-      {Options}
-    </Select>
-  );
-};
-
-export default SearchEngineSelect;
