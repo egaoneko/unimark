@@ -1,4 +1,5 @@
 import React, {
+  FC,
   useCallback,
   useEffect,
   useRef,
@@ -11,20 +12,15 @@ import {
 } from 'react-grid-layout';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
 const DEFAULT_WIDTH: number = 1200;
 
 interface PropsType extends ResponsiveProps {
   measureBeforeMount?: boolean;
 }
 
-export default function WidthProvider(
+function WidthProvider(
   ComposedComponent: any
-): React.FC<PropsType> {
+): FC<PropsType> {
   return (props) => {
     const { measureBeforeMount, ...rest } = props;
     const [width, setWidth] = useState<number>(DEFAULT_WIDTH);
@@ -105,3 +101,10 @@ export default function WidthProvider(
     );
   };
 }
+
+export default WidthProvider;
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;

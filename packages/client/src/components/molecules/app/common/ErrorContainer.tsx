@@ -1,24 +1,16 @@
-import React from 'react';
+import React, {
+  FC,
+  ReactNode
+} from 'react';
 import styled from 'styled-components';
 import { Result } from 'antd';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: #f8f8f2;
-  border: 2px solid #ff5555;
-`;
-
 interface PropsType {
   title?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const ErrorContainer: React.FC<PropsType> = (props) => {
+const ErrorContainer: FC<PropsType> = (props) => {
   return (
     <Container>
       <Result
@@ -30,3 +22,14 @@ const ErrorContainer: React.FC<PropsType> = (props) => {
 };
 
 export default ErrorContainer;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f8f2;
+  border: 2px solid #ff5555;
+`;

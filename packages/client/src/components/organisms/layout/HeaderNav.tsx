@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import Logo from '../../molecules/layout/Logo';
@@ -6,6 +6,30 @@ import useStores from '../../../utils/mobx';
 import AvatarDropdown from './AvatarDropdown';
 import SettingButton from './SettingButton';
 import { DRACULA_THEME_COLOR } from '../../../constant/theme/dracula';
+
+interface PropsType {
+}
+
+const HeaderNav: FC<PropsType> = observer(() => {
+  const { userStore } = useStores();
+
+  return (
+    <Header>
+      <Logo
+        size={38}
+        style={{
+          margin: '2px 10px 2px 0',
+          float: 'left',
+        }}/>
+      <RightMenuContainer>
+        {userStore.user && <SettingButton/>}
+        <AvatarDropdown user={userStore.user}/>
+      </RightMenuContainer>
+    </Header>
+  );
+});
+
+export default HeaderNav;
 
 const Header = styled.div`
   display: flex;
@@ -30,27 +54,3 @@ const RightMenuContainer = styled.div`
     margin-left: 8px;
   }
 `;
-
-interface PropsType {
-}
-
-const HeaderNav: React.FC<PropsType> = observer(() => {
-  const { userStore } = useStores();
-
-  return (
-    <Header>
-      <Logo
-        size={38}
-        style={{
-          margin: '2px 10px 2px 0',
-          float: 'left',
-        }}/>
-      <RightMenuContainer>
-        { userStore.user && <SettingButton/> }
-        <AvatarDropdown user={userStore.user}/>
-      </RightMenuContainer>
-    </Header>
-  );
-});
-
-export default HeaderNav;

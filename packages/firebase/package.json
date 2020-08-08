@@ -21,22 +21,22 @@
   "dependencies": {
     "@unimark/core": "~0.0.1",
     "axios": "~0.19.1",
-    "firebase": "~7.15.0",
+    "firebase": "~7.17.2",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
     "react-firebaseui": "~4.1.0",
-    "rxjs": "~6.5.3"
+    "rxjs": "~6.6.2"
   },
   "devDependencies": {
     "@types/axios": "~0.14.0",
-    "@types/jest": "~25.2.3",
-    "@types/node": "~14.0.11",
-    "@types/react": "~16.9.23",
+    "@types/jest": "~26.0.9",
+    "@types/node": "~14.0.27",
+    "@types/react": "~16.9.44",
     "@types/react-dom": "~16.9.5",
-    "jest": "~26.0.1",
-    "jest-config": "~26.0.1",
-    "ts-jest": "~26.1.0",
-    "typescript": "~3.9.5"
+    "jest": "~26.2.2",
+    "jest-config": "~26.2.2",
+    "ts-jest": "~26.1.4",
+    "typescript": "~3.9.7"
   },
   "gitHead": "55310dda3269e203d2a1eee5536a506a2370ec43"
 }

@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, {
+  FC,
+  useState
+} from 'react';
 import {
   Alert,
   Col,
@@ -19,6 +22,135 @@ import FirebaseAuth, {
   AuthUIError,
   UiConfig
 } from '@unimark/firebase/lib/components/molecules/FirebaseAuth';
+
+interface PropsType {
+  uiConfig: UiConfig;
+}
+
+const SignInTemplate: FC<PropsType> = ({ uiConfig }) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { site } = useStaticQuery(
+    graphql`
+        query {
+            site {
+                siteMetadata {
+                    copyright
+                }
+            }
+        }
+    `,
+  );
+  const orgSignInFailure = uiConfig.callbacks?.signInFailure;
+  const orgUiShown = uiConfig.callbacks?.uiShown;
+  uiConfig = {
+    ...uiConfig,
+    callbacks: {
+      ...uiConfig.callbacks,
+      signInFailure: async (error: AuthUIError) => {
+        setLoading(false);
+        setError(error.message);
+        return orgSignInFailure && await orgSignInFailure(error);
+      },
+      uiShown: () => {
+        setLoading(false);
+        orgUiShown && orgUiShown();
+      }
+    }
+  };
+
+  const onClose = () => {
+    setError(null);
+  };
+
+  return (
+    <FullLayoutTemplate style={{
+      backgroundColor: 'transparent',
+    }}>
+      <GlobalStyles/>
+      <Background
+        params={{
+          'particles': {
+            'number': {
+              'value': 160,
+              'density': {
+                'enable': false
+              }
+            },
+            'size': {
+              'value': 3,
+              'random': true,
+              'anim': {
+                'speed': 4,
+                'size_min': 0.3
+              }
+            },
+            'line_linked': {
+              'enable': false
+            },
+            'move': {
+              'random': true,
+              'speed': 1,
+              'direction': 'top',
+              'out_mode': 'out'
+            }
+          },
+          'interactivity': {
+            'events': {
+              'onhover': {
+                'enable': true,
+                'mode': 'bubble'
+              },
+              'onclick': {
+                'enable': true,
+                'mode': 'repulse'
+              }
+            },
+            'modes': {
+              'bubble': {
+                'distance': 250,
+                'duration': 2,
+                'size': 0,
+                'opacity': 0
+              },
+              'repulse': {
+                'distance': 400,
+                'duration': 4
+              }
+            }
+          }
+        }}/>
+      <CenterTemplate>
+        <Container className='animated fadeInDown'>
+          <LogoContainer span={24}>
+            <LogoWrapper>
+              <Logo
+                size={76}
+                onClick={main}
+              />
+            </LogoWrapper>
+          </LogoContainer>
+          <AuthContainer span={24}>
+            <Auth
+              uiConfig={uiConfig}
+              loading={loading}
+              error={error}
+              onClose={onClose}/>
+          </AuthContainer>
+          <CopyrightContainer span={24}>
+            <CopyrightContainer>
+              <Copyright>
+                {site.siteMetadata.copyright}
+              </Copyright>
+            </CopyrightContainer>
+          </CopyrightContainer>
+        </Container>
+      </CenterTemplate>
+    </FullLayoutTemplate>
+  );
+};
+
+export default SignInTemplate;
 
 const Particles = Loadable({
   loader: () => import('react-particles-js'),
@@ -46,7 +178,7 @@ const AuthContainer = styled(Col)`
   position: relative;
 `;
 
-const Auth: React.FC<{
+const Auth: FC<{
   uiConfig: UiConfig,
   loading: boolean,
   error: string | null,
@@ -141,133 +273,3 @@ const GlobalStyles = createGlobalStyle`
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6638f0', endColorstr='#32469b', GradientType=0 );
   }
 `;
-
-
-interface PropsType {
-  uiConfig: UiConfig;
-}
-
-const SignInTemplate: React.FC<PropsType> = ({ uiConfig }) => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const { site } = useStaticQuery(
-    graphql`
-        query {
-            site {
-                siteMetadata {
-                    copyright
-                }
-            }
-        }
-    `,
-  );
-  const orgSignInFailure = uiConfig.callbacks?.signInFailure;
-  const orgUiShown = uiConfig.callbacks?.uiShown;
-  uiConfig = {
-    ...uiConfig,
-    callbacks: {
-      ...uiConfig.callbacks,
-      signInFailure: async (error: AuthUIError) => {
-        setLoading(false);
-        setError(error.message);
-        return orgSignInFailure && await orgSignInFailure(error);
-      },
-      uiShown: () => {
-        setLoading(false);
-        orgUiShown && orgUiShown();
-      }
-    }
-  };
-
-  const onClose = () => {
-    setError(null);
-  };
-
-  return (
-    <FullLayoutTemplate style={{
-      backgroundColor: 'transparent',
-    }}>
-      <GlobalStyles/>
-      <Background
-        params={{
-          "particles": {
-            "number": {
-              "value": 160,
-              "density": {
-                "enable": false
-              }
-            },
-            "size": {
-              "value": 3,
-              "random": true,
-              "anim": {
-                "speed": 4,
-                "size_min": 0.3
-              }
-            },
-            "line_linked": {
-              "enable": false
-            },
-            "move": {
-              "random": true,
-              "speed": 1,
-              "direction": "top",
-              "out_mode": "out"
-            }
-          },
-          "interactivity": {
-            "events": {
-              "onhover": {
-                "enable": true,
-                "mode": "bubble"
-              },
-              "onclick": {
-                "enable": true,
-                "mode": "repulse"
-              }
-            },
-            "modes": {
-              "bubble": {
-                "distance": 250,
-                "duration": 2,
-                "size": 0,
-                "opacity": 0
-              },
-              "repulse": {
-                "distance": 400,
-                "duration": 4
-              }
-            }
-          }
-        }}/>
-      <CenterTemplate>
-        <Container className='animated fadeInDown'>
-          <LogoContainer span={24}>
-            <LogoWrapper>
-              <Logo
-                size={76}
-                onClick={main}
-              />
-            </LogoWrapper>
-          </LogoContainer>
-          <AuthContainer span={24}>
-            <Auth
-              uiConfig={uiConfig}
-              loading={loading}
-              error={error}
-              onClose={onClose}/>
-          </AuthContainer>
-          <CopyrightContainer span={24}>
-            <CopyrightContainer>
-              <Copyright>
-                {site.siteMetadata.copyright}
-              </Copyright>
-            </CopyrightContainer>
-          </CopyrightContainer>
-        </Container>
-      </CenterTemplate>
-    </FullLayoutTemplate>
-  );
-};
-
-export default SignInTemplate;

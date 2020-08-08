@@ -35,11 +35,11 @@
     "publish:canary": "lerna publish --canary --yes"
   },
   "devDependencies": {
-    "@types/jest": "~25.2.3",
+    "@types/jest": "~26.0.9",
     "change-case": "~4.1.0",
-    "firebase-tools": "^8.4.2",
+    "firebase-tools": "^8.7.0",
     "inquirer-autocomplete-prompt": "~1.0.1",
-    "lerna": "~3.22.0",
-    "plop": "~2.7.1"
+    "lerna": "~3.22.1",
+    "plop": "~2.7.4"
   }
 }

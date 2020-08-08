@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
 import { Tag } from 'antd';
 import {
@@ -10,7 +10,7 @@ interface PropsType {
   engine: SearchEngine
 }
 
-const SearchEngineTag: React.FC<PropsType> = ({ engine }) => {
+const SearchEngineTag: FC<PropsType> = ({ engine }) => {
   const metadata = SEARCH_ENGINE_METADATA.get(engine);
 
   return (

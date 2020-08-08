@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  FC,
+  ReactNode
+} from 'react';
 import { Button } from 'antd';
 import { SettingTwoTone } from '@ant-design/icons';
 import useStores from '../../../utils/mobx';
@@ -6,10 +9,10 @@ import { observer } from 'mobx-react';
 import { DRACULA_THEME_COLOR } from '../../../constant/theme/dracula';
 
 interface PropsType {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const SettingButton: React.FC<PropsType> = observer((props) => {
+const SettingButton: FC<PropsType> = observer((props) => {
   const { userStore } = useStores();
   return (
     <Button

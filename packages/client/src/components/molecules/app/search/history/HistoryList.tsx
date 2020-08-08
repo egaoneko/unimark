@@ -1,9 +1,35 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { List } from 'antd';
 import styled from 'styled-components';
 import History from '@unimark/core/lib/domain/entities/search/History';
 import HistoryItem from './HistoryItem';
 import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
+
+interface PropsType {
+  histories: History[];
+  onSearch?: (word: string, engine: SearchEngine) => Promise<void>;
+}
+
+const HistoryList: FC<PropsType> = ({ histories, onSearch }) => {
+  return (
+    <Wrapper className={[
+      'animate__animated animate__fadeIn animate__delay-0.1s',
+      histories.length > 0 ? 'show' : 'hide'
+    ].join(' ')}>
+      <Container>
+        <List
+          itemLayout="horizontal"
+          dataSource={histories}
+          renderItem={(history: History) => (
+            <HistoryItem history={history} onSearch={onSearch}/>
+          )}
+        />
+      </Container>
+    </Wrapper>
+  );
+};
+
+export default HistoryList;
 
 const Wrapper = styled.div`
   position: absolute;
@@ -31,29 +57,3 @@ const Container = styled.div`
   overflow-y: auto;
   box-sizing: border-box;
 `;
-
-interface PropsType {
-  histories: History[];
-  onSearch?: (word: string, engine: SearchEngine) => Promise<void>;
-}
-
-const HistoryList: React.FC<PropsType> = ({ histories, onSearch }) => {
-  return (
-    <Wrapper className={[
-      'animate__animated animate__fadeIn animate__delay-0.1s',
-      histories.length > 0 ? 'show' : 'hide'
-    ].join(' ')}>
-      <Container>
-        <List
-          itemLayout="horizontal"
-          dataSource={histories}
-          renderItem={(history: History) => (
-            <HistoryItem history={history} onSearch={onSearch}/>
-          )}
-        />
-      </Container>
-    </Wrapper>
-  );
-};
-
-export default HistoryList;

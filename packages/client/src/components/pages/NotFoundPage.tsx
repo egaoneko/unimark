@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   Result
 } from 'antd';
 import SEO from '../organisms/common/SEO';
 import FullLayout from '../templates/layout/FullLayoutTemplate';
 
-const NotFoundPage: React.FC = () => {
+interface PropsType {
+}
+
+const NotFoundPage: FC<PropsType> = () => {
   return (
     <FullLayout>
       <SEO title="404: Not found"/>

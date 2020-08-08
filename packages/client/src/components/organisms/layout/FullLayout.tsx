@@ -1,22 +1,17 @@
-import React, { CSSProperties } from 'react';
+import React, {
+  FC,
+  ReactNode,
+  CSSProperties
+} from 'react';
 import BaseLayout from './BaseLayout';
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyles = createGlobalStyle`
-  html, body, #___gatsby, #gatsby-focus-wrapper {
-    height: 100%;
-  }
-  div[role="group"][tabindex] {
-    height: 100%;
-  }
-`;
-
 interface PropsType {
   style?: CSSProperties;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const FullLayout: React.FC<PropsType> = ({ style, children }) => {
+const FullLayout: FC<PropsType> = ({ style, children }) => {
   return (
     <BaseLayout style={style}>
       <GlobalStyles/>
@@ -26,3 +21,12 @@ const FullLayout: React.FC<PropsType> = ({ style, children }) => {
 };
 
 export default FullLayout;
+
+const GlobalStyles = createGlobalStyle`
+  html, body, #___gatsby, #gatsby-focus-wrapper {
+    height: 100%;
+  }
+  div[role="group"][tabindex] {
+    height: 100%;
+  }
+`;

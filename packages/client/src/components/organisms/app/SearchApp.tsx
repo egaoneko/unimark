@@ -1,4 +1,7 @@
-import React, { useCallback } from 'react';
+import React, {
+  FC,
+  useCallback
+} from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import Search from '../../molecules/app/search/Search';
@@ -7,19 +10,10 @@ import { SearchEngine } from '@unimark/core/lib/enums/search/engine';
 import History from '@unimark/core/lib/domain/entities/search/History';
 import { redirect } from '../../../utils/router';
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface PropsType {
 }
 
-const SearchApp: React.FC<PropsType> = observer((props) => {
+const SearchApp: FC<PropsType> = observer((props) => {
   const { userStore, searchStore } = useStores();
 
   const onSearch = useCallback(async (word: string, engine: SearchEngine): Promise<void> => {
@@ -46,3 +40,12 @@ const SearchApp: React.FC<PropsType> = observer((props) => {
 });
 
 export default SearchApp;
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
