@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "unimark",
     "public": "packages/client/public",
     "ignore": [
       "firebase.json",

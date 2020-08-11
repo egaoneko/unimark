@@ -30,7 +30,6 @@
     "build:search": "lerna run build --scope @unimark/search",
     "build:client": "lerna run build --scope @unimark/client",
     "deploy": "firebase deploy --only hosting --token \"$FIREBASE_TOKEN\" --non-interactive",
-    "deploy:client": "firebase deploy --only hosting --token \"$FIREBASE_TOKEN\" --non-interactive",
     "publish": "lerna publish --yes",
     "publish:canary": "lerna publish --canary --yes"
   },

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "personal-fb"
+  },
+  "targets": {
+    "personal-fb": {
+      "hosting": {
+        "unimark": [
+          "smilecat-unimark"
+        ]
+      }
+    }
   }
 }
