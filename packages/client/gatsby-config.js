@@ -30,7 +30,7 @@ module.exports = {
           modifyVars: {
             '@font-family': 'Noto Sans KR, -apple-system, sans-serif',
             '@primary-color': '#282a36', // primary color for all components
-            '@link-color': '##1890ff', // link color
+            '@link-color': '#1890ff', // link color
             '@success-color': '#52c41a', // success state color
             '@warning-color': '#faad14', // warning state color
             '@error-color': '#f5222d', // error state color

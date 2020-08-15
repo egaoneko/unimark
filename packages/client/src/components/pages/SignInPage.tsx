@@ -12,31 +12,30 @@ import {
 } from '../../utils/router';
 import FirebaseUserMapper from '@unimark/firebase/lib/data/mappers/account/FirebaseUserMapper';
 import { UiConfig } from '@unimark/firebase/lib/components/molecules/FirebaseAuth';
+import useStores from '../../utils/mobx';
 
 interface PropsType {
 }
 
 const SignInPage: FC<PropsType> = () => {
+  const { userStore } = useStores();
   const uiConfig: UiConfig = {
     signInFlow: 'popup',
-    signInSuccessUrl: '/',
+    signInSuccessUrl: '',
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     ],
     callbacks: {
-      signInSuccessWithAuthResult: (credential: firebase.auth.UserCredential, redirectUrl: string) => {
+      signInSuccessWithAuthResult: async (credential: firebase.auth.UserCredential, redirectUrl: string) => {
         if (credential && credential.user) {
-          apply<CreateUser>(
-            CONTEXT.contexts.account.useCases.createUser,
-            (it: CreateUser) => it.user = new FirebaseUserMapper().toEntity(credential.user as firebase.User)
-          )
-            .runOnce(async, queue)
-            .subscribe(() => {
-              main();
-            }, (err: any) => {
-              console.error(err);
-              signIn();
-            });
+          const user = new FirebaseUserMapper().toEntity(credential.user as firebase.User);
+
+          try {
+            await userStore.createUser(user);
+            main();
+          } catch (err) {
+            signIn();
+          }
         } else {
           signIn();
         }

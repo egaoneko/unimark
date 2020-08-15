@@ -9,7 +9,11 @@ import { STORES } from '../utils/mobx';
 
 export default ({ element }: WrapRootElementBrowserArgs | WrapRootElementNodeArgs) => {
   STORES.userStore.initObserve();
-  return <Provider
-    {...STORES}
-  >{element}</Provider>;
+  return (
+    <Provider
+      {...STORES}
+    >
+      {element}
+    </Provider>
+  );
 };

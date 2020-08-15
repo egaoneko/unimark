@@ -28,13 +28,17 @@ import {
   TestEntity,
   TestFirebaseProvider
 } from '../../../__mocks__/MockCorrection';
-import { DEFAULT_ID } from '../../../__mocks__/constant';
+import {
+  DEFAULT_COLLECTION_PATH,
+  DEFAULT_FULL_COLLECTION_PATH,
+  DEFAULT_ID
+} from '../../../__mocks__/constant';
 
 describe('FirebaseProvider', () => {
   const provider: TestFirebaseProvider = new TestFirebaseProvider(
     db,
     auth,
-    'tests',
+    DEFAULT_COLLECTION_PATH,
   );
   const projectSpyFn = jest.spyOn<any, any>(provider, 'project');
   const unprojectSpyFn = jest.spyOn<any, any>(provider, 'unproject');
@@ -61,7 +65,7 @@ describe('FirebaseProvider', () => {
     expect(success).toBeTruthy();
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(add).toHaveBeenCalledTimes(1);
     expect(projectSpyFn).toHaveBeenCalledTimes(1);
   });
@@ -72,7 +76,7 @@ describe('FirebaseProvider', () => {
     expect(success).toBeTruthy();
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(doc).toHaveBeenCalledTimes(1);
     expect(doc).toBeCalledWith(DEFAULT_ID);
     expect(set).toHaveBeenCalledTimes(1);
@@ -89,7 +93,7 @@ describe('FirebaseProvider', () => {
     expect(list.length).toBe(1);
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(where).toHaveBeenCalledTimes(2);
     expect(where.mock.calls[0]).toEqual(['a', '>', 'test']);
     expect(where.mock.calls[1]).toEqual(['b', '<', 1]);
@@ -116,7 +120,7 @@ describe('FirebaseProvider', () => {
     expect(list.length).toBe(1);
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(where).toHaveBeenCalledTimes(2);
     expect(where.mock.calls[0]).toEqual(['a', '>', 'test']);
     expect(where.mock.calls[1]).toEqual(['b', '<', 1]);
@@ -140,7 +144,7 @@ describe('FirebaseProvider', () => {
     expect(list.length).toBe(1);
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(doc).toHaveBeenCalledTimes(1);
     expect(doc).toBeCalledWith(DEFAULT_ID);
     expect(get).toHaveBeenCalledTimes(1);
@@ -153,7 +157,7 @@ describe('FirebaseProvider', () => {
     expect(success).toBeTruthy();
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(doc).toHaveBeenCalledTimes(1);
     expect(doc).toBeCalledWith(DEFAULT_ID);
     expect(update).toHaveBeenCalledTimes(1);
@@ -172,7 +176,7 @@ describe('FirebaseProvider', () => {
     expect(success).toBeTruthy();
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(doc).toHaveBeenCalledTimes(1);
     expect(doc).toBeCalledWith(DEFAULT_ID);
     expect(mDelete).toHaveBeenCalledTimes(1);
@@ -195,7 +199,7 @@ describe('FirebaseProvider', () => {
     expect(count).toBe(1);
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(where).toHaveBeenCalledTimes(2);
     expect(where.mock.calls[0]).toEqual(['a', '>', 'test']);
     expect(where.mock.calls[1]).toEqual(['b', '<', 1]);
@@ -222,7 +226,7 @@ describe('FirebaseProvider', () => {
     expect(count).toBe(1);
 
     expect(collection).toHaveBeenCalledTimes(1);
-    expect(collection).toBeCalledWith('tests');
+    expect(collection).toBeCalledWith(DEFAULT_FULL_COLLECTION_PATH);
     expect(where).toHaveBeenCalledTimes(2);
     expect(where.mock.calls[0]).toEqual(['a', '>', 'test']);
     expect(where.mock.calls[1]).toEqual(['b', '<', 1]);

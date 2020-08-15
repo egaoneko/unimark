@@ -54,7 +54,7 @@ const MainGridContainer: FC<PropsType> = observer(() => {
         <AppContainer layout={layout}/>
       </div>)
     );
-  }, [userStore.appMap, setting, breakpoint]);
+  }, [breakpoint, setting, userStore.appMap]);
 
   return (
     setting && <ResponsiveReactGridLayout
@@ -66,7 +66,6 @@ const MainGridContainer: FC<PropsType> = observer(() => {
       rowHeight={30}
       onLayoutChange={async (layout: Layout[], allLayouts: Layouts) => {
         await userStore.updateLayout(setting, allLayouts);
-        setSetting(setting);
       }}
       onBreakpointChange={(breakpoint: string) => setBreakpoint(breakpoint)}
       cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
