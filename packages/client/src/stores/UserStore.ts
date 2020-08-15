@@ -21,7 +21,8 @@ import AppJSONMapper from '@unimark/core/lib/data/mappers/account/AppJSONMapper'
 import firebase from '@unimark/firebase/lib/externals/firebase';
 import {
   getCurrentUser,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut
 } from '@unimark/firebase/lib/utils/auth';
 import FirebaseUserMapper from '@unimark/firebase/lib/data/mappers/account/FirebaseUserMapper';
 import { Layouts } from '@unimark/core/lib/interfaces/account/setting';
@@ -33,6 +34,7 @@ import CreateApp from '@unimark/core/lib/domain/use-cases/account/CreateApp';
 import FindAppsBy from '@unimark/core/lib/domain/use-cases/account/FindAppsBy';
 import { avoid } from '../decorator/ssr';
 import FindHistoriesBy from '@unimark/core/lib/domain/use-cases/search/FindHistoriesBy';
+import CreateUser from '@unimark/core/lib/domain/use-cases/account/CreateUser';
 
 const userMapper = new UserJSONMapper();
 const settingMapper = new SettingJSONMapper();
@@ -100,6 +102,16 @@ export default class UserStore {
   }
 
   @action
+  public async createUser(user: User): Promise<void> {
+    await apply<CreateUser>(
+      CONTEXT.contexts.account.useCases.createUser,
+      (it: CreateUser) => it.user = user
+    )
+      .runOnce(async, queue)
+      .toPromise();
+  }
+
+  @action
   public async updateUser(user: User | null): Promise<void> {
     if (user && this.user?.equal(user)) {
       return;
@@ -110,13 +122,20 @@ export default class UserStore {
       return;
     }
 
-    await this.setUser(user);
+    try {
+      await this.setUser(user);
 
-    const apps = await this.loadApps(user);
-    await this.setApps(apps);
+      const apps = await this.loadApps(user);
+      await this.setApps(apps);
 
-    const setting = await this.loadSetting(user);
-    await this.setSetting(setting);
+      const setting = await this.loadSetting(user);
+      await this.setSetting(setting);
+    } catch (e) {
+      await signOut();
+      await this.clear();
+      console.error(e);
+      return;
+    }
   }
 
   @action
@@ -128,14 +147,25 @@ export default class UserStore {
       return false;
     }
 
-    const [_, success]: [Setting, boolean] = await apply<UpdateSetting>(
-      CONTEXT.contexts.account.useCases.updateSetting,
-      (it: UpdateSetting) => it.setting = setting
-    )
-      .runOnce(async, queue)
-      .toPromise();
-
-    return success;
+    if (setting.id) {
+      return (
+        await apply<UpdateSetting>(
+          CONTEXT.contexts.account.useCases.updateSetting,
+          (it: UpdateSetting) => it.setting = setting
+        )
+          .runOnce(async, queue)
+          .toPromise()
+      )[1];
+    } else {
+      return (
+        await apply<CreateSetting>(
+          CONTEXT.contexts.account.useCases.createSetting,
+          (it: CreateSetting) => it.setting = setting
+        )
+          .runOnce(async, queue)
+          .toPromise()
+      )[1];
+    }
   }
 
   @action

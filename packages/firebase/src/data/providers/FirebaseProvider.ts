@@ -14,8 +14,10 @@ import { APPLICATION_ERROR_FACTORY } from '@unimark/core/lib/data/errors/factori
 import ErrorType from '@unimark/core/lib/error/ErrorType';
 import { Options } from '@unimark/core/lib/interfaces/repository/options';
 import Serializable from '@unimark/core/lib/interfaces/definitions/Serializable';
+import { SERVICE } from '../../constant/common';
 
 export default abstract class FirebaseProvider<S extends Serializable, T extends Serializable> {
+  private collectionPath: string;
 
   protected get collection(): firebase.firestore.CollectionReference {
     return this.db.collection(this.collectionPath);
@@ -28,8 +30,9 @@ export default abstract class FirebaseProvider<S extends Serializable, T extends
   constructor(
     private db: firebase.firestore.Firestore,
     private auth: firebase.auth.Auth,
-    private collectionPath: string,
+    collectionPath: string,
   ) {
+    this.collectionPath = `${SERVICE}-${collectionPath}`;
   }
 
   protected create(entity: T): Observable<[T, boolean]> {
